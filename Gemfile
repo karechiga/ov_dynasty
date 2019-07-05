@@ -71,3 +71,7 @@ source 'https://rails-assets.org' do
 end
 
 gem 'devise'
+
+gem 'unirest'
+
+gem "figaro"
