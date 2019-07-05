@@ -10,10 +10,65 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_26_033243) do
+ActiveRecord::Schema.define(version: 2019_07_05_024842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "players", force: :cascade do |t|
+    t.string "position"
+    t.string "name"
+    t.string "team"
+    t.string "former_team"
+    t.integer "minutes"
+    t.integer "points"
+    t.integer "rebounds"
+    t.integer "assists"
+    t.integer "steals"
+    t.integer "blocks"
+    t.integer "turnovers"
+    t.integer "fgm"
+    t.integer "fga"
+    t.integer "fgm3"
+    t.integer "fga3"
+    t.integer "ftm"
+    t.integer "fta"
+    t.integer "gp"
+    t.integer "min_total"
+    t.integer "pts_total"
+    t.integer "reb_total"
+    t.integer "ast_total"
+    t.integer "stl_total"
+    t.integer "blk_total"
+    t.integer "to_total"
+    t.integer "fgm_total"
+    t.integer "fga_total"
+    t.integer "fgm3_total"
+    t.integer "fga3_total"
+    t.integer "ftm_total"
+    t.integer "fta_total"
+    t.integer "roster_id"
+    t.string "timestamps"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["roster_id"], name: "index_players_on_roster_id"
+  end
+
+  create_table "rosters", force: :cascade do |t|
+    t.string "team_name"
+    t.string "team_abbrev"
+    t.text "motto"
+    t.decimal "cap_space"
+    t.decimal "penalty"
+    t.decimal "traded_salary"
+    t.integer "wins"
+    t.integer "losses"
+    t.integer "ties"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_rosters_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
