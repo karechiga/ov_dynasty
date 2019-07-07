@@ -1,4 +1,24 @@
-
 <h1>
-  <%= @response["api"]["games"] %>
+  <%# <%= @response["api"]["games"] %> 
 </h1>
+
+
+<script>
+  $(function() {
+
+    $.ajaxSetup({
+      headers: {
+        "X-RapidAPI-Host" : env.rapidapi_host,
+        "X-RapidAPI-Key" : env.rapidapi_key     
+      }
+      
+    });
+
+    $.get("https://api-nba-v1.p.rapidapi.com/games/live/").success( function(data) {
+      console.log(data);
+    });
+    console.log("OV Dynasty");
+    h1Element = $("h1");
+    h1Element.html("OV Dynasty");
+  });
+</script>

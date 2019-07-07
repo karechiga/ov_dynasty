@@ -3,7 +3,7 @@ class StaticPagesController < ApplicationController
 
 
   def index
-    @response = get_info()
+    # @response = get_info()
   end
 
   private
