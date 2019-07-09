@@ -8,7 +8,7 @@ class PlayersController < ApplicationController
   private
 
   def player_params
-    params.require(:player).permit(:id, :position
+    params.require(:player).permit(:id, :position,
       :name, :former_team, :minutes, :points,
       :rebounds, :assists, :steals, :blocks,
       :turnovers, :fgm, :fga, :fgm3, :fga3, 
@@ -17,4 +17,7 @@ class PlayersController < ApplicationController
       :to_total, :fgm_total, :fga_total, :fgm3_total,
       :fga3_total, :ftm_total, :fta_total, :roster_id)
   end
+  # def player_params
+  #   params.require(:player).permit(:id, :name)
+  # end
 end

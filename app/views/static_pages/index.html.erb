@@ -1,5 +1,5 @@
 <h1>
-  <%# <%= @response["api"]["games"] %> 
+
 </h1>
 
 
@@ -14,11 +14,44 @@
       
     });
 
-    $.get("https://api-nba-v1.p.rapidapi.com/games/live/").success( function(data) {
-      console.log(data);
+    $.get("https://api-nba-v1.p.rapidapi.com/players/league/standard").success( function(data) {
+      $.each(data.api.players, function (index, player) {
+        if (player.leagues.standard.active == "1") {
+          console.log(player.firstName + ' ' + player.lastName);
+        }
+      });
+      
     });
     console.log("OV Dynasty");
     h1Element = $("h1");
     h1Element.html("OV Dynasty");
+
   });
+
+    // $.ajax({
+    //     url: "/players",
+    //     type: "POST",
+    //     data: {players: {
+    //             id: 3, 
+    //             name: "firstname lastname"}},
+    //     success: function(resp){ 
+    //       console(resp);
+    //     }
+    // });
+
+    //   var player = data.api.players[1];
+    //   var url = "/players";
+    //   console.log(url);
+    //   $.post(url, {
+    //     id: player.playerId,
+    //     name: player.firstName + ' ' + player.lastName
+    //   });
+
+    // $.post("/players", {players: {
+    //   id: 1,
+    //   name: "firstname lastname"
+    // } }).success(function () {
+    //   console("success");
+    // });
+    
 </script>
