@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-def get_info
+def get_player_info
   response = Unirest.get "https://api-nba-v1.p.rapidapi.com/players/league/standard",
     {
       "X-RapidAPI-Host" => ENV["rapidapi_host"],
@@ -16,14 +16,40 @@ def get_info
   return response.body
 end
 
+def get_team_info
+  response = Unirest.get "https://api-nba-v1.p.rapidapi.com/teams/league/standard",
+    {
+      "X-RapidAPI-Host" => ENV["rapidapi_host"],
+      "X-RapidAPI-Key" => ENV["rapidapi_key"]
+    }
+  return response.body
+end
 
-response = get_info
+def team_id_is_valid(team_id)
+  return !(NbaTeam.where(:id => team_id).empty?)
+end
 
-response["api"]["players"].each do |player|
+team_response = get_team_info
+player_response = get_player_info
+
+
+team_response["api"]["teams"].each do |team|
+  if team["nbaFranchise"] == "1"
+    nba_team = NbaTeam.create(city: team["city"], nickname: team["nickname"], abbrev: team["shortName"], id: team["teamId"])
+    puts "#{nba_team.city} #{nba_team.nickname}"
+  end
+end
+
+player_response["api"]["players"].each do |player|
   if player["leagues"]["standard"]["active"] == "1"
     name = "#{player["firstName"]} #{player["lastName"]}"
-    puts name
-    new_player = Player.create(name: name, id: player["playerId"])
-    new_player.save
+    team_id = player["teamId"]
+    if team_id == nil
+      Player.create(name: name, id: player["playerId"], nba_team_id: player["teamId"])
+      puts "#{name} (FA)"
+    elsif team_id_is_valid(team_id)
+      NbaTeam.find(team_id).players.create(name: name, id: player["playerId"], nba_team_id: player["teamId"])
+      puts "#{name} (#{NbaTeam.find(team_id).abbrev})"
+    end
   end
 end
