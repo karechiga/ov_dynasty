@@ -10,8 +10,8 @@
 
     $.ajax({
       headers: {
-        "X-RapidAPI-Host" : env.rapidapi_host,
-        "X-RapidAPI-Key" : env.rapidapi_key
+        "X-RapidAPI-Host" : ENV['RAPIDAPI_HOST'],
+        "X-RapidAPI-Key" : ENV['RAPIDAPI_KEY']
       },
       url: "https://api-nba-v1.p.rapidapi.com/players/league/standard",
       success: function(data) {

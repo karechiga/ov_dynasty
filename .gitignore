@@ -31,3 +31,4 @@
 
 # Ignore file with RapidAPI header info
 /app/assets/javascripts/rapidapi_config.js
+figaro.json
