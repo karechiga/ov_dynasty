@@ -4,6 +4,11 @@ class PlayersController < ApplicationController
     @player = Player.create(player_params)
   end
 
+  def update
+    @player = Player.find(params[:id])
+    @player = Player.update_attributes(player_params)
+  end
+
 
   private
 

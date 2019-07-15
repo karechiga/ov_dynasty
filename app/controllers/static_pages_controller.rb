@@ -4,6 +4,7 @@ class StaticPagesController < ApplicationController
 
   def index
     # @response = get_info()
+    @players = Player.all
   end
 
   private

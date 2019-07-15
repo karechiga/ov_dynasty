@@ -1,32 +1,40 @@
 <h1>
-
+  <%# <% quincy_acy = @players.find(2) %> %>
+  <%# <% quincy_acy.update(points: 20) %> %>
+  <%# <%= "#{quincy_acy.name} has #{quincy_acy.points} points."%> %>
 </h1>
 
 
 <script>
   $(function() {
 
-    $.ajaxSetup({
+    $.ajax({
       headers: {
         "X-RapidAPI-Host" : env.rapidapi_host,
-        "X-RapidAPI-Key" : env.rapidapi_key     
-      }
-      
+        "X-RapidAPI-Key" : env.rapidapi_key
+      },
+      url: "https://api-nba-v1.p.rapidapi.com/players/league/standard",
+      success: function(data) {
+        // $.each(data.api.players, function (index, player) {
+        //   if (player.leagues.standard.active == "1") {
+        //     console.log('Player Name: ',`${player.firstName} ${player.lastName}`);
+        //   }
+        // });
+        console.log(data);
+      },
+      dataType: 'json'
     });
 
-    $.get("https://api-nba-v1.p.rapidapi.com/players/league/standard").success( function(data) {
-      $.each(data.api.players, function (index, player) {
-        if (player.leagues.standard.active == "1") {
-          console.log(player.firstName + ' ' + player.lastName);
-        }
-      });
-      
-    });
     console.log("OV Dynasty");
-    h1Element = $("h1");
-    h1Element.html("OV Dynasty");
+    // h1Element = $("h1");
+    // h1Element.html("OV Dynasty");
 
   });
+
+
+
+
+
 
     // $.ajax({
     //     url: "/players",
@@ -54,4 +62,22 @@
     //   console("success");
     // });
     
+    // $.get("https://api-nba-v1.p.rapidapi.com/players/league/standard").success( function(data) {
+    //   $.each(data.api.players, function (index, player) {
+    //     if (player.leagues.standard.active == "1") {
+    //       console.log(player.firstName + ' ' + player.lastName);
+    //     }
+    //   });
+    // });
+
+    // $.ajax({
+    //   type: "POST",
+    //   url: '/players/2',
+    //   data: { _method:'PUT', player : {
+    //     points: 20 } },
+    //   dataType: 'json',
+    //   success: function(msg) {
+    //     alert( "Data Saved: " + msg );
+    //   }
+    // });
 </script>
