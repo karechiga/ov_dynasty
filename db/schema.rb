@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_09_023309) do
+ActiveRecord::Schema.define(version: 2019_07_18_041951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "contracts", force: :cascade do |t|
+    t.decimal "salaries", array: true
+    t.integer "years"
+    t.boolean "team_options", array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "player_id"
+  end
 
   create_table "nba_teams", force: :cascade do |t|
     t.string "city"
@@ -21,6 +30,19 @@ ActiveRecord::Schema.define(version: 2019_07_09_023309) do
     t.string "abbrev"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "picks", force: :cascade do |t|
+    t.string "name"
+    t.integer "year"
+    t.integer "round"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "roster_id"
+    t.index ["name"], name: "index_picks_on_name"
+    t.index ["round"], name: "index_picks_on_round"
+    t.index ["year"], name: "index_picks_on_year"
   end
 
   create_table "players", force: :cascade do |t|
