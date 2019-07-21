@@ -23,7 +23,4 @@ class PlayersController < ApplicationController
       :fga3_total, :ftm_total, :fta_total, :roster_id, 
       :nba_team_id)
   end
-  # def player_params
-  #   params.require(:player).permit(:id, :name)
-  # end
 end
