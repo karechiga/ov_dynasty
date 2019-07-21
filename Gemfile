@@ -75,3 +75,7 @@ gem 'devise'
 gem 'unirest'
 
 gem "figaro"
+
+gem "nokogiri"
+
+gem "pry"
