@@ -9,6 +9,12 @@ class PlayersController < ApplicationController
     @player = Player.update_attributes(player_params)
   end
 
+  def show
+  end
+
+  def index
+    @players = Player.all
+  end
 
   private
 

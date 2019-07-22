@@ -17,18 +17,34 @@ def get_salaries(team_name)
     base_url = 'http://www.spotrac.com/nba/'
     main_url = "#{base_url}#{team_name}/yearly/base/roster/"
     data = data_scraper(main_url)
-    player = "not empty"
     i = 1
+    player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
+    name = player.children.to_s
     while !player.empty?
-      player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
-      puts player
+      if !Player.where("name like ?", "%#{name}%").empty?
+        # puts "Found #{name} in the database"
+      else
+        puts "Could not find #{name} in database"
+      end
       i += 1
+      player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
+      name = player.children.to_s
     end
 end
 
+teams = NbaTeam.all
+teams.each do |team|
+  city = team.city
+  nickname = team.nickname
+  if team.city == "LA"
+    city = "Los Angeles"
+  end
+  team_name = "#{city} #{nickname}"
+  team_name = team_name.gsub(" ", "-").downcase
+  puts team_name
+  get_salaries(team_name)
+end
 
-
-get_salaries('boston-celtics')
 
 
 
