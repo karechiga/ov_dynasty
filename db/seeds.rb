@@ -10,6 +10,11 @@
 require 'nokogiri'
 require 'open-uri'
 require 'pry'
+require 'fuzzy_match'
+require 'amatch'
+
+include Amatch
+
 def data_scraper(url)
   Nokogiri::HTML(open(url))
 end
@@ -23,8 +28,10 @@ def get_salaries(team_name)
     while !player.empty?
       if !Player.where("name like ?", "%#{name}%").empty?
         # puts "Found #{name} in the database"
+        @matched.push(Player.where("name like ?", "%#{name}%")[0])
       else
-        puts "Could not find #{name} in database"
+        @unmatched.push(name)
+        # puts "Spotrac: #{name} Actual Name: #{fz_player.name} Distance: #{dist}"
       end
       i += 1
       player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
@@ -32,7 +39,10 @@ def get_salaries(team_name)
     end
 end
 
+
 teams = NbaTeam.all
+@matched = []
+@unmatched = []
 teams.each do |team|
   city = team.city
   nickname = team.nickname
@@ -41,8 +51,27 @@ teams.each do |team|
   end
   team_name = "#{city} #{nickname}"
   team_name = team_name.gsub(" ", "-").downcase
-  puts team_name
+  # puts team_name
   get_salaries(team_name)
+end
+players = Player.all
+unmatched_db = []
+players.each do |player|
+  if @matched.index(player) == nil
+    unmatched_db.push(player)
+  end
+end
+
+fz = FuzzyMatch.new(unmatched_db, :read => :name)
+@unmatched.each do |name|
+  fz_player = fz.find(name)
+  m = LongestSubsequence.new(name)
+  dist = name.longest_subsequence_similar(fz_player.name)
+  if dist > 0.65
+    puts "Spotrac: #{name} Actual Name: #{fz_player.name} Distance: #{dist}"
+  else
+    puts "Name is not found: #{name}, what FuzzyMatch thought: #{fz_player.name} Distance: #{dist}"
+  end
 end
 
 

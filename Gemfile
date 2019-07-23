@@ -79,3 +79,7 @@ gem "figaro"
 gem "nokogiri"
 
 gem "pry"
+
+gem "fuzzy_match"
+
+gem 'amatch'
