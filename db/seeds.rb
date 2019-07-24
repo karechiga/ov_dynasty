@@ -7,72 +7,72 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-require 'nokogiri'
-require 'open-uri'
-require 'pry'
-require 'fuzzy_match'
-require 'amatch'
+# require 'nokogiri'
+# require 'open-uri'
+# require 'pry'
+# require 'fuzzy_match'
+# require 'amatch'
 
-include Amatch
+# include Amatch
 
-def data_scraper(url)
-  Nokogiri::HTML(open(url))
-end
-def get_salaries(team_name)
-    base_url = 'http://www.spotrac.com/nba/'
-    main_url = "#{base_url}#{team_name}/yearly/base/roster/"
-    data = data_scraper(main_url)
-    i = 1
-    player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
-    name = player.children.to_s
-    while !player.empty?
-      if !Player.where("name like ?", "%#{name}%").empty?
-        # puts "Found #{name} in the database"
-        @matched.push(Player.where("name like ?", "%#{name}%")[0])
-      else
-        @unmatched.push(name)
-        # puts "Spotrac: #{name} Actual Name: #{fz_player.name} Distance: #{dist}"
-      end
-      i += 1
-      player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
-      name = player.children.to_s
-    end
-end
+# def data_scraper(url)
+#   Nokogiri::HTML(open(url))
+# end
+# def get_salaries(team_name)
+#     base_url = 'http://www.spotrac.com/nba/'
+#     main_url = "#{base_url}#{team_name}/yearly/base/roster/"
+#     data = data_scraper(main_url)
+#     i = 1
+#     player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
+#     name = player.children.to_s
+#     while !player.empty?
+#       if !Player.where("name like ?", "%#{name}%").empty?
+#         # puts "Found #{name} in the database"
+#         @matched.push(Player.where("name like ?", "%#{name}%")[0])
+#       else
+#         @unmatched.push(name)
+#         # puts "Spotrac: #{name} Actual Name: #{fz_player.name} Distance: #{dist}"
+#       end
+#       i += 1
+#       player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
+#       name = player.children.to_s
+#     end
+# end
 
 
-teams = NbaTeam.all
-@matched = []
-@unmatched = []
-teams.each do |team|
-  city = team.city
-  nickname = team.nickname
-  if team.city == "LA"
-    city = "Los Angeles"
-  end
-  team_name = "#{city} #{nickname}"
-  team_name = team_name.gsub(" ", "-").downcase
-  # puts team_name
-  get_salaries(team_name)
-end
-players = Player.all
-unmatched_db = []
-players.each do |player|
-  if @matched.index(player) == nil
-    unmatched_db.push(player)
-  end
-end
+# teams = NbaTeam.all
+# @matched = []
+# @unmatched = []
+# teams.each do |team|
+#   city = team.city
+#   nickname = team.nickname
+#   if team.city == "LA"
+#     city = "Los Angeles"
+#   end
+#   team_name = "#{city} #{nickname}"
+#   team_name = team_name.gsub(" ", "-").downcase
+#   # puts team_name
+#   get_salaries(team_name)
+# end
+# players = Player.all
+# unmatched_db = []
+# players.each do |player|
+#   if @matched.index(player) == nil
+#     unmatched_db.push(player)
+#   end
+# end
 
-fz = FuzzyMatch.new(unmatched_db, :read => :name)
-@unmatched.each do |name|
-  fz_player = fz.find(name)
-  m = LongestSubsequence.new(name)
-  dist = name.longest_subsequence_similar(fz_player.name)
-  if dist > 0.65
-    puts "Spotrac: #{name} Actual Name: #{fz_player.name} Distance: #{dist}"
-  else
-    puts "Name is not found: #{name}, what FuzzyMatch thought: #{fz_player.name} Distance: #{dist}"
-  end
-end
+# fz = FuzzyMatch.new(unmatched_db, :read => :name)
+# @unmatched.each do |name|
+#   fz_player = fz.find(name)
+#   m = LongestSubsequence.new(name)
+#   ls_dist = name.longest_subsequence_similar(fz_player.name)
+#   if ls_dist > 0.4
+#     puts "Spotrac: #{name} Actual Name: #{fz_player.name} LS_Distance: #{ls_dist}"
+#   else
+#     puts "Name is not found: #{name}, what FuzzyMatch thought: #{fz_player.name} LS_Distance: #{ls_dist}"
+#   end
+# end
 
 
 
@@ -135,10 +135,10 @@ end
 #   name = "#{player["firstName"]} #{player["lastName"]}"
 #   team_id = player["teamId"]
 #   if team_id == nil
-#     Player.create(name: name, id: player["playerId"], nba_team_id: player["teamId"])
+#     Player.create(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], nba_team_id: player["teamId"])
 #     puts "#{name} (FA)"
 #   elsif team_id_is_valid(team_id)
-#     NbaTeam.find(team_id).players.create(name: name, id: player["playerId"], nba_team_id: player["teamId"])
+#     NbaTeam.find(team_id).players.create(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], nba_team_id: player["teamId"])
 #     puts "#{name} (#{NbaTeam.find(team_id).abbrev})"
 #   end
 # end
@@ -149,7 +149,7 @@ end
 #   team_id = player["teamId"].to_i
 #   if player_db.name != name || player_db.nba_team_id != team_id
 #     puts "Updating #{player['firstName']} #{player['lastName']}"
-#     player_db.update(name: name, nba_team_id: team_id)
+#     player_db.update(name: name, first_name: player["firstName"], last_name: player["lastName"], nba_team_id: team_id)
 #   end
 # end
 

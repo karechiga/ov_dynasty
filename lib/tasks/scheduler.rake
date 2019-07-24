@@ -43,10 +43,10 @@ task :update_players_list => :environment do
     name = "#{player["firstName"]} #{player["lastName"]}"
     team_id = player["teamId"]
     if team_id == nil
-      Player.create(name: name, id: player["playerId"], nba_team_id: player["teamId"])
+      Player.create(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], nba_team_id: player["teamId"])
       puts "#{name} (FA)"
     elsif team_id_is_valid(team_id)
-      NbaTeam.find(team_id).players.create(name: name, id: player["playerId"], nba_team_id: player["teamId"])
+      NbaTeam.find(team_id).players.create(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], nba_team_id: player["teamId"])
       puts "#{name} (#{NbaTeam.find(team_id).abbrev})"
     end
   end
@@ -57,7 +57,7 @@ task :update_players_list => :environment do
     team_id = player["teamId"].to_i
     if player_db.name != name || player_db.nba_team_id != team_id
       puts "Updating #{player['firstName']} #{player['lastName']}"
-      player_db.update(name: name, nba_team_id: team_id)
+      player_db.update(name: name, first_name: player["firstName"], last_name: player["lastName"], nba_team_id: team_id)
     end
   end
   

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_21_000452) do
+ActiveRecord::Schema.define(version: 2019_07_24_035147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,10 @@ ActiveRecord::Schema.define(version: 2019_07_21_000452) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "nba_team_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.index ["first_name"], name: "index_players_on_first_name"
+    t.index ["last_name"], name: "index_players_on_last_name"
     t.index ["roster_id"], name: "index_players_on_roster_id"
   end
 
