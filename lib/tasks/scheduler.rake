@@ -94,6 +94,97 @@ task :update_players_list => :environment do
   update_players_list
 end
 
-# task :send_reminders => :environment do
-#   User.send_reminders
-# end
+task :update_salaries => :environment do
+  require 'nokogiri'
+  require 'open-uri'
+  require 'pry'
+  require 'fuzzy_match'
+  require 'amatch'
+
+  include Amatch
+
+  def data_scraper(url)
+    Nokogiri::HTML(open(url))
+  end
+
+  def get_data(team_name)
+    base_url = 'http://www.spotrac.com/nba/'
+    main_url = "#{base_url}#{team_name}/yearly/base/roster/"
+    return data_scraper(main_url)
+  end
+
+  def get_salaries(team_name)
+      data = get_data(team_name)
+      i = 1
+      next_player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
+      while !next_player.empty?
+        player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
+        salary_info = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td:nth-child(3) > span")
+        name = player.children.to_s
+        salary = salary_info.children.to_s.gsub(/[^\d\.]/, '').to_f
+        # puts "#{name} has a salary of #{salary}."
+        if !Player.where("name like ?", "%#{name}%").empty?
+          # puts "Found #{name} in the database"
+          Player.where("name like ?", "%#{name}%")[0].update(:current_salary => salary)
+          @matched.push(Player.where("name like ?", "%#{name}%")[0])
+        else
+          @unmatched.push(name)
+          @unmatched_salaries.push(salary)
+          # puts "Spotrac: #{name} Actual Name: #{fz_player.name} Distance: #{dist}"
+        end
+        i += 1
+        next_player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
+      end
+  end
+
+
+  teams = NbaTeam.all
+  @matched = []
+  @unmatched = []
+  @unmatched_salaries = []
+  teams.each do |team|
+    city = team.city
+    nickname = team.nickname
+    if team.city == "LA"
+      city = "Los Angeles"
+    end
+    team_name = "#{city} #{nickname}"
+    team_name = team_name.gsub(" ", "-").downcase
+    # puts team_name
+    get_salaries(team_name)
+  end
+  players = Player.all
+  unmatched_db = []
+  players.each do |player|
+    if @matched.index(player) == nil
+      unmatched_db.push(player)
+    end
+  end
+
+  fz = FuzzyMatch.new(unmatched_db, :read => :name)
+  fz_last = FuzzyMatch.new(unmatched_db, :read => :last_name)
+  @unmatched.each_index do |i|
+    name = @unmatched[i]
+    salary = @unmatched_salaries[i]
+    fz_player = fz.find(name)
+    name_arr = name.split(' ')
+    last_name = name
+    if name_arr.length == 2
+      last_name = name_arr[1]
+    elsif name_arr.length == 3
+      last_name = "#{name_arr[1]} #{name_arr[2]}"
+    end
+
+    m = JaroWinkler.new(last_name)
+    ls_dist = name.longest_substring_similar(fz_player.name)
+    last_name_dist = m.match(fz_player.last_name)
+    if ls_dist > 0.35 && last_name_dist > 0.9
+      fz_player.update(:current_salary => salary)
+      puts "Spotrac: #{name} Actual Name: #{fz_player.name} LS_Distance: #{ls_dist}, Last Name: #{last_name}, Jaro_Distance: #{last_name_dist}"
+      puts "Updating #{fz_player.name}'s current salary to #{fz_player.current_salary}"
+    else
+      puts "Name is not found: #{name}, what FuzzyMatch thought: #{fz_player.name}, LS_Distance: #{ls_dist}, Last Name: #{last_name}, Jaro_Distance: #{last_name_dist}"
+    end
+  end
+
+end

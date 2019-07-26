@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_24_035147) do
+ActiveRecord::Schema.define(version: 2019_07_26_045026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,19 +58,6 @@ ActiveRecord::Schema.define(version: 2019_07_24_035147) do
     t.string "name"
     t.string "team"
     t.string "former_team"
-    t.integer "minutes"
-    t.integer "points"
-    t.integer "rebounds"
-    t.integer "assists"
-    t.integer "steals"
-    t.integer "blocks"
-    t.integer "turnovers"
-    t.integer "fgm"
-    t.integer "fga"
-    t.integer "fgm3"
-    t.integer "fga3"
-    t.integer "ftm"
-    t.integer "fta"
     t.integer "gp"
     t.integer "min_total"
     t.integer "pts_total"
@@ -92,6 +79,7 @@ ActiveRecord::Schema.define(version: 2019_07_24_035147) do
     t.integer "nba_team_id"
     t.string "first_name"
     t.string "last_name"
+    t.decimal "current_salary", default: "0.0"
     t.index ["first_name"], name: "index_players_on_first_name"
     t.index ["last_name"], name: "index_players_on_last_name"
     t.index ["roster_id"], name: "index_players_on_roster_id"
