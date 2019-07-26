@@ -162,7 +162,7 @@ def create_player(player)
   height_inches_float = player["heightInMeters"].to_f * 39.3701
   height_inches = height_inches_float.round
   height_feet = (height_inches / 12).floor
-  weight_pounds = player["weightInKilograms"] * 2.205
+  weight_pounds = player["weightInKilograms"].to_f * 2.205
   college = player["collegeName"] == "No College" ? player["affiliation"] : player["collegeName"]
   # if team_id == nil
   Player.create(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], 
@@ -183,7 +183,7 @@ def update_player(player)
   height_inches_float = player["heightInMeters"].to_f * 39.3701
   height_inches = height_inches_float.round
   height_feet = (height_inches / 12).floor
-  weight_pounds = player["weightInKilograms"] * 2.205
+  weight_pounds = player["weightInKilograms"].to_f * 2.205
   college = player["collegeName"] == "No College" ? player["affiliation"] : player["collegeName"]
   puts "Updating #{player['firstName']} #{player['lastName']}"
   player_db.update(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], 
