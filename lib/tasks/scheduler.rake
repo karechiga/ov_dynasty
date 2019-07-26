@@ -39,26 +39,41 @@ task :update_players_list => :environment do
   end
   
   
+  
   def create_player(player)
     name = "#{player["firstName"]} #{player["lastName"]}"
     team_id = player["teamId"]
-    if team_id == nil
-      Player.create(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], nba_team_id: player["teamId"])
-      puts "#{name} (FA)"
-    elsif team_id_is_valid(team_id)
-      NbaTeam.find(team_id).players.create(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], nba_team_id: player["teamId"])
-      puts "#{name} (#{NbaTeam.find(team_id).abbrev})"
-    end
+    height_inches_float = player["heightInMeters"].to_f * 39.3701
+    height_inches = height_inches_float.round
+    height_feet = (height_inches / 12).floor
+    weight_pounds = player["weightInKilograms"] * 2.205
+    college = player["collegeName"] == "No College" ? player["affiliation"] : player["collegeName"]
+    # if team_id == nil
+    Player.create(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], 
+      nba_team_id: player["teamId"], years_pro: player["yearsPro"], college: college, country: player["country"],
+        date_of_birth: player["dateOfBirth"], height_feet: height_feet, height_inches: height_inches, weight_pounds: weight_pounds)
+    puts "#{name}, #{height_feet}'#{height_inches % 12}"" out of #{college.blank? ? player["country"] : college}." 
+    # elsif team_id_is_valid(team_id)
+    #   NbaTeam.find(team_id).players.create(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], nba_team_id: player["teamId"])
+    #   puts "#{name} (#{NbaTeam.find(team_id).abbrev})"
+    # end
   end
   
   def update_player(player)
     player_db = Player.find(player["playerId"])
+  # if !player_is_up_to_date(player_db, player)
     name = "#{player["firstName"]} #{player["lastName"]}"
     team_id = player["teamId"].to_i
-    if player_db.name != name || player_db.nba_team_id != team_id
-      puts "Updating #{player['firstName']} #{player['lastName']}"
-      player_db.update(name: name, first_name: player["firstName"], last_name: player["lastName"], nba_team_id: team_id)
-    end
+    height_inches_float = player["heightInMeters"].to_f * 39.3701
+    height_inches = height_inches_float.round
+    height_feet = (height_inches / 12).floor
+    weight_pounds = player["weightInKilograms"] * 2.205
+    college = player["collegeName"] == "No College" ? player["affiliation"] : player["collegeName"]
+    puts "Updating #{player['firstName']} #{player['lastName']}"
+    player_db.update(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], 
+      nba_team_id: player["teamId"], years_pro: player["yearsPro"], college: college, country: player["country"],
+        date_of_birth: player["dateOfBirth"], height_feet: height_feet, height_inches: height_inches, weight_pounds: weight_pounds)
+    # end
   end
   
   def destroy_player(player)

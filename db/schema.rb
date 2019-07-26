@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_26_045026) do
+ActiveRecord::Schema.define(version: 2019_07_26_142648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,16 @@ ActiveRecord::Schema.define(version: 2019_07_26_045026) do
     t.string "first_name"
     t.string "last_name"
     t.decimal "current_salary", default: "0.0"
+    t.integer "years_pro"
+    t.string "college"
+    t.string "country"
+    t.string "date_of_birth"
+    t.integer "height_feet"
+    t.integer "height_inches"
+    t.decimal "weight_pounds"
+    t.index ["college"], name: "index_players_on_college"
+    t.index ["country"], name: "index_players_on_country"
+    t.index ["date_of_birth"], name: "index_players_on_date_of_birth"
     t.index ["first_name"], name: "index_players_on_first_name"
     t.index ["last_name"], name: "index_players_on_last_name"
     t.index ["roster_id"], name: "index_players_on_roster_id"
