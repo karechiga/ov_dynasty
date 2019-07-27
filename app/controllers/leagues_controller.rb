@@ -6,7 +6,7 @@ class LeaguesController < ApplicationController
   end
 
   def show
-    @league = current_user.leagues.find(params[:id])
+    @league = League.find(params[:id])
   end
 
   def new
@@ -14,12 +14,8 @@ class LeaguesController < ApplicationController
   end
 
   def create
-    if user_signed_in?
-      @league = current_user.leagues.create(league_params)
-      redirect_to league_path(@league)
-    else
-      redirect_to new_user_session_path and return
-    end
+    @league = current_user.leagues.create(league_params)
+    redirect_to league_path(@league)
   end
 
   private

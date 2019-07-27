@@ -8,4 +8,9 @@ class User < ApplicationRecord
 
   has_many :leagues
   has_many :memberships
+  has_many :memberships_to_leagues, through: :memberships, source: :league
+
+  def is_a_member?(league)
+    return memberships_to_leagues.include?(league)
+  end
 end
