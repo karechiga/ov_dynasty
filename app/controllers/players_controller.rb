@@ -13,7 +13,7 @@ class PlayersController < ApplicationController
   end
 
   def index
-    @players = Player.all
+    @players = Player.all.sort_by { |player| player.last_name }
   end
 
   private

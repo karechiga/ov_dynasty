@@ -1,21 +1,26 @@
 class LeaguesController < ApplicationController
   before_action :authenticate_user!
-  def create
-    @league = current_user.leagues.create(league_params)
-    redirect_to league_path(@league)
+
+  def index
+    @leagues = League.all
+  end
+
+  def show
+    @league = current_user.leagues.find(params[:id])
   end
 
   def new
     @league = League.new
   end
 
-  def show
+  def create
+    if user_signed_in?
+      @league = current_user.leagues.create(league_params)
+      redirect_to league_path(@league)
+    else
+      redirect_to new_user_session_path and return
+    end
   end
-
-  def index
-    @leagues = League.all
-  end
-
 
   private
 

@@ -43,6 +43,13 @@ ActiveRecord::Schema.define(version: 2019_07_27_205934) do
     t.index ["user_id", "league_id"], name: "index_memberships_on_user_id_and_league_id"
   end
 
+  create_table "leagues_users", id: false, force: :cascade do |t|
+    t.bigint "league_id"
+    t.bigint "user_id"
+    t.index ["league_id"], name: "index_leagues_users_on_league_id"
+    t.index ["user_id"], name: "index_leagues_users_on_user_id"
+  end
+
   create_table "nba_teams", force: :cascade do |t|
     t.string "city"
     t.string "nickname"
