@@ -83,3 +83,5 @@ gem "pry"
 gem "fuzzy_match"
 
 gem 'amatch'
+
+gem 'simple_form'
