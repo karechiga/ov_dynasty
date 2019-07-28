@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_27_205934) do
+ActiveRecord::Schema.define(version: 2019_07_28_172728) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,13 +41,6 @@ ActiveRecord::Schema.define(version: 2019_07_27_205934) do
     t.datetime "updated_at", null: false
     t.index ["league_id"], name: "index_memberships_on_league_id"
     t.index ["user_id", "league_id"], name: "index_memberships_on_user_id_and_league_id"
-  end
-
-  create_table "leagues_users", id: false, force: :cascade do |t|
-    t.bigint "league_id"
-    t.bigint "user_id"
-    t.index ["league_id"], name: "index_leagues_users_on_league_id"
-    t.index ["user_id"], name: "index_leagues_users_on_user_id"
   end
 
   create_table "nba_teams", force: :cascade do |t|
@@ -137,7 +130,11 @@ ActiveRecord::Schema.define(version: 2019_07_27_205934) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["first_name"], name: "index_users_on_first_name"
+    t.index ["last_name"], name: "index_users_on_last_name"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
