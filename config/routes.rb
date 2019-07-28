@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :players, only: :index
   resources :leagues do
     resources :memberships, only: :create
+    resources :homes, only: :index
   end
   
 end

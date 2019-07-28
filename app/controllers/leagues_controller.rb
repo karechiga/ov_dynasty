@@ -7,6 +7,9 @@ class LeaguesController < ApplicationController
 
   def show
     @league = League.find(params[:id])
+    if current_user.is_a_member?(@league)
+      redirect_to league_homes_path(@league)
+    end
   end
 
   def new
@@ -16,7 +19,7 @@ class LeaguesController < ApplicationController
   def create
     @league = current_user.leagues.create(league_params)
     @membership = current_user.memberships.create(league: @league)
-    redirect_to league_path(@league)
+    redirect_to league_homes_path(@league)
   end
 
   private
