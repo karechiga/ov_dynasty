@@ -17,9 +17,10 @@ class LeaguesController < ApplicationController
   end
 
   def create
-    @league = current_user.leagues.create(league_params)
-    @membership = current_user.memberships.create(league: @league)
-    redirect_to league_homes_path(@league)
+    league = current_user.leagues.create(league_params)
+    membership = current_user.memberships.create(league: league)
+    roster = current_user.rosters.create(league: league)
+    redirect_to league_homes_path(league)
   end
 
   private

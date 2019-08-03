@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :leagues do
     resources :memberships, only: :create
     resources :homes, only: :index, :path => 'home'
+    resources :rosters
   end
   
 end

@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_one :roster
+  has_many :rosters
 
   has_many :leagues
   has_many :memberships

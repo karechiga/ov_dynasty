@@ -3,7 +3,8 @@ class MembershipsController < ApplicationController
 
   def create
     membership = current_user.memberships.create(league: current_league)
-    redirect_to league_homes_path(membership.league_id)
+    roster = current_user.rosters.create(league: current_league)
+    redirect_to league_homes_path(membership.league_id) 
   end
 
   private
