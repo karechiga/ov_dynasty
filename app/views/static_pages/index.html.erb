@@ -1,83 +1,22 @@
+<% if user_signed_in? %>
+  <% if current_user.is_a_member_of_any_league? %>
+    <% current_user.leagues.each do |league| %>
+      <h2><%= link_to league.name, league_homes_path(league) %></h2>
+    <% end %>
+  <% else %>
+    <h2>
+      <%= link_to 'Create', new_league_path %> 
+      or <%= link_to 'Join', leagues_path %>
+      a League
+    </h2>
+  <% end %>
+<% else %>
+  <h2>
+    <%= link_to 'Sign in', new_user_session_path %> 
+     or <%= link_to 'Create a New Account', new_user_registration_path %>
+     to view Leagues
+  </h2>
+<% end %>
 <h1>
-  <%# <% quincy_acy = @players.find(2) %> %>
-  <%# <% quincy_acy.update(points: 20) %> %>
-  <%# <%= "#{quincy_acy.name} has #{quincy_acy.points} points."%> %>
+  
 </h1>
-
-
-<script>
-  $(function() {
-
-    $.ajax({
-      headers: {
-        "X-RapidAPI-Host" : ENV['RAPIDAPI_HOST'],
-        "X-RapidAPI-Key" : ENV['RAPIDAPI_KEY']
-      },
-      url: "https://api-nba-v1.p.rapidapi.com/players/league/standard",
-      success: function(data) {
-        // $.each(data.api.players, function (index, player) {
-        //   if (player.leagues.standard.active == "1") {
-        //     console.log('Player Name: ',`${player.firstName} ${player.lastName}`);
-        //   }
-        // });
-        console.log(data);
-      },
-      dataType: 'json'
-    });
-
-    console.log("OV Dynasty");
-    // h1Element = $("h1");
-    // h1Element.html("OV Dynasty");
-
-  });
-
-
-
-
-
-
-    // $.ajax({
-    //     url: "/players",
-    //     type: "POST",
-    //     data: {players: {
-    //             id: 3, 
-    //             name: "firstname lastname"}},
-    //     success: function(resp){ 
-    //       console(resp);
-    //     }
-    // });
-
-    //   var player = data.api.players[1];
-    //   var url = "/players";
-    //   console.log(url);
-    //   $.post(url, {
-    //     id: player.playerId,
-    //     name: player.firstName + ' ' + player.lastName
-    //   });
-
-    // $.post("/players", {players: {
-    //   id: 1,
-    //   name: "firstname lastname"
-    // } }).success(function () {
-    //   console("success");
-    // });
-    
-    // $.get("https://api-nba-v1.p.rapidapi.com/players/league/standard").success( function(data) {
-    //   $.each(data.api.players, function (index, player) {
-    //     if (player.leagues.standard.active == "1") {
-    //       console.log(player.firstName + ' ' + player.lastName);
-    //     }
-    //   });
-    // });
-
-    // $.ajax({
-    //   type: "POST",
-    //   url: '/players/2',
-    //   data: { _method:'PUT', player : {
-    //     points: 20 } },
-    //   dataType: 'json',
-    //   success: function(msg) {
-    //     alert( "Data Saved: " + msg );
-    //   }
-    // });
-</script>
