@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :players, only: :index
   resources :leagues do
     resources :memberships, only: :create
-    resources :homes, only: :index
+    resources :homes, only: :index, :path => 'home'
   end
   
 end
