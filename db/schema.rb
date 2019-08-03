@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_03_171320) do
+ActiveRecord::Schema.define(version: 2019_08_03_204401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2019_08_03_171320) do
     t.integer "league_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "admin", default: false
     t.index ["league_id"], name: "index_memberships_on_league_id"
     t.index ["user_id", "league_id"], name: "index_memberships_on_user_id_and_league_id"
   end

@@ -14,6 +14,6 @@ class User < ApplicationRecord
     return memberships_to_leagues.include?(league)
   end
   def is_a_member_of_any_league?
-    return !memberships.empty?
+    return !memberships_to_leagues.empty?
   end
 end
