@@ -1,0 +1,6 @@
+<% @memberships.each do |membership| %>
+  <h2>
+    <%= "#{membership.user.first_name} #{membership.user.last_name}" %>
+    <%= link_to "#{membership.admin ? "Admin" : "Member"}",  league_membership_path(membership.league, membership), method: :put %>
+  </h2>
+<% end %>
