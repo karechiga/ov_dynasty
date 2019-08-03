@@ -1,7 +1,7 @@
 <% if user_signed_in? %>
   <% if current_user.is_a_member_of_any_league? %>
-    <% current_user.leagues.each do |league| %>
-      <h2><%= link_to league.name, league_homes_path(league) %></h2>
+    <% current_user.memberships.each do |membership| %>
+      <h2><%= link_to membership.league.name, league_homes_path(membership.league) %></h2>
     <% end %>
   <% else %>
     <h2>
@@ -17,6 +17,3 @@
      to view Leagues
   </h2>
 <% end %>
-<h1>
-  
-</h1>

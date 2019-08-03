@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_03_044846) do
+ActiveRecord::Schema.define(version: 2019_08_03_171320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,13 +109,13 @@ ActiveRecord::Schema.define(version: 2019_08_03_044846) do
   create_table "rosters", force: :cascade do |t|
     t.string "team_name"
     t.string "team_abbrev"
-    t.text "motto"
-    t.decimal "cap_space"
-    t.decimal "penalty"
-    t.decimal "traded_salary"
-    t.integer "wins"
-    t.integer "losses"
-    t.integer "ties"
+    t.text "motto", default: ""
+    t.decimal "cap_space", default: "0.0"
+    t.decimal "penalty", default: "0.0"
+    t.decimal "traded_salary", default: "0.0"
+    t.integer "wins", default: 0
+    t.integer "losses", default: 0
+    t.integer "ties", default: 0
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
