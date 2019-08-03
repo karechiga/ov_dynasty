@@ -20,7 +20,6 @@ class LeaguesController < ApplicationController
     league = current_user.leagues.create(league_params)
     membership = current_user.memberships.create(league: league)
     roster = current_user.rosters.create(league: league)
-    roster.init_name
     redirect_to league_homes_path(league)
   end
 
