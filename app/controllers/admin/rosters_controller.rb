@@ -1,9 +1,13 @@
-class Admin::ToolsController < ApplicationController
+class Admin::RostersController < ApplicationController
   before_action :authenticate_user!
   before_action :require_user_admin_privilege
 
   def index
-    @league = current_league
+    @rosters = current_league.rosters
+  end
+
+  def show
+    @roster = Roster.find(params[:id])
   end
 
   private
@@ -21,5 +25,4 @@ class Admin::ToolsController < ApplicationController
       render plain: "Unauthorized", status: :unauthorized
     end
   end
-
 end

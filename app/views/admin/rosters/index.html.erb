@@ -1,0 +1,5 @@
+<h1>Rosters</h1>
+
+<% @rosters.each do |roster| %>
+  <h2><%= link_to roster.team_name, league_admin_roster_path(roster.league, roster) %></h2>
+<% end %>
