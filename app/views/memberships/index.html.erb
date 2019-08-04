@@ -1,6 +1,8 @@
 <% @memberships.each do |membership| %>
-  <h2>
+  <h2 class="disabled">
     <%= "#{membership.user.first_name} #{membership.user.last_name}" %>
-    <%= link_to "#{membership.admin ? "Admin" : "Member"}",  league_membership_path(membership.league, membership), method: :put %>
+    <%= link_to_if !membership.user_is_league_creator, "#{membership.user_is_league_creator ? "League Creator" : membership.admin ? "Admin" : "Member"}", league_membership_path(membership.league, membership), 
+    method: :put, data: {confirm: 
+    "#{membership.user.first_name} #{membership.user.last_name} will become a#{membership.admin ? " regular user" : "n Admin"}. Click Yes to confirm."} %>
   </h2>
 <% end %>
