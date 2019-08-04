@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   root 'static_pages#index'  
   resources :players, only: :index
   resources :leagues do
+    namespace :admin do
+      resources :tools, only: [:index]
+    end
     resources :memberships, only: [:create, :index, :update]
     resources :homes, only: :index, :path => 'home'
     resources :rosters
