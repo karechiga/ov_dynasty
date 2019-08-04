@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   resources :leagues do
     namespace :admin do
       resources :tools, only: [:index]
-      resources :rosters
+      resources :rosters do
+        resources :players, only: [:index, :update]
+      end
     end
     resources :memberships, only: [:create, :index, :update]
     resources :homes, only: :index, :path => 'home'

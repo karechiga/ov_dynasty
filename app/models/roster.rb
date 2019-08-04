@@ -26,7 +26,7 @@ class Roster < ApplicationRecord
     else
       draft_year = current_year
     end
-    for i in 1..5 do
+    for i in 1..6 do
       for round in 1..3
         self.picks.create(roster_id: self.id, name: self.team_name, year: draft_year, round: round, comment: "")
       end

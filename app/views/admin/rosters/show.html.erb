@@ -1,1 +1,12 @@
 <h1><%= @roster.team_name %></h1>
+<h2><%= link_to 'Add Players', league_admin_roster_players_path(@roster.league, @roster) %></h2>
+<% for i in 0..29 %>
+  <div class="row">
+    <div class="col-6">
+      <%= i < @roster.players.length ? @roster.players[i].name : "" %>
+    </div>
+    <div class="col-6">
+      <%= i < @roster.picks.length ? "#{@roster.picks[i].year} Round #{@roster.picks[i].round} #{@roster.picks[i].name}": "" %>
+    </div>
+  </div>
+<% end %>
