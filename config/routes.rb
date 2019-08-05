@@ -6,7 +6,9 @@ Rails.application.routes.draw do
     namespace :admin do
       resources :tools, only: [:index]
       resources :rosters do
-        resources :players, only: [:index, :update]
+        resources :players, only: [:index, :update] do
+          resources :contracts, only: :create
+        end
       end
     end
     resources :memberships, only: [:create, :index, :update]

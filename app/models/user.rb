@@ -16,4 +16,7 @@ class User < ApplicationRecord
   def is_a_member_of_any_league?
     return !memberships_to_leagues.empty?
   end
+  def is_admin?(league)
+    return memberships.find_by_league_id(league.id).admin
+  end
 end

@@ -1,4 +1,6 @@
 <h1><%= @league.name %> Home Page</h1>
 
 <h2><%= link_to 'Members', league_memberships_path(@league) %></h2>
-<h2><%= link_to 'Admin Tools', league_admin_tools_path(@league) %></h2>
+<% if current_user.is_admin?(@league) %>
+  <h2><%= link_to 'Admin Tools', league_admin_tools_path(@league) %></h2>
+<% end %>
