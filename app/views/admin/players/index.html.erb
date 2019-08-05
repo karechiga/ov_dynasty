@@ -1,16 +1,74 @@
 <h1>Free Agents</h1>
-<% @players.each do |player|%>
-  <div class="row">
+
+<div class="table-responsive-lg">
+  <table class="table table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th class="text-center" colspan="17">2018-2019 Season</th>
+      </tr>
+    </thead>
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Position</th>
+        <th scope="col">GP</th>
+        <th scope="col">MPG</th>
+        <th scope="col">PPG</th>
+        <th scope="col">RPG</th>
+        <th scope="col">APG</th>
+        <th scope="col">SPG</th>
+        <th scope="col">BPG</th>
+        <th scope="col">TOPG</th>
+        <th scope="col">FG%</th>
+        <th scope="col">3Pt%</th>
+        <th scope="col">FT%</th>
+        <th scope="col">FPPG</th>
+        <th scope="col">Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% row = 1 %>
+      <% @players.each do |player|%>
+        <tr>
+          <th scope="row"><%= row %></th>
+          <th scope="col"><%= player.first_name %></th>
+          <th scope="col"><%= player.last_name %></th>
+          <th scope="col"><%= player.position %></th>
+          <th scope="col"><%= player.gp %></th>
+          <th scope="col"><%= player.mpg %></th>
+          <th scope="col"><%= player.ppg %></th>
+          <th scope="col"><%= player.rpg %></th>
+          <th scope="col"><%= player.apg %></th>
+          <th scope="col"><%= player.spg %></th>
+          <th scope="col"><%= player.bpg %></th>
+          <th scope="col"><%= player.topg %></th>
+          <th scope="col"><%= player.fg_perc %></th>
+          <th scope="col"><%= player.fg3_perc %></th>
+          <th scope="col"><%= player.ft_perc %></th>
+          <th scope="col"><%= player.fppg %></th>
+          <th scope="col"><%= player.current_salary %></th>
+        </tr>
+        <% row += 1%>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<%# <% @players.each do |player|%>
+  <%# <div class="row">
     <div class="col-8">
       <p><%= link_to player.name, league_admin_roster_player_path(@league, @roster, player), method: :put, data: {confirm: 
-        "You would like to add #{player.name} to #{@roster.team_name}?"} %></p>
-    </div>
+        <%# "You would like to add #{player.name} to #{@roster.team_name}?"} %>
+    <%# </div>
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#contractModal" data-contract-url="<%= league_admin_roster_player_contracts_path(@league, @roster, player) %>">
-      Add Player
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#contractModal" data-contract-url="<%= league_admin_roster_player_contracts_path(@league, @roster, player) %>
+      <%# Add Player
     </button>
   </div>
-<% end %>
+<%# <% end %>
 
 
 
