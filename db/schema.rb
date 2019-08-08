@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_03_204401) do
+ActiveRecord::Schema.define(version: 2019_08_06_041701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 2019_08_03_204401) do
     t.string "team"
     t.string "former_team"
     t.integer "gp"
-    t.integer "min_total"
+    t.decimal "min_total"
     t.integer "pts_total"
     t.integer "reb_total"
     t.integer "ast_total"

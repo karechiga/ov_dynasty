@@ -203,3 +203,125 @@ task :update_salaries => :environment do
   end
 
 end
+
+task :update_100_players_stats => :environment do
+  def get_player_info(id)
+    response = Unirest.get "https://api-nba-v1.p.rapidapi.com/statistics/players/playerId/#{id}",
+      {
+        "X-RapidAPI-Host" => ENV["rapidapi_host"],
+        "X-RapidAPI-Key" => ENV["rapidapi_key"]
+      }
+    return response.body
+  end
+
+  def get_game_info(year)
+    response = Unirest.get "https://api-nba-v1.p.rapidapi.com/games/seasonYear/#{year}",
+      {
+        "X-RapidAPI-Host" => ENV["rapidapi_host"],
+        "X-RapidAPI-Key" => ENV["rapidapi_key"]
+      }
+    return response.body
+  end
+
+  def stats_populated_already(player)
+    return player.gp != nil && player.pts_total != nil
+  end
+
+  def minutes_string_to_float(minutes_seconds)
+    strs = minutes_seconds.split(':')
+    if strs.length == 1
+      return minutes_seconds.to_f
+    end
+    minutes = strs[0].to_f
+    seconds = strs[1].to_f
+    return minutes + seconds / 60.0
+  end
+
+  def stats_initialize_to_zero(player)
+    player.gp = 0
+    player.min_total = 0.0
+    player.pts_total = 0
+    player.reb_total = 0
+    player.ast_total = 0
+    player.stl_total = 0
+    player.blk_total = 0
+    player.to_total = 0
+    player.fgm_total = 0
+    player.fga_total = 0
+    player.fgm3_total = 0
+    player.fga3_total = 0
+    player.ftm_total = 0
+    player.fta_total = 0
+    return
+  end
+
+  def increment_stats(player, game_stats)
+    player.gp += 1
+    player.min_total += minutes_string_to_float(game_stats["min"])
+    player.pts_total += game_stats["points"].to_i
+    player.reb_total += game_stats["totReb"].to_i
+    player.ast_total += game_stats["assists"].to_i
+    player.stl_total += game_stats["steals"].to_i
+    player.blk_total += game_stats["blocks"].to_i
+    player.to_total += game_stats["turnovers"].to_i
+    player.fgm_total += game_stats["fgm"].to_i
+    player.fga_total += game_stats["fga"].to_i
+    player.fgm3_total += game_stats["tpm"].to_i
+    player.fga3_total += game_stats["tpa"].to_i
+    player.ftm_total += game_stats["ftm"].to_i
+    player.fta_total += game_stats["fta"].to_i
+  end
+  game_response = get_game_info(2018)
+  games = game_response["api"]["games"]
+  # games = games.uniq! { |game| [game["startTimeUTC"], game["endTimeUTC"], game["arena"]] }
+  games.delete_if { |game| game["seasonStage"] != "2" || game["league"] != "standard" } 
+  
+  players = Player.all.sort_by { |player| player.last_name }
+  # i = players.index { |player| player.first_name == "Nene" }
+  for i in 0..50 do
+    if !stats_populated_already(players[i])
+      puts "updating stats for #{players[i].name}"
+      stats_initialize_to_zero(players[i])
+
+      player_response = get_player_info(players[i].id)
+    
+      player_response["api"]["statistics"].each do |game_stats|
+        game_index = games.index { |game| game["gameId"] == game_stats["gameId"] && game_stats["min"] != "0:00" && game_stats["min"] != ""}
+        if game_index != nil
+          increment_stats(players[i], game_stats)
+        end
+      end
+      players[i].save
+    end
+  end
+
+  # for i in 0..70 do
+    
+  # end
+end
+
+task :reset_stats => :environment do
+
+  def set_to_nil(player)
+    player.gp = nil
+    player.min_total = nil
+    player.pts_total = nil
+    player.reb_total = nil
+    player.ast_total = nil
+    player.stl_total = nil
+    player.blk_total = nil
+    player.to_total = nil
+    player.fgm_total = nil
+    player.fga_total = nil
+    player.fgm3_total = nil
+    player.fga3_total = nil
+    player.ftm_total = nil
+    player.fta_total = nil
+  end
+
+  players = Player.all
+  players.each do |player|
+    set_to_nil(player)
+    player.save
+  end
+end
