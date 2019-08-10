@@ -87,3 +87,5 @@ gem "fuzzy_match"
 gem 'amatch'
 
 gem 'simple_form'
+
+gem 'will_paginate', '~> 3.1.0'

@@ -1,17 +1,17 @@
 <h1>Free Agents</h1>
 
-<div class="table-responsive-lg">
-  <table class="table table-hover header-fixed">
-    <thead class="thead-light main-header">
-      <tr>
-        <th class="text-center" colspan="17">2018-2019 Season</th>
-      </tr>
-    </thead>
+<%= will_paginate @players %>
+<div class="table-responsive-lg player-table">
+  <table class="table table-hover table-bordered">
     <thead class="thead-light">
       <tr>
+        <th class="text-center" colspan="16">2018-2019 Season</th>
+      </tr>
+    </thead>
+    <thead class="thead-light player-stats">
+      <tr>
         <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
+        <th scope="col">Name</th>
         <th scope="col">Position</th>
         <th scope="col">GP</th>
         <th scope="col">MPG</th>
@@ -33,8 +33,7 @@
       <% @players.each do |player|%>
         <tr>
           <th scope="row"><%= row %></th>
-          <th scope="col"><%= player.first_name %></th>
-          <th scope="col"><%= player.last_name %></th>
+          <th scope="col"><%= player.name %></th>
           <th scope="col"><%= player.position %></th>
           <th scope="col"><%= player.gp %></th>
           <th scope="col"><%= player.mpg %></th>
@@ -55,6 +54,7 @@
     </tbody>
   </table>
 </div>
+
 
 
 <%# <% @players.each do |player|%>
