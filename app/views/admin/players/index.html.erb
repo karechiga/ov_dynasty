@@ -34,7 +34,7 @@
         <tr>
           <th scope="row"><%= row %></th>
           <th scope="col"><button type="button" class="btn btn-primary btn-sm" 
-            data-toggle="modal" data-target="#contractModal" data-contract-url="#">
+            data-toggle="modal" data-target="#contractModal" data-contract-url="#" id="<%= player.id %>">
             <%= player.name %></button>
           </th>
           <th scope="col"><%= player.position %></th>
@@ -86,7 +86,37 @@
         </button>
       </div>
       <div class="modal-body">
-        
+        <form>
+          <div class="form-group">
+            <label for="contractFormControlSelect1">Number of Years</label>
+            <select class="form-control" id="contractFormControlSelect1">
+              <option selected>Select Number</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+            </select>
+          </div>
+          <div class="contractSalaries">
+            <div class="form-group">
+              <div class="row">
+                <label class="col-9" for="salary">Salary</label>
+                <label class="col-3" for="team_option">Team Option</label>
+              </div>
+              <div class="row">
+                <div class="input-group mb-3 col-9">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                  </div>
+                  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                </div>
+                <div class="form-check col-3">
+                  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -95,3 +125,51 @@
     </div>
   </div>
 </div>
+
+<script>
+  $(function () {
+    var contract_modal = $('#contractModal')
+    $('th > button').click(function(e) {
+      var playerName = e.target.outerText;
+      var modalTitle = $('#contractModalLongTitle');
+      modalTitle.text(playerName);
+      $('#contractFormControlSelect1').change( function(e) {
+        var numYears = parseInt(e.target.value);
+        if (!isNaN(numYears)) {
+          var html = ''
+          var d = new Date();
+          var currentMonth = d.getMonth();
+          var currentSeason = d.getFullYear();
+          if (currentMonth < 5) {  // If it's May or earlier
+            currentSeason = currentSeason - 1;
+          }
+          for (var i = 0; i < numYears; i = i + 1) {
+            html = html + 
+            '<div class="form-group">' +
+              '<div class="row">' +
+                '<label class="col-9" for="salary">' + currentSeason + ' Salary</label>' +
+                '<label class="col-3" for="team_option">Team Option</label>' +
+              '</div>' +
+              '<div class="row">' +
+                '<div class="input-group mb-3 col-9">' +
+                  '<div class="input-group-prepend">' +
+                    '<span class="input-group-text">$</span>' +
+                  '</div>' +
+                  '<input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">' +
+                '</div>' +
+                '<div class="form-check col-3">' +
+                  '<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+            currentSeason = currentSeason + 1;
+          }
+          $('.contractSalaries').html(html);
+        }
+        else {
+          var html = $('.contractSalaries').html('');
+        }
+      });
+    });
+  });
+</script>
