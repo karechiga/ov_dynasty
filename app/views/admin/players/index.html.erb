@@ -33,7 +33,10 @@
       <% @players.each do |player|%>
         <tr>
           <th scope="row"><%= row %></th>
-          <th scope="col"><%= player.name %></th>
+          <th scope="col"><button type="button" class="btn btn-primary btn-sm" 
+            data-toggle="modal" data-target="#contractModal" data-contract-url="#">
+            <%= player.name %></button>
+          </th>
           <th scope="col"><%= player.position %></th>
           <th scope="col"><%= player.gp %></th>
           <th scope="col"><%= player.mpg %></th>

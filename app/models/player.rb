@@ -1,7 +1,7 @@
 class Player < ApplicationRecord
   belongs_to :roster, optional: true
   belongs_to :nba_team, optional: true
-  has_one :contract
+  has_many :contract_years
 
   def mpg
     return (self.min_total.to_f / self.gp.to_f).round(1)

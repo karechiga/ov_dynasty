@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ContractsControllerTest < ActionDispatch::IntegrationTest
+class ContractYearTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

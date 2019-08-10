@@ -235,28 +235,26 @@
 <part>id</part>
 </key>
 </table>
-<table x="1143" y="610" name="Contract">
+<table x="587" y="698" name="NBA_team">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="Player" row="id" />
-</row>
-<row name="years" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="salary" null="1" autoincrement="0">
-<datatype>DECIMAL</datatype>
-<default>NULL</default><comment>:array</comment>
-</row>
-<row name="team_options" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default><comment>array</comment>
-</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="587" y="698" name="NBA_team">
+<table x="1139" y="583" name="ContractYear">
 <row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Player" row="id" />
+</row>
+<row name="year" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="salary" null="1" autoincrement="0">
+<datatype>DECIMAL</datatype>
+<default>NULL</default></row>
+<row name="team_option" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
