@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       resources :tools, only: [:index]
       resources :rosters do
         resources :players, only: [:index, :update] do
+          resources :contract_years, only: :create
         end
       end
     end

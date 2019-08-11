@@ -31,10 +31,10 @@
     <tbody>
       <% row = 1 %>
       <% @players.each do |player|%>
-        <tr>
+        <tr id="<%= player.id %>">
           <th scope="row"><%= row %></th>
           <th scope="col"><button type="button" class="btn btn-primary btn-sm" 
-            data-toggle="modal" data-target="#contractModal" data-contract-url="#" id="<%= player.id %>">
+            data-toggle="modal" data-target="#contractModal" data-contract_year-url="<%= league_admin_roster_player_contract_years_path(@league, @roster, player) %>">
             <%= player.name %></button>
           </th>
           <th scope="col"><%= player.position %></th>
@@ -98,23 +98,6 @@
             </select>
           </div>
           <div class="contractSalaries">
-            <div class="form-group">
-              <div class="row">
-                <label class="col-9" for="salary">Salary</label>
-                <label class="col-3" for="team_option">Team Option</label>
-              </div>
-              <div class="row">
-                <div class="input-group mb-3 col-9">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">$</span>
-                  </div>
-                  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                </div>
-                <div class="form-check col-3">
-                  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                </div>
-              </div>
-            </div>
           </div>
         </form>
       </div>
@@ -130,6 +113,7 @@
   $(function () {
     var contract_modal = $('#contractModal')
     $('th > button').click(function(e) {
+      var id = e.target.parentElement.parentElement.id;
       var playerName = e.target.outerText;
       var modalTitle = $('#contractModalLongTitle');
       modalTitle.text(playerName);
@@ -155,7 +139,7 @@
                   '<div class="input-group-prepend">' +
                     '<span class="input-group-text">$</span>' +
                   '</div>' +
-                  '<input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">' +
+                  '<input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="1,000,000">' +
                 '</div>' +
                 '<div class="form-check col-3">' +
                   '<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">' +
