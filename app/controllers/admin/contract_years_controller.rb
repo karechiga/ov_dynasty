@@ -2,9 +2,20 @@ class Admin::ContractYearsController < ApplicationController
   before_action :authenticate_user!
   before_action :require_user_admin_privilege
   
+  def new
+    @contract_year = ContractYear.new
+    # 4.times do
+    #   @contract_years << ContractYear.new
+    # end
+    @player = current_player
+    @league = current_league
+    @roster = current_roster
+  end
+
   def create
     contract_year = current_player.contract_years.create(contract_year_params)
-    redirect_to league_admin_roster_player(current_league, current_roster), method: :put
+    current_player.update(roster_id: current_roster.id)
+    redirect_to league_admin_roster_path(current_league, current_roster)
   end
 
   private
@@ -18,7 +29,7 @@ class Admin::ContractYearsController < ApplicationController
   end
 
   def current_player
-    @current_player ||= Roster.find(params[:player_id])
+    @current_player ||= Player.find(params[:player_id])
   end
 
   def current_membership

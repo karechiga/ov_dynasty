@@ -278,7 +278,7 @@ task :update_100_players_stats => :environment do
   
   players = Player.all.sort_by { |player| player.last_name }
   # i = players.index { |player| player.first_name == "Nene" }
-  for i in 51..100 do
+  for i in 1..50 do
     if !stats_populated_already(players[i])
       puts "updating stats for #{players[i].name}"
       stats_initialize_to_zero(players[i])

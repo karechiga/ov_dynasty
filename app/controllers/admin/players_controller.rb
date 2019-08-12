@@ -6,6 +6,7 @@ class Admin::PlayersController < ApplicationController
     @players = Player.where(:roster_id => nil).paginate(:page => params[:page], per_page: 50).order('last_name ASC')
     @roster = current_roster
     @league = current_league
+    @contract_year = ContractYear.new
   end
 
   def update

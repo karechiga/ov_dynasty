@@ -1,0 +1,77 @@
+<h1>New Contract<h1>
+
+<%# <%= form_tag league_admin_roster_player_contract_years_path(@league, @roster, @player) do %> 
+  <%# <% @contract_years.each do |contract_year| %> 
+    <%= simple_form_for @contract_year, url: league_admin_roster_player_contract_years_path(@league, @roster, @player) do |f| %>
+    <%# <%= fields_for contract_year do |f| %>
+    <hr/>
+      <%= f.label :season %>
+      <%= f.text_field :season %>
+      <%= f.label :salary %>
+      <%= f.text_field :salary %>
+      <%= f.label :team_option %>
+      <%= f.text_field :team_option %>
+      <%= f.submit "Create" %>
+    <% end %>
+    <%# <%= f.submit "Create" %> 
+  <%# <% end %> 
+<%# <% end %> 
+
+<%# <form>
+  <div class="form-group">
+    <label for="contractFormControlSelect1">Number of Years</label>
+    <select class="form-control" id="contractFormControlSelect1">
+      <option selected>Select Number</option>
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+    </select>
+  </div>
+  <div class="contractSalaries">
+  </div>
+</form> %>
+
+<%# 
+<script>
+  $(function () {
+    $('#contractFormControlSelect1').change( function(e) {
+      var numYears = parseInt(e.target.value);
+      if (!isNaN(numYears)) {
+        var html = ''
+        var d = new Date();
+        var currentMonth = d.getMonth();
+        var currentSeason = d.getFullYear();
+        if (currentMonth < 5) {  // If it's May or earlier
+          currentSeason = currentSeason - 1;
+        }
+        for (var i = 0; i < numYears; i = i + 1) {
+          html = html + 
+          '<div class="form-group">' +
+            '<div class="row">' +
+              '<label class="col-9" for="salary">' + currentSeason + ' Salary</label>' +
+              '<label class="col-3" for="team_option">Team Option</label>' +
+            '</div>' +
+            '<div class="row">' +
+              '<div class="input-group mb-3 col-9">' +
+                '<div class="input-group-prepend">' +
+                  '<span class="input-group-text">$</span>' +
+                '</div>' +
+                '<input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="1,000,000">' +
+              '</div>' +
+              '<div class="form-check col-3">' +
+                '<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+          currentSeason = currentSeason + 1;
+        }
+        $('.contractSalaries').html(html);
+      }
+      else {
+        var html = $('.contractSalaries').html('');
+      }
+    });
+  });
+
+</script> %>

@@ -34,7 +34,7 @@
         <tr id="<%= player.id %>">
           <th scope="row"><%= row %></th>
           <th scope="col"><button type="button" class="btn btn-primary btn-sm" 
-            data-toggle="modal" data-target="#contractModal" data-contract_year-url="<%= league_admin_roster_player_contract_years_path(@league, @roster, player) %>">
+            data-toggle="modal" data-target="#contractModal" data-contract-year-url="<%= league_admin_roster_player_contract_years_path(@league, @roster, player) %>">
             <%= player.name %></button>
           </th>
           <th scope="col"><%= player.position %></th>
@@ -86,7 +86,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <%# <form>
           <div class="form-group">
             <label for="contractFormControlSelect1">Number of Years</label>
             <select class="form-control" id="contractFormControlSelect1">
@@ -97,14 +97,26 @@
               <option>4</option>
             </select>
           </div>
-          <div class="contractSalaries">
-          </div>
-        </form>
+          <%# <div class="contractSalaries">
+          </div> %>
+          
+        <%# </form> %>
+        <div class="new-contract-year">
+        <%= simple_form_for @contract_year, url: '#', html: {id: 'newContractYearForm'} do |f| %>
+          <%= f.label :season %>
+          <%= f.text_field :season %>
+          <%= f.label :salary %>
+          <%= f.text_field :salary %>
+          <%= f.label :team_option %>
+          <%= f.text_field :team_option %>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Submit</button>
+        <%= f.submit "Create", class: "btn btn-primary" %>
+        <%# <button type="button" class="btn btn-primary">Submit</button> %>
       </div>
+      <% end %>
     </div>
   </div>
 </div>
@@ -113,6 +125,9 @@
   $(function () {
     var contract_modal = $('#contractModal')
     $('th > button').click(function(e) {
+      var contractUrl = $(e.target).data('contract-year-url');
+      $('#newContractYearForm').attr('action', contractUrl);
+
       var id = e.target.parentElement.parentElement.id;
       var playerName = e.target.outerText;
       var modalTitle = $('#contractModalLongTitle');
