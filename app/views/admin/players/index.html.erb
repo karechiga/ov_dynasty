@@ -102,18 +102,27 @@
           
         <%# </form> %>
         <div class="new-contract-year">
-        <%= simple_form_for @contract_year, url: '#', html: {id: 'newContractYearForm'} do |f| %>
-          <%= f.label :season %>
-          <%= f.text_field :season %>
-          <%= f.label :salary %>
-          <%= f.text_field :salary %>
-          <%= f.label :team_option %>
-          <%= f.text_field :team_option %>
+          <%= form_tag '#',  id: 'newContractYearForm' do %>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[season]" %>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[team_option]" %>
+            <hr/>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[season]" %>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[team_option]" %>
+            <hr/>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[season]" %>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[team_option]" %>
+            <hr/>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[season]" %>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
+            <%= text_field_tag "contract_years[contract_years][]contract_year[team_option]" %>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <%= f.submit "Create", class: "btn btn-primary" %>
+        <div><%= submit_tag 'Submit' %></div>
         <%# <button type="button" class="btn btn-primary">Submit</button> %>
       </div>
       <% end %>
@@ -121,13 +130,23 @@
   </div>
 </div>
 
+
+<%# <%= simple_form_for @contract_year, url: '#', html: {id: 'newContractYearForm'} do |f| %> 
+  <%# <%= f.label :season %> 
+  <%# <%= f.text_field :season %> 
+  <%# <%= f.label :salary %> 
+  <%# <%= f.text_field :salary %> 
+  <%# <%= f.label :team_option %> 
+  <%# <%= f.text_field :team_option %> 
+<%# <%= f.submit "Create", class: "btn btn-primary" %>
+
 <script>
   $(function () {
     var contract_modal = $('#contractModal')
     $('th > button').click(function(e) {
       var contractUrl = $(e.target).data('contract-year-url');
       $('#newContractYearForm').attr('action', contractUrl);
-
+      console.log($('.new-contract-year'));
       var id = e.target.parentElement.parentElement.id;
       var playerName = e.target.outerText;
       var modalTitle = $('#contractModalLongTitle');
