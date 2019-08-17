@@ -13,7 +13,12 @@ class Admin::ContractYearsController < ApplicationController
   end
 
   def create
-    contract_year = current_player.contract_years.create(contract_year_params)
+    num_params.times do |i|
+      contract_year = current_player.contract_years.create(contract_year_params["contract_years"][i]["contract_year"])
+      # if !contract_year.valid?
+      #   return render plain: "#{contract_year_params["contract_years"][i]["contract_year"]}", status: :unprocessable_entity
+      # end
+    end
     current_player.update(roster_id: current_roster.id)
     redirect_to league_admin_roster_path(current_league, current_roster)
   end
@@ -41,9 +46,22 @@ class Admin::ContractYearsController < ApplicationController
       render plain: "Unauthorized", status: :unauthorized
     end
   end
-
+  
   def contract_year_params
-    params.require(:contract_year).permit(:season, :salary, :team_option)
+    params.require(:contract_years).permit({ 
+      contract_years: [
+        contract_year: [
+          :season, 
+          :salary,
+          :team_option
+        ] 
+      ]
+    })
+    # params.require(:contract_year).permit(:season, :salary, :team_option)
+  end
+
+  def num_params
+    return contract_year_params["contract_years"].length
   end
 
 

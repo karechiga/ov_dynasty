@@ -1,18 +1,33 @@
-<h1>New Contract<h1>
+<h1>New Contract for <%= @player.name %><h1>
+
+
+<%= form_tag(league_admin_roster_player_contract_years_path(@league, @roster, @player)) do %>
+  <%= text_field_tag "contract_years[contract_years][]contract_year[season]" %>
+  <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
+  <%= text_field_tag "contract_years[contract_years][]contract_year[team_option]" %>
+  <hr/>
+  <%= text_field_tag "contract_years[contract_years][]contract_year[season]" %>
+  <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
+  <%= text_field_tag "contract_years[contract_years][]contract_year[team_option]" %>
+  <div><%= submit_tag 'Submit' %></div>
+<% end %>
+
+
+
 
 <%# <%= form_tag league_admin_roster_player_contract_years_path(@league, @roster, @player) do %> 
   <%# <% @contract_years.each do |contract_year| %> 
-    <%= simple_form_for @contract_year, url: league_admin_roster_player_contract_years_path(@league, @roster, @player) do |f| %>
+    <%# <%= simple_form_for @contract_year, url: league_admin_roster_player_contract_years_path(@league, @roster, @player) do |f| %> %>
     <%# <%= fields_for contract_year do |f| %>
-    <hr/>
-      <%= f.label :season %>
-      <%= f.text_field :season %>
-      <%= f.label :salary %>
-      <%= f.text_field :salary %>
-      <%= f.label :team_option %>
-      <%= f.text_field :team_option %>
-      <%= f.submit "Create" %>
-    <% end %>
+    <%# <hr/> %>
+      <%# <%= f.label :season %> %>
+      <%# <%= f.text_field :season %> %>
+      <%# <%= f.label :salary %> %>
+      <%# <%= f.text_field :salary %> %>
+      <%# <%= f.label :team_option %> %>
+      <%# <%= f.text_field :team_option %> %>
+      <%# <%= f.submit "Create" %> %>
+    <%# <% end %> %>
     <%# <%= f.submit "Create" %> 
   <%# <% end %> 
 <%# <% end %> 
