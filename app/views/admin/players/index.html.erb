@@ -105,19 +105,19 @@
           <%= form_tag '#',  id: 'newContractYearForm' do %>
             <%= label_tag "2019 Season" %>
             <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
-            <%= text_field_tag "contract_years[contract_years][]contract_year[team_option]" %>
+            <%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]')  %>
             <hr/>
             <%= label_tag "2020 Season" %>
             <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
-            <%= text_field_tag "contract_years[contract_years][]contract_year[team_option]" %>
+            <%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]')  %>
             <hr/>
             <%= label_tag "2021 Season" %>
             <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
-            <%= text_field_tag "contract_years[contract_years][]contract_year[team_option]" %>
+            <%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]')  %>
             <hr/>
             <%= label_tag "2022 Season" %>
             <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
-            <%= text_field_tag "contract_years[contract_years][]contract_year[team_option]" %>
+            <%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]')  %>
         </div>
       </div>
       <div class="modal-footer">

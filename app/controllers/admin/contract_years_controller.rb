@@ -16,7 +16,6 @@ class Admin::ContractYearsController < ApplicationController
     season = current_season
     num_params.times do |i|
       contract_year = current_player.contract_years.create(contract_year_params["contract_years"][i]["contract_year"].merge(season: season))
-      # contract_year.update(season: season)
       # if !contract_year.valid?
       #   return render plain: "#{contract_year_params["contract_years"][i]["contract_year"]}", status: :unprocessable_entity
       # end
