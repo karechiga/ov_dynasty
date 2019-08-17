@@ -86,7 +86,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <%# <form>
+        <form>
           <div class="form-group">
             <label for="contractFormControlSelect1">Number of Years</label>
             <select class="form-control" id="contractFormControlSelect1">
@@ -99,25 +99,10 @@
           </div>
           <%# <div class="contractSalaries">
           </div> %>
-          
-        <%# </form> %>
+        </form>
         <div class="new-contract-year">
           <%= form_tag '#',  id: 'newContractYearForm' do %>
-            <%= label_tag "2019 Season" %>
-            <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
-            <%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]')  %>
-            <hr/>
-            <%= label_tag "2020 Season" %>
-            <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
-            <%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]')  %>
-            <hr/>
-            <%= label_tag "2021 Season" %>
-            <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
-            <%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]')  %>
-            <hr/>
-            <%= label_tag "2022 Season" %>
-            <%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>
-            <%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]')  %>
+          <div class="contractSalaries"></div>
         </div>
       </div>
       <div class="modal-footer">
@@ -168,16 +153,14 @@
                 '<label class="col-9" for="salary">' + currentSeason + ' Salary</label>' +
                 '<label class="col-3" for="team_option">Team Option</label>' +
               '</div>' +
-              '<div class="row">' +
-                '<div class="input-group mb-3 col-9">' +
-                  '<div class="input-group-prepend">' +
-                    '<span class="input-group-text">$</span>' +
-                  '</div>' +
-                  '<input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="1,000,000">' +
+              '<div class="row contract-year-input">' +
+                '<div class="col-9">' +
+                  '<%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>' +
                 '</div>' +
-                '<div class="form-check col-3">' +
-                  '<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">' +
+                '<div class="col-3">' +
+                  '<%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]')  %>' +
                 '</div>' +
+                '<hr/>' +
               '</div>' +
             '</div>';
             currentSeason = currentSeason + 1;

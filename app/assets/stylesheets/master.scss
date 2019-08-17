@@ -7,10 +7,13 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.contractSalaries .form-check {
-  text-align: center;
+.contract-year-input .col-9 input {
+  width: 90%;
 }
 
+.contract-year-input .col-3 {
+  text-align: center;
+}
 // .header-fixed {
 //   width: 100% 
 // }
