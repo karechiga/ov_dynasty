@@ -1,6 +1,7 @@
 class Admin::ContractYearsController < ApplicationController
   before_action :authenticate_user!
   before_action :require_user_admin_privilege
+  protect_from_forgery with: :null_session
   
   def new
     @contract_year = ContractYear.new

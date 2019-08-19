@@ -85,8 +85,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <%= form_tag '#',  id: 'newContractYearForm' do %>
       <div class="modal-body">
-        <form>
           <div class="form-group">
             <label for="contractFormControlSelect1">Number of Years</label>
             <select class="form-control" id="contractFormControlSelect1">
@@ -99,15 +99,13 @@
           </div>
           <%# <div class="contractSalaries">
           </div> %>
-        </form>
         <div class="new-contract-year">
-          <%= form_tag '#',  id: 'newContractYearForm' do %>
           <div class="contractSalaries"></div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <div><%= submit_tag 'Submit' %></div>
+        <%= submit_tag 'Submit', class:"btn btn-primary" %>
         <%# <button type="button" class="btn btn-primary">Submit</button> %>
       </div>
       <% end %>
@@ -127,7 +125,7 @@
 
 <script>
   $(function () {
-    var contract_modal = $('#contractModal')
+    var contract_modal = $('#contractModal');
     $('th > button').click(function(e) {
       var contractUrl = $(e.target).data('contract-year-url');
       $('#newContractYearForm').attr('action', contractUrl);
@@ -139,7 +137,7 @@
       $('#contractFormControlSelect1').change( function(e) {
         var numYears = parseInt(e.target.value);
         if (!isNaN(numYears)) {
-          var html = ''
+          var html = '';
           var d = new Date();
           var currentMonth = d.getMonth();
           var currentSeason = d.getFullYear();
@@ -158,7 +156,7 @@
                   '<%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>' +
                 '</div>' +
                 '<div class="col-3">' +
-                  '<%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]')  %>' +
+                  '<%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]') %>' +
                 '</div>' +
                 '<hr/>' +
               '</div>' +

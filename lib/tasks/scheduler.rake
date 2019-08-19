@@ -325,3 +325,10 @@ task :reset_stats => :environment do
     player.save
   end
 end
+
+task :remove_players_from_roster => :environment do
+  players = Player.where.not(roster_id: nil)
+  players.each do |player| 
+    player.update(:roster_id => nil)
+  end
+end
