@@ -1,4 +1,6 @@
 @import "bootstrap";
+@import "font-awesome";
+@import 'datatables';
 
 
 .player-table {
@@ -14,6 +16,31 @@
 .contract-year-input .col-3 {
   text-align: center;
 }
+
+.btn-circle {
+  width: 15px;
+  height: 15px;
+  text-align: center;
+  padding: 0px 0;
+  font-size: 9px;
+  margin-left: 6px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:before {
+  bottom: .5em;
+}
+
 // .header-fixed {
 //   width: 100% 
 // }

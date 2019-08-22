@@ -3,7 +3,8 @@ class Admin::PlayersController < ApplicationController
   before_action :require_user_admin_privilege
 
   def index
-    @players = Player.where(:roster_id => nil).paginate(:page => params[:page], per_page: 50).order('last_name ASC')
+    @players = Player.where(:roster_id => nil).sort_by { |player| player.last_name }
+    # .paginate(:page => params[:page], per_page: 50).order('last_name ASC')
     @roster = current_roster
     @league = current_league
     @contract_year = ContractYear.new

@@ -1,31 +1,32 @@
 <h1>Free Agents</h1>
 
-<%= will_paginate @players %>
+<%# <%= will_paginate @players %>
 <div class="table-responsive-lg player-table">
-  <table class="table table-hover table-bordered">
-    <thead class="thead-light">
+  <table id="dtDynamicVerticalScrollExample" class="table table-hover table-bordered table-sm" cellspacing="0"
+  width="100%">
+    <%# <thead class="thead-light">
       <tr>
-        <th class="text-center" colspan="16">2018-2019 Season</th>
+        <th class="text-center" colspan="16">2018-2019 Season
       </tr>
-    </thead>
+    </thead> %>
     <thead class="thead-light player-stats">
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Position</th>
-        <th scope="col">GP</th>
-        <th scope="col">MPG</th>
-        <th scope="col">PPG</th>
-        <th scope="col">RPG</th>
-        <th scope="col">APG</th>
-        <th scope="col">SPG</th>
-        <th scope="col">BPG</th>
-        <th scope="col">TOPG</th>
-        <th scope="col">FG%</th>
-        <th scope="col">3Pt%</th>
-        <th scope="col">FT%</th>
-        <th scope="col">FPPG</th>
-        <th scope="col">Salary</th>
+        <th class="th-sm" scope="col">#</th>
+        <th class="th-sm" scope="col">Name</th>
+        <th class="th-sm" scope="col">Position</th>
+        <th class="th-sm" scope="col">GP</th>
+        <th class="th-sm" scope="col">MPG</th>
+        <th class="th-sm" scope="col">PPG</th>
+        <th class="th-sm" scope="col">RPG</th>
+        <th class="th-sm" scope="col">APG</th>
+        <th class="th-sm" scope="col">SPG</th>
+        <th class="th-sm" scope="col">BPG</th>
+        <th class="th-sm" scope="col">TOPG</th>
+        <th class="th-sm" scope="col">FG%</th>
+        <th class="th-sm" scope="col">3Pt%</th>
+        <th class="th-sm" scope="col">FT%</th>
+        <th class="th-sm" scope="col">FPPG</th>
+        <th class="th-sm" scope="col">Salary</th>
       </tr>
     </thead>
     <tbody>
@@ -33,24 +34,27 @@
       <% @players.each do |player|%>
         <tr id="<%= player.id %>">
           <th scope="row"><%= row %></th>
-          <th scope="col"><button type="button" class="btn btn-primary btn-sm" 
+          <th scope="col">
+          <%= link_to player.name, '#' %>
+          
+          <button type="button" class="btn btn-primary btn-circle" 
             data-toggle="modal" data-target="#contractModal" data-contract-year-url="<%= league_admin_roster_player_contract_years_path(@league, @roster, player) %>">
-            <%= player.name %></button>
+            <i class="fa fa-plus"></i></button>
           </th>
-          <th scope="col"><%= player.position %></th>
-          <th scope="col"><%= player.gp %></th>
-          <th scope="col"><%= player.mpg %></th>
-          <th scope="col"><%= player.ppg %></th>
-          <th scope="col"><%= player.rpg %></th>
-          <th scope="col"><%= player.apg %></th>
-          <th scope="col"><%= player.spg %></th>
-          <th scope="col"><%= player.bpg %></th>
-          <th scope="col"><%= player.topg %></th>
-          <th scope="col"><%= player.fg_perc %></th>
-          <th scope="col"><%= player.fg3_perc %></th>
-          <th scope="col"><%= player.ft_perc %></th>
-          <th scope="col"><%= player.fppg %></th>
-          <th scope="col"><%= player.current_salary %></th>
+          <td scope="col"><%= player.position %></td>
+          <td scope="col"><%= player.gp %></td>
+          <td scope="col"><%= player.mpg %></td>
+          <td scope="col"><%= player.ppg %></td>
+          <td scope="col"><%= player.rpg %></td>
+          <td scope="col"><%= player.apg %></td>
+          <td scope="col"><%= player.spg %></td>
+          <td scope="col"><%= player.bpg %></td>
+          <td scope="col"><%= player.topg %></td>
+          <td scope="col"><%= player.fg_perc %></td>
+          <td scope="col"><%= player.fg3_perc %></td>
+          <td scope="col"><%= player.ft_perc %></td>
+          <td scope="col"><%= player.fppg %></td>
+          <td scope="col"><%= player.current_salary %></td>
         </tr>
         <% row += 1%>
       <% end %>
@@ -125,13 +129,23 @@
 
 <script>
   $(function () {
+
+    $(document).ready(function () {
+      $('#dtDynamicVerticalScrollExample').DataTable({
+        "scrollY": "50vh",
+        "scrollCollapse": true,
+      });
+      $('.dataTables_length').addClass('bs-select');
+    });
+
+
     var contract_modal = $('#contractModal');
     $('th > button').click(function(e) {
-      var contractUrl = $(e.target).data('contract-year-url');
+      var contractUrl = $(e.target.parentNode).data('contract-year-url');
+      console.log(contractUrl);
       $('#newContractYearForm').attr('action', contractUrl);
-      console.log($('.new-contract-year'));
       var id = e.target.parentElement.parentElement.id;
-      var playerName = e.target.outerText;
+      var playerName = e.target.parentNode.parentNode.childNodes[1].innerText;
       var modalTitle = $('#contractModalLongTitle');
       modalTitle.text(playerName);
       $('#contractFormControlSelect1').change( function(e) {
