@@ -1,6 +1,5 @@
 <h1>Free Agents</h1>
 
-<%# <%= will_paginate @players %>
 <div class="table-responsive-lg player-table">
   <table id="dtDynamicVerticalScrollExample" class="table table-hover table-bordered table-sm" cellspacing="0"
   width="100%">
@@ -61,6 +60,7 @@
     </tbody>
   </table>
 </div>
+<%= will_paginate @players, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
 
 
 
@@ -130,13 +130,13 @@
 <script>
   $(function () {
 
-    $(document).ready(function () {
-      $('#dtDynamicVerticalScrollExample').DataTable({
-        "scrollY": "50vh",
-        "scrollCollapse": true,
-      });
-      $('.dataTables_length').addClass('bs-select');
-    });
+    // $(document).ready(function () {
+    //   $('#dtDynamicVerticalScrollExample').DataTable({
+    //     "scrollY": "50vh",
+    //     "scrollCollapse": true,
+    //   });
+    //   $('.dataTables_length').addClass('bs-select');
+    // });
 
 
     var contract_modal = $('#contractModal');
