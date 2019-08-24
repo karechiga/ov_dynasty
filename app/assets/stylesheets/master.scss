@@ -1,7 +1,7 @@
 @import "bootstrap";
 @import "font-awesome";
 @import 'datatables';
-
+@import url('https://fonts.googleapis.com/css?family=Lexend+Exa|Noto+Sans&display=swap');
 
 .player-table {
   margin: 35px 35px 35px 35px;
@@ -33,11 +33,37 @@
 
 }
 
+.app-navbar {
+  background-image: linear-gradient(to right, #e6e7e9e8, #b1b2b6);
+  border-bottom: 1px solid #000000;
+  line-height: 2;
+}
+
+.app-navbar .navbar-brand {
+  font-family: 'Lexend Exa', sans-serif;
+  color: #2528a2;
+}
+
+.app-navbar .navbar-nav .nav-link {
+  color: #2a67b6;
+}
+
+.navbar-nav .nav-link {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.app-navbar .navbar-nav .nav-link:hover {
+  background-color: #c4c4cc;
+}
+
+.league-navbar .navbar-nav .nav-link:hover {
+  background-color: #555583;
+}
+
 .league-navbar {
   background-image: linear-gradient(to right, #6287bee8, #c8cbd6);
   box-shadow: 0px 2px 6px #000000;
   border-top: 1px solid;
-  margin-top: 5px;
   line-height: 1;
 }
 
@@ -52,11 +78,22 @@
   box-shadow: 3px 3px 7px #9b9ba7;
 }
 
-.dropdown-divider {
+.app-navbar .navbar-nav .dropdown-menu {
+  background-color: #d7d8da;
+  border: 2px solid #8a87bb;
+  border-top: 0px;
+  box-shadow: 3px 3px 7px #9b9ba7;
+}
+
+.league-navbar .dropdown-divider {
   border-top: 1px solid #828290;
   display: block;
 }
 
+.app-navbar .dropdown-divider {
+  border-top: 1px solid #8a87bb;
+  display: block;
+}
 // table.dataTable thead .sorting:after,
 // table.dataTable thead .sorting:before,
 // table.dataTable thead .sorting_asc:after,
