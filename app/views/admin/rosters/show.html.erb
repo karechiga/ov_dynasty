@@ -3,7 +3,7 @@
 <% for i in 0..29 %>
   <div class="row">
     <div class="col-6">
-      <%= i < @roster.players.length ? @roster.players[i].name : "" %>
+      <%= i < @roster.player_associations.length ? @roster.player_associations[i].player.name : "" %>
     </div>
     <div class="col-6">
       <%= i < @roster.picks.length ? "#{@roster.picks[i].year} Round #{@roster.picks[i].round} #{@roster.picks[i].name}": "" %>

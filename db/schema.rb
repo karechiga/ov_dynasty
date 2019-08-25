@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_17_162428) do
+ActiveRecord::Schema.define(version: 2019_08_25_150456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,7 +21,8 @@ ActiveRecord::Schema.define(version: 2019_08_17_162428) do
     t.string "team_option", default: "false"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "player_id"
+    t.integer "player_association_id"
+    t.index ["player_association_id"], name: "index_contract_years_on_player_association_id"
   end
 
   create_table "leagues", force: :cascade do |t|
@@ -65,6 +66,15 @@ ActiveRecord::Schema.define(version: 2019_08_17_162428) do
     t.index ["year"], name: "index_picks_on_year"
   end
 
+  create_table "player_associations", force: :cascade do |t|
+    t.integer "player_id"
+    t.integer "roster_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id"], name: "index_player_associations_on_player_id"
+    t.index ["roster_id"], name: "index_player_associations_on_roster_id"
+  end
+
   create_table "players", force: :cascade do |t|
     t.string "position"
     t.string "name"
@@ -84,7 +94,6 @@ ActiveRecord::Schema.define(version: 2019_08_17_162428) do
     t.integer "fga3_total"
     t.integer "ftm_total"
     t.integer "fta_total"
-    t.integer "roster_id"
     t.string "timestamps"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -104,7 +113,6 @@ ActiveRecord::Schema.define(version: 2019_08_17_162428) do
     t.index ["date_of_birth"], name: "index_players_on_date_of_birth"
     t.index ["first_name"], name: "index_players_on_first_name"
     t.index ["last_name"], name: "index_players_on_last_name"
-    t.index ["roster_id"], name: "index_players_on_roster_id"
   end
 
   create_table "rosters", force: :cascade do |t|

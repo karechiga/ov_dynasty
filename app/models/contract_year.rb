@@ -1,5 +1,6 @@
 class ContractYear < ApplicationRecord
-  belongs_to :player
+  belongs_to :player_association
+  
 
   # validates :season, presence: true
   # validates :salary, presence: true

@@ -3,14 +3,18 @@ class Admin::PlayersController < ApplicationController
   before_action :require_user_admin_privilege
   
   def index
-    @players = Player.where(:roster_id => nil).paginate(:page => params[:page], per_page: 50).order('last_name ASC')
+    # @players = Player.where(:roster_id => nil).paginate(:page => params[:page], per_page: 50).order('last_name ASC')
+    # @players = Player.where.not( { associations: { roster_id: {league_id: current_league } } } )
+    # @players.delete_if { |player| player.is_in_league?(current_league) }
+    @players = Player.all.paginate(:page => params[:page], per_page: 50).order('last_name ASC')
     @roster = current_roster
     @league = current_league
     @contract_year = ContractYear.new
   end
 
   def update
-    player = Player.find(params[:id]).update(roster_id: current_roster.id)
+    # player = Player.find(params[:id]).update(roster_id: current_roster.id)
+    player = Player.find(params[:id]).player_associations.create(roster_id: current_roster.id)
     redirect_to league_admin_roster_path(current_league, current_roster)
   end
 

@@ -15,14 +15,14 @@ class Admin::ContractYearsController < ApplicationController
 
   def create
     season = current_season
+    player_association = current_player.player_associations.create(roster_id: current_roster.id)
     num_params.times do |i|
-      contract_year = current_player.contract_years.create(contract_year_params["contract_years"][i]["contract_year"].merge(season: season))
+      contract_year = player_association.contract_years.create(contract_year_params["contract_years"][i]["contract_year"].merge(season: season))
       # if !contract_year.valid?
       #   return render plain: "#{contract_year_params["contract_years"][i]["contract_year"]}", status: :unprocessable_entity
       # end
       season += 1
     end
-    current_player.update(roster_id: current_roster.id)
     redirect_to league_admin_roster_path(current_league, current_roster)
   end
   
