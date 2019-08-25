@@ -1,18 +1,14 @@
 class Player < ApplicationRecord
   belongs_to :nba_team, optional: true
   has_many :player_associations
-  has_many :player_associations_to_rosters, through: :player_associations, source: :roster
+  has_many :rosters, through: :player_associations, source: :roster
+  has_many :leagues, through: :rosters, source: :league
 
   def is_on_roster?(roster)
-    return player_associations_to_rosters.include?(roster)
+    return rosters.include?(roster)
   end
   def is_in_league?(league)
-    player_associations_to_rosters.each do |roster|
-      if roster.league == league
-        return true
-      end
-    end
-    return false
+    return leagues.include?(league)
   end
 
   def mpg

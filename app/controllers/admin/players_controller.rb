@@ -3,10 +3,13 @@ class Admin::PlayersController < ApplicationController
   before_action :require_user_admin_privilege
   
   def index
-    # @players = Player.where(:roster_id => nil).paginate(:page => params[:page], per_page: 50).order('last_name ASC')
+    # @players = Player.where(:rosters => nil).paginate(:page => params[:page], per_page: 50).order('last_name ASC')
     # @players = Player.where.not( { associations: { roster_id: {league_id: current_league } } } )
     # @players.delete_if { |player| player.is_in_league?(current_league) }
-    @players = Player.all.paginate(:page => params[:page], per_page: 50).order('last_name ASC')
+    @players = Player.left_outer_joins(:leagues).where.not(leagues: { id: current_league })
+    .or(Player.left_outer_joins(:leagues).where(leagues: { id: nil }))
+    .paginate(:page => params[:page], per_page: 50).order('last_name ASC')
+    
     @roster = current_roster
     @league = current_league
     @contract_year = ContractYear.new
