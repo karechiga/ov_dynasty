@@ -8,11 +8,16 @@ class Admin::PlayersController < ApplicationController
     # @players.delete_if { |player| player.is_in_league?(current_league) }
     @players = Player.left_outer_joins(:leagues).where.not(leagues: { id: current_league })
     .or(Player.left_outer_joins(:leagues).where(leagues: { id: nil }))
-    .paginate(:page => params[:page], per_page: 50).order('last_name ASC')
+    # .paginate(:page => params[:page], per_page: 50).order('last_name ASC')
     
     @roster = current_roster
     @league = current_league
     @contract_year = ContractYear.new
+
+    respond_to do |format|
+      format.html
+      format.json { render json: PlayerDatatable.new(params) }
+    end
   end
 
   def update

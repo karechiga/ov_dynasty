@@ -32,17 +32,20 @@
           </li>
           <% end %>
           <%= link_to 'About the OV Dynasty', '#', class: 'nav-link' %>
-          <% if user_signed_in? %>
-            <%= link_to 'Sign-out', destroy_user_session_path, method: :delete, class: 'nav-link' %>
-            <span class="navbar-text">
-              <%= current_user.email %>
-            </span>
-          <% else %>
-            <%= link_to 'Sign In', new_user_session_path, class: 'nav-link' %>
-            <%= link_to 'Sign Up', new_user_registration_path, class: 'nav-link' %>
-          <% end %>
         </ul>
       </div>
+
+      <%# <div class="sign-in"> %>
+      <% if user_signed_in? %>
+        <%= link_to 'Sign-out', destroy_user_session_path, method: :delete, class: 'nav-link' %>
+        <span class="navbar-text">
+          <%= current_user.email %>
+        </span>
+      <% else %>
+        <%= link_to 'Sign In', new_user_session_path, class: 'nav-link' %>
+        <%= link_to 'Sign Up', new_user_registration_path, class: 'nav-link' %>
+      <% end %>
+      <%# </div> %>
     </nav>
     <% if user_signed_in? && current_user.is_a_member?(@current_league) %>
       <%= render "leagues/league_navbar" %>

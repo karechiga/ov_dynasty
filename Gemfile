@@ -93,3 +93,5 @@ gem 'will_paginate-bootstrap4'
 gem "font-awesome-rails"
 
 gem 'jquery-datatables'
+
+gem 'ajax-datatables-rails'

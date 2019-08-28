@@ -45,19 +45,19 @@
   color: #2528a2;
 }
 
-.app-navbar .navbar-nav .nav-link {
+.app-navbar .nav-link {
   color: #2a67b6;
 }
 
-.navbar-nav .nav-link {
+.nav-link {
   font-family: 'Noto Sans', sans-serif;
 }
 
-.app-navbar .navbar-nav .nav-link:hover {
+.app-navbar .nav-link:hover {
   background-color: #c4c4cc;
 }
 
-.league-navbar .navbar-nav .nav-link:hover {
+.league-navbar .nav-link:hover {
   background-color: #555583;
 }
 
@@ -99,6 +99,14 @@
 body {
   background: image_url('dust_scratches.png');
 }
+
+#dttb_filter label, 
+#dttb_length label {
+  padding: 10px;
+}
+
+
+
 // table.dataTable thead .sorting:after,
 // table.dataTable thead .sorting:before,
 // table.dataTable thead .sorting_asc:after,

@@ -1,8 +1,50 @@
 
 <h1>Free Agents</h1>
 
+
+
+<table id="players-datatable" data-source="<%= league_admin_roster_players_path(@league, @roster, format: :json) %>">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Position</th>
+      <th>GP</th>
+      <th>MPG</th>
+      <th>PPG</th>
+      <th>RPG</th>
+      <th>APG</th>
+      <th>SPG</th>
+      <th>BPG</th>
+      <th>TOPG</th>
+      <th>FG%</th>
+      <th>3Pt%</th>
+      <th>FT%</th>
+      <th>FPPG</th>
+      <th>Salary</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="table-responsive-lg player-table">
-  <table id="dtDynamicVerticalScrollExample" class="table table-hover table-bordered table-sm" cellspacing="0"
+  <table id="dttb" class="table table-hover table-bordered table-sm" cellspacing="0"
   width="100%">
     <%# <thead class="thead-light">
       <tr>
@@ -61,7 +103,7 @@
     </tbody>
   </table>
 </div>
-<%= will_paginate @players, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+<%# <%= will_paginate @players, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %> %>
 
 
 
@@ -130,7 +172,38 @@
 
 <script>
   $(function () {
-
+    jQuery(document).ready(function() {
+      $('#players-datatable').dataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+          "url": $('#players-datatable').data('source')
+        },
+        "pagingType": "full_numbers",
+        "columns": [
+          {"data": "id"},
+          {"data": "first_name"},
+          {"data": "last_name"},
+          {"data": "position"},
+          {"data": "gp"},
+          {"data": "mpg"},
+          {"data": "ppg"},
+          {"data": "rpg"},
+          {"data": "apg"},
+          {"data": "spg"},
+          {"data": "bpg"},
+          {"data": "topg"},
+          {"data": "fg_perc"},
+          {"data": "fg3_perc"},
+          {"data": "ft_perc"},
+          {"data": "fppg"},
+          {"data": "current_salary"}
+        ]
+        // pagingType is optional, if you want full pagination controls.
+        // Check dataTables documentation to learn more about
+        // available options.
+      });
+    });
     // $(document).ready(function () {
     //   $('#dtDynamicVerticalScrollExample').DataTable({
     //     "scrollY": "50vh",
@@ -138,7 +211,9 @@
     //   });
     //   $('.dataTables_length').addClass('bs-select');
     // });
-
+    // $(document).ready(function() {
+    //   $("#dttb").dataTable();
+    // });
 
     var contract_modal = $('#contractModal');
     $('th > button').click(function(e) {
