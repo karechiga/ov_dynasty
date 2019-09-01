@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_25_150456) do
+ActiveRecord::Schema.define(version: 2019_08_28_033323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,17 @@ ActiveRecord::Schema.define(version: 2019_08_25_150456) do
     t.integer "height_feet"
     t.integer "height_inches"
     t.decimal "weight_pounds"
+    t.decimal "mpg"
+    t.decimal "ppg"
+    t.decimal "rpg"
+    t.decimal "apg"
+    t.decimal "spg"
+    t.decimal "bpg"
+    t.decimal "topg"
+    t.decimal "fg_perc"
+    t.decimal "fg3_perc"
+    t.decimal "ft_perc"
+    t.decimal "fppg"
     t.index ["college"], name: "index_players_on_college"
     t.index ["country"], name: "index_players_on_country"
     t.index ["date_of_birth"], name: "index_players_on_date_of_birth"

@@ -1,12 +1,79 @@
 <h1><%= @roster.team_name %></h1>
 <h2><%= link_to 'Add Players', league_admin_roster_players_path(@roster.league, @roster) %></h2>
-<% for i in 0..29 %>
-  <div class="row">
-    <div class="col-6">
-      <%= i < @roster.player_associations.length ? @roster.player_associations[i].player.name : "" %>
-    </div>
-    <div class="col-6">
-      <%= i < @roster.picks.length ? "#{@roster.picks[i].year} Round #{@roster.picks[i].round} #{@roster.picks[i].name}": "" %>
-    </div>
+
+<div class="row">
+  <div class="table-responsive-lg player-table col-6">
+    <table class="table table-hover table-bordered table-sm" cellspacing="0"
+    width="100%">
+      <%# <thead class="thead-light">
+        <tr>
+          <th class="text-center" colspan="16">2018-2019 Season
+        </tr>
+      </thead> %>
+      <thead class="thead-light player-stats">
+        <tr>
+          <th class="th-sm" scope="col">Position</th>
+          <th class="th-sm" scope="col">Name</th>
+          <th class="th-sm" scope="col"><%= @season %></th>
+          <th class="th-sm" scope="col"><%= @season + 1 %></th>
+          <th class="th-sm" scope="col"><%= @season + 2 %></th>
+          <th class="th-sm" scope="col"><%= @season + 3 %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @players.each do |player|%>
+          <% player_association = @player_associations.find_by_player_id(player.id) %>
+          <tr id="<%= player.id %>">
+            <th scope="row"><%= player.position %></th>
+            <th scope="col">
+            <%= link_to player.name, '#' %>
+  <%#           
+            <button type="button" class="btn btn-primary btn-circle" 
+              data-toggle="modal" data-target="#contractModal" data-contract-year-url="<%= league_admin_roster_player_contract_years_path(@league, @roster, player) %>
+              <%# <i class="fa fa-plus"></i></button> %>
+            <%# </th> %>
+            <% player_association.contract_years.each do |contract_year| %>
+              <td scope="col"><%= contract_year.salary %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
-<% end %>
+
+
+  <div class="table-responsive-lg pick-table col-4">
+    <table class="table table-hover table-bordered table-sm" cellspacing="0"
+    width="100%">
+      <%# <thead class="thead-light">
+        <tr>
+          <th class="text-center" colspan="16">2018-2019 Season
+        </tr>
+      </thead> %>
+      <thead class="thead-light">
+        <tr>
+          <th class="th-sm" scope="col">Years</th>
+          <th class="th-sm" scope="col">Round 1</th>
+          <th class="th-sm" scope="col">Round 2</th>
+          <th class="th-sm" scope="col">Round 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @years.each do |year|%>
+          <tr>
+            <th scope="row"><%= year %></th>
+            <% picks_in_year = @picks.where(year: year) %>
+            <% picks_in_year.each do |pick| %>
+              <td scope="col"><%= pick.roster.team_abbrev %></td>
+              <%#           
+              <button type="button" class="btn btn-primary btn-circle" 
+                data-toggle="modal" data-target="#contractModal" data-contract-year-url="<%= league_admin_roster_player_contract_years_path(@league, @roster, player) %>
+                <%# <i class="fa fa-plus"></i></button> %>
+              <%# </th> %>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

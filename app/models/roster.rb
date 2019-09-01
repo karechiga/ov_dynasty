@@ -2,6 +2,7 @@ class Roster < ApplicationRecord
   belongs_to :league
   belongs_to :user
   has_many :player_associations
+  has_many :players, through: :player_associations, source: :player
   has_many :picks
 
   after_initialize :init_name

@@ -3,106 +3,50 @@
 
 
 
-<table id="players-datatable" data-source="<%= league_admin_roster_players_path(@league, @roster, format: :json) %>">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Position</th>
-      <th>GP</th>
-      <th>MPG</th>
-      <th>PPG</th>
-      <th>RPG</th>
-      <th>APG</th>
-      <th>SPG</th>
-      <th>BPG</th>
-      <th>TOPG</th>
-      <th>FG%</th>
-      <th>3Pt%</th>
-      <th>FT%</th>
-      <th>FPPG</th>
-      <th>Salary</th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="table-responsive-lg player-table">
-  <table id="dttb" class="table table-hover table-bordered table-sm" cellspacing="0"
-  width="100%">
-    <%# <thead class="thead-light">
-      <tr>
-        <th class="text-center" colspan="16">2018-2019 Season
-      </tr>
-    </thead> %>
+  <table id="players-datatable" class="table table-hover table-bordered table-sm" cellspacing="0"
+  width="100%" data-source="<%= league_admin_roster_players_path(@league, @roster, format: :json) %>">
     <thead class="thead-light player-stats">
       <tr>
-        <th class="th-sm" scope="col">#</th>
-        <th class="th-sm" scope="col">Name</th>
-        <th class="th-sm" scope="col">Position</th>
-        <th class="th-sm" scope="col">GP</th>
-        <th class="th-sm" scope="col">MPG</th>
-        <th class="th-sm" scope="col">PPG</th>
-        <th class="th-sm" scope="col">RPG</th>
-        <th class="th-sm" scope="col">APG</th>
-        <th class="th-sm" scope="col">SPG</th>
-        <th class="th-sm" scope="col">BPG</th>
-        <th class="th-sm" scope="col">TOPG</th>
-        <th class="th-sm" scope="col">FG%</th>
-        <th class="th-sm" scope="col">3Pt%</th>
-        <th class="th-sm" scope="col">FT%</th>
-        <th class="th-sm" scope="col">FPPG</th>
-        <th class="th-sm" scope="col">Salary</th>
+        <th>#</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Position</th>
+        <th>GP</th>
+        <th>MPG</th>
+        <th>PPG</th>
+        <th>RPG</th>
+        <th>APG</th>
+        <th>SPG</th>
+        <th>BPG</th>
+        <th>TOPG</th>
+        <th>FG%</th>
+        <th>3Pt%</th>
+        <th>FT%</th>
+        <th>FPPG</th>
+        <th>Salary</th>
       </tr>
     </thead>
     <tbody>
-      <% row = 1 %>
-      <% @players.each do |player|%>
-        <tr id="<%= player.id %>">
-          <th scope="row"><%= row %></th>
-          <th scope="col">
-          <%= link_to player.name, '#' %>
-          
-          <button type="button" class="btn btn-primary btn-circle" 
-            data-toggle="modal" data-target="#contractModal" data-contract-year-url="<%= league_admin_roster_player_contract_years_path(@league, @roster, player) %>">
-            <i class="fa fa-plus"></i></button>
-          </th>
-          <td scope="col"><%= player.position %></td>
-          <td scope="col"><%= player.gp %></td>
-          <td scope="col"><%= player.mpg %></td>
-          <td scope="col"><%= player.ppg %></td>
-          <td scope="col"><%= player.rpg %></td>
-          <td scope="col"><%= player.apg %></td>
-          <td scope="col"><%= player.spg %></td>
-          <td scope="col"><%= player.bpg %></td>
-          <td scope="col"><%= player.topg %></td>
-          <td scope="col"><%= player.fg_perc %></td>
-          <td scope="col"><%= player.fg3_perc %></td>
-          <td scope="col"><%= player.ft_perc %></td>
-          <td scope="col"><%= player.fppg %></td>
-          <td scope="col"><%= player.current_salary %></td>
-        </tr>
-        <% row += 1%>
-      <% end %>
     </tbody>
   </table>
-</div>
+<div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <%# <%= will_paginate @players, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %> %>
 
 
@@ -169,7 +113,6 @@
   <%# <%= f.label :team_option %> 
   <%# <%= f.text_field :team_option %> 
 <%# <%= f.submit "Create", class: "btn btn-primary" %>
-
 <script>
   $(function () {
     jQuery(document).ready(function() {
@@ -181,24 +124,42 @@
         },
         "pagingType": "full_numbers",
         "columns": [
-          {"data": "id"},
+          {"data": "id",
+          "orderSequence": [ "asc", "desc" ] },
           {"data": "first_name"},
           {"data": "last_name"},
           {"data": "position"},
-          {"data": "gp"},
-          {"data": "mpg"},
-          {"data": "ppg"},
-          {"data": "rpg"},
-          {"data": "apg"},
-          {"data": "spg"},
-          {"data": "bpg"},
-          {"data": "topg"},
-          {"data": "fg_perc"},
-          {"data": "fg3_perc"},
-          {"data": "ft_perc"},
-          {"data": "fppg"},
-          {"data": "current_salary"}
-        ]
+          {"data": "gp",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "mpg",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "ppg",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "rpg",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "apg",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "spg",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "bpg",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "topg",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "fg_perc",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "fg3_perc",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "ft_perc",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "fppg",
+          "orderSequence": [ "desc", "asc" ]},
+          {"data": "current_salary",
+            render: $.fn.dataTable.render.number( ',', '.', 0, '$' ),
+          "orderSequence": [ "desc", "asc" ]
+          }
+        ],
+        rowGroup: true,
+        "pageLength": 50,
         // pagingType is optional, if you want full pagination controls.
         // Check dataTables documentation to learn more about
         // available options.

@@ -271,6 +271,21 @@ task :update_100_players_stats => :environment do
     player.ftm_total += game_stats["ftm"].to_i
     player.fta_total += game_stats["fta"].to_i
   end
+
+  def update_per_game(player)
+    player.mpg = player.calc_mpg
+    player.ppg = player.calc_ppg
+    player.rpg = player.calc_rpg
+    player.apg = player.calc_apg
+    player.spg = player.calc_spg
+    player.bpg = player.calc_bpg
+    player.topg = player.calc_topg
+    player.fg_perc = player.calc_fg_perc
+    player.fg3_perc = player.calc_fg3_perc
+    player.ft_perc = player.calc_ft_perc
+    player.fppg = player.calc_fppg
+  end
+
   game_response = get_game_info(2018)
   games = game_response["api"]["games"]
   # games = games.uniq! { |game| [game["startTimeUTC"], game["endTimeUTC"], game["arena"]] }
@@ -291,6 +306,7 @@ task :update_100_players_stats => :environment do
           increment_stats(players[i], game_stats)
         end
       end
+      update_per_game(players[i])
       players[i].save
     end
   end

@@ -8,6 +8,11 @@ class Admin::RostersController < ApplicationController
 
   def show
     @roster = Roster.find(params[:id])
+    @players = @roster.players
+    @picks = @roster.picks
+    @player_associations = @roster.player_associations
+    @season = current_season
+    @years = years
   end
 
   private
@@ -24,5 +29,24 @@ class Admin::RostersController < ApplicationController
     if !current_membership.admin
       render plain: "Unauthorized", status: :unauthorized
     end
+  end
+
+  def current_season
+    month = Date.today.month
+    year = Date.today.year
+    if month < 6
+      return year-1
+    else
+      return year
+    end
+  end
+
+  def years
+    years = []
+    season = current_season + 1
+    6.times do |i|
+      years.push(season + i)
+    end
+    return years
   end
 end

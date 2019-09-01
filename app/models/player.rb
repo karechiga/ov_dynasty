@@ -4,6 +4,8 @@ class Player < ApplicationRecord
   has_many :rosters, through: :player_associations, source: :roster
   has_many :leagues, through: :rosters, source: :league
 
+  # after_update :update_per_game
+
   def is_on_roster?(roster)
     return rosters.include?(roster)
   end
@@ -11,49 +13,55 @@ class Player < ApplicationRecord
     return leagues.include?(league)
   end
 
-  def mpg
+  # def update_per_game
+  #   puts "Updating Per Game Stats!!!"
+  #   self.update(mpg: mpg, ppg: ppg, rpg: rpg, apg: apg, spg: spg, bpg: bpg,
+  #   topg: topg, fg_perc: fg_perc, fg3_perc: fg3_perc, ft_perc: ft_perc)
+  # end
+
+  def calc_mpg
     return (self.min_total.to_f / self.gp.to_f).round(1)
   end
-  def ppg
+  def calc_ppg
     return (self.pts_total.to_f / self.gp.to_f).round(1)
   end
-  def rpg
+  def calc_rpg
     return (self.reb_total.to_f / self.gp.to_f).round(1)
   end
-  def apg
+  def calc_apg
     return (self.ast_total.to_f / self.gp.to_f).round(1)
   end
-  def spg
+  def calc_spg
     return (self.stl_total.to_f / self.gp.to_f).round(2)
   end
-  def bpg
+  def calc_bpg
     return (self.blk_total.to_f / self.gp.to_f).round(2)
   end
-  def topg
+  def calc_topg
     return (self.to_total.to_f / self.gp.to_f).round(2)
   end
-  def fg_perc
+  def calc_fg_perc
     return (self.fgm_total.to_f / self.fga_total.to_f).round(3)
   end
-  def fgpg
+  def calc_fgpg
     return self.fgm_total.to_f / self.gp.to_f
   end
-  def fgapg
+  def calc_fgapg
     return self.fga_total.to_f / self.gp.to_f
   end
-  def ftpg
+  def calc_ftpg
     return self.ftm_total.to_f / self.gp.to_f
   end
-  def ftapg
+  def calc_ftapg
     return self.fta_total.to_f / self.gp.to_f
   end
-  def fg3_perc
+  def calc_fg3_perc
     return (self.fgm3_total.to_f / self.fga3_total.to_f).round(3)
   end
-  def ft_perc
+  def calc_ft_perc
     return (self.ftm_total.to_f / self.fta_total.to_f).round(3)
   end
-  def fppg
-    return (ppg + rpg + apg + spg + bpg - topg + fgpg - fgapg + ftpg - ftapg).round(1)
+  def calc_fppg
+    return (calc_ppg + calc_rpg + calc_apg + calc_spg + calc_bpg - calc_topg + calc_fgpg - calc_fgapg + calc_ftpg - calc_ftapg).round(1)
   end
 end
