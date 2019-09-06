@@ -224,7 +224,7 @@ task :update_100_players_stats => :environment do
   end
 
   def stats_populated_already(player)
-    return player.gp != nil && player.pts_total != nil
+    return player.gp != 0 && player.pts_total != 0
   end
 
   def minutes_string_to_float(minutes_seconds)
@@ -293,7 +293,7 @@ task :update_100_players_stats => :environment do
   
   players = Player.all.sort_by { |player| player.last_name }
   # i = players.index { |player| player.first_name == "Nene" }
-  for i in 1..50 do
+  for i in 51..100 do
     if !stats_populated_already(players[i])
       puts "updating stats for #{players[i].name}"
       stats_initialize_to_zero(players[i])

@@ -8,7 +8,6 @@
   width="100%" data-source="<%= league_admin_roster_players_path(@league, @roster, format: :json) %>">
     <thead class="thead-light player-stats">
       <tr>
-        <th>#</th>
         <th>First Name</th>
         <th>Last Name</th>
         <th>Position</th>
@@ -25,6 +24,7 @@
         <th>FT%</th>
         <th>FPPG</th>
         <th>Salary</th>
+        <th>Add</th>
       </tr>
     </thead>
     <tbody>
@@ -47,7 +47,7 @@
 
 
 
-<%# <%= will_paginate @players, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %> %>
+<%# <%= will_paginate @players, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
 
 
 
@@ -124,8 +124,6 @@
         },
         "pagingType": "full_numbers",
         "columns": [
-          {"data": "id",
-          "orderSequence": [ "asc", "desc" ] },
           {"data": "first_name"},
           {"data": "last_name"},
           {"data": "position"},
@@ -160,11 +158,74 @@
         ],
         rowGroup: true,
         "pageLength": 50,
+        "initComplete": function(settings, json) {
+        }
+      });
+      $('#players-datatable').on( 'draw.dt', function () {
+        rows = $("#players-datatable > tbody > tr");
+        $("#players-datatable > tbody > tr").each( function(index) { 
+          row_html = $("#players-datatable > tbody > #" + rows[index].id).html();
+          var id = rows[index].id;
+          new_row_html = row_html + '<th><button type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#contractModal" data-contract-year-url="/leagues/<%= @league.id %>/admin/rosters/<%= @roster.id %>/players/' + id + '/contract_years"></button></th>';
+          $("#players-datatable > tbody > #" + rows[index].id).html(new_row_html);
+        });
+
+        $('.player-table > tbody').change( function(e) {
+          console.log('Table has changed');
+        });
+
+        $('th > button').click(function(e) {
+          var contractUrl = $(e.target).data('contract-year-url');
+          $('#newContractYearForm').attr('action', contractUrl);
+          var id = e.target.parentElement.parentElement.id;
+          var lastName = e.target.parentNode.parentNode.childNodes[1].innerText;
+          var firstName = e.target.parentNode.parentNode.childNodes[0].innerText;
+          var playerName = firstName + ' ' + lastName;
+          var modalTitle = $('#contractModalLongTitle');
+          modalTitle.text(playerName);
+          $('#contractFormControlSelect1').change( function(e) {
+            var numYears = parseInt(e.target.value);
+            if (!isNaN(numYears)) {
+              var html = '';
+              var d = new Date();
+              var currentMonth = d.getMonth();
+              var currentSeason = d.getFullYear();
+              if (currentMonth < 5) {  // If it's May or earlier
+                currentSeason = currentSeason - 1;
+              }
+              for (var i = 0; i < numYears; i = i + 1) {
+                html = html + 
+                '<div class="form-group">' +
+                  '<div class="row">' +
+                    '<label class="col-9" for="salary">' + currentSeason + ' Salary</label>' +
+                    '<label class="col-3" for="team_option">Team Option</label>' +
+                  '</div>' +
+                  '<div class="row contract-year-input">' +
+                    '<div class="col-9">' +
+                      '<%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>' +
+                    '</div>' +
+                    '<div class="col-3">' +
+                      '<%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]') %>' +
+                    '</div>' +
+                    '<hr/>' +
+                  '</div>' +
+                '</div>';
+                currentSeason = currentSeason + 1;
+              }
+              $('.contractSalaries').html(html);
+            }
+            else {
+              var html = $('.contractSalaries').html('');
+            }
+          });
+        });
+      } );
         // pagingType is optional, if you want full pagination controls.
         // Check dataTables documentation to learn more about
         // available options.
-      });
     });
+  });
+    
     // $(document).ready(function () {
     //   $('#dtDynamicVerticalScrollExample').DataTable({
     //     "scrollY": "50vh",
@@ -176,50 +237,6 @@
     //   $("#dttb").dataTable();
     // });
 
-    var contract_modal = $('#contractModal');
-    $('th > button').click(function(e) {
-      var contractUrl = $(e.target.parentNode).data('contract-year-url');
-      console.log(contractUrl);
-      $('#newContractYearForm').attr('action', contractUrl);
-      var id = e.target.parentElement.parentElement.id;
-      var playerName = e.target.parentNode.parentNode.childNodes[1].innerText;
-      var modalTitle = $('#contractModalLongTitle');
-      modalTitle.text(playerName);
-      $('#contractFormControlSelect1').change( function(e) {
-        var numYears = parseInt(e.target.value);
-        if (!isNaN(numYears)) {
-          var html = '';
-          var d = new Date();
-          var currentMonth = d.getMonth();
-          var currentSeason = d.getFullYear();
-          if (currentMonth < 5) {  // If it's May or earlier
-            currentSeason = currentSeason - 1;
-          }
-          for (var i = 0; i < numYears; i = i + 1) {
-            html = html + 
-            '<div class="form-group">' +
-              '<div class="row">' +
-                '<label class="col-9" for="salary">' + currentSeason + ' Salary</label>' +
-                '<label class="col-3" for="team_option">Team Option</label>' +
-              '</div>' +
-              '<div class="row contract-year-input">' +
-                '<div class="col-9">' +
-                  '<%= text_field_tag "contract_years[contract_years][]contract_year[salary]" %>' +
-                '</div>' +
-                '<div class="col-3">' +
-                  '<%= check_box_tag(:team_option, 'true', false, :name=> 'contract_years[contract_years][]contract_year[team_option]') %>' +
-                '</div>' +
-                '<hr/>' +
-              '</div>' +
-            '</div>';
-            currentSeason = currentSeason + 1;
-          }
-          $('.contractSalaries').html(html);
-        }
-        else {
-          var html = $('.contractSalaries').html('');
-        }
-      });
-    });
-  });
+  //   var contract_modal = $('#contractModal');
+  // });
 </script>

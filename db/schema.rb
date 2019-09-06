@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_28_033323) do
+ActiveRecord::Schema.define(version: 2019_09_03_032712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,20 +80,20 @@ ActiveRecord::Schema.define(version: 2019_08_28_033323) do
     t.string "name"
     t.string "team"
     t.string "former_team"
-    t.integer "gp"
-    t.decimal "min_total"
-    t.integer "pts_total"
-    t.integer "reb_total"
-    t.integer "ast_total"
-    t.integer "stl_total"
-    t.integer "blk_total"
-    t.integer "to_total"
-    t.integer "fgm_total"
-    t.integer "fga_total"
-    t.integer "fgm3_total"
-    t.integer "fga3_total"
-    t.integer "ftm_total"
-    t.integer "fta_total"
+    t.integer "gp", default: 0
+    t.decimal "min_total", default: "0.0"
+    t.integer "pts_total", default: 0
+    t.integer "reb_total", default: 0
+    t.integer "ast_total", default: 0
+    t.integer "stl_total", default: 0
+    t.integer "blk_total", default: 0
+    t.integer "to_total", default: 0
+    t.integer "fgm_total", default: 0
+    t.integer "fga_total", default: 0
+    t.integer "fgm3_total", default: 0
+    t.integer "fga3_total", default: 0
+    t.integer "ftm_total", default: 0
+    t.integer "fta_total", default: 0
     t.string "timestamps"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -4,7 +4,6 @@ class PlayerDatatable < AjaxDatatablesRails::ActiveRecord
     # Declare strings in this format: ModelName.column_name
     # or in aliased_join_table.column_name format
     @view_columns ||= {
-      id:         { source: "Player.id", searchable: false },
       first_name: { source: "Player.first_name", cond: :like, searchable: true, orderable: true },
       last_name:  { source: "Player.last_name",  cond: :like, searchable: true },
       position:      { source: "Player.position", searchable: false },
@@ -30,7 +29,6 @@ class PlayerDatatable < AjaxDatatablesRails::ActiveRecord
         # example:
         # id: record.id,
         # name: record.name
-        id:         record.id,
         first_name: record.first_name,
         last_name:  record.last_name,
         position:   record.position,
@@ -56,7 +54,8 @@ class PlayerDatatable < AjaxDatatablesRails::ActiveRecord
     # insert query here
     # User.all
     Player.left_outer_joins(:leagues).where.not(leagues: { id: current_league })
-    .or(Player.left_outer_joins(:leagues).where(leagues: { id: nil }))
+    .or(Player.left_outer_joins(:leagues).where(leagues: { id: nil })).where.not(:current_salary => 0)
+    .where.not(:gp => 0)
   end
 
   def current_league
