@@ -41,7 +41,8 @@ class Player < ApplicationRecord
     return (self.to_total.to_f / self.gp.to_f).round(2)
   end
   def calc_fg_perc
-    return (self.fgm_total.to_f / self.fga_total.to_f).round(3)
+    fg_perc = (self.fgm_total.to_f / self.fga_total.to_f).round(3)
+    return fg_perc.nan? ? 0.00 : fg_perc
   end
   def calc_fgpg
     return self.fgm_total.to_f / self.gp.to_f
@@ -56,10 +57,12 @@ class Player < ApplicationRecord
     return self.fta_total.to_f / self.gp.to_f
   end
   def calc_fg3_perc
-    return (self.fgm3_total.to_f / self.fga3_total.to_f).round(3)
+    fg3_perc = (self.fgm3_total.to_f / self.fga3_total.to_f).round(3)
+    return fg3_perc.nan? ? 0.00 : fg3_perc
   end
   def calc_ft_perc
-    return (self.ftm_total.to_f / self.fta_total.to_f).round(3)
+    ft_perc = (self.ftm_total.to_f / self.fta_total.to_f).round(3)
+    return ft_perc.nan? ? 0.00 : ft_perc
   end
   def calc_fppg
     return (calc_ppg + calc_rpg + calc_apg + calc_spg + calc_bpg - calc_topg + calc_fgpg - calc_fgapg + calc_ftpg - calc_ftapg).round(1)

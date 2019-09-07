@@ -154,7 +154,8 @@
           {"data": "current_salary",
             render: $.fn.dataTable.render.number( ',', '.', 0, '$' ),
           "orderSequence": [ "desc", "asc" ]
-          }
+          },
+          {"defaultContent": ""}
         ],
         rowGroup: true,
         "pageLength": 50,
@@ -162,19 +163,18 @@
         }
       });
       $('#players-datatable').on( 'draw.dt', function () {
-        rows = $("#players-datatable > tbody > tr");
+        
+        var rows = $("#players-datatable > tbody > tr");
         $("#players-datatable > tbody > tr").each( function(index) { 
-          row_html = $("#players-datatable > tbody > #" + rows[index].id).html();
+          var last_child = $("#players-datatable > tbody > #" + rows[index].id + " > td:last-child");
+          console.log(last_child);
           var id = rows[index].id;
-          new_row_html = row_html + '<th><button type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#contractModal" data-contract-year-url="/leagues/<%= @league.id %>/admin/rosters/<%= @roster.id %>/players/' + id + '/contract_years"></button></th>';
-          $("#players-datatable > tbody > #" + rows[index].id).html(new_row_html);
+          last_child.html('<button type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#contractModal" data-contract-year-url="/leagues/<%= @league.id %>/admin/rosters/<%= @roster.id %>/players/' + id + '/contract_years"></button>')
+          // new_row_html = row_html + '<th><button type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#contractModal" data-contract-year-url="/leagues/<%= @league.id %>/admin/rosters/<%= @roster.id %>/players/' + id + '/contract_years"></button></th>';
+          // $("#players-datatable > tbody > #" + rows[index].id).html(new_row_html);
         });
 
-        $('.player-table > tbody').change( function(e) {
-          console.log('Table has changed');
-        });
-
-        $('th > button').click(function(e) {
+        $('#players-datatable > tbody > tr > td > button').click(function(e) {
           var contractUrl = $(e.target).data('contract-year-url');
           $('#newContractYearForm').attr('action', contractUrl);
           var id = e.target.parentElement.parentElement.id;
