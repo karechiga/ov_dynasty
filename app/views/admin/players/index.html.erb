@@ -155,7 +155,8 @@
             render: $.fn.dataTable.render.number( ',', '.', 0, '$' ),
           "orderSequence": [ "desc", "asc" ]
           },
-          {"defaultContent": ""}
+          {"defaultContent": "",
+          "sortable" : false}
         ],
         rowGroup: true,
         "pageLength": 50,
@@ -169,7 +170,7 @@
           var last_child = $("#players-datatable > tbody > #" + rows[index].id + " > td:last-child");
           console.log(last_child);
           var id = rows[index].id;
-          last_child.html('<button type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#contractModal" data-contract-year-url="/leagues/<%= @league.id %>/admin/rosters/<%= @roster.id %>/players/' + id + '/contract_years"></button>')
+          last_child.html('<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#contractModal" data-contract-year-url="/leagues/<%= @league.id %>/admin/rosters/<%= @roster.id %>/players/' + id + '/contract_years">+</button>')
           // new_row_html = row_html + '<th><button type="button" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#contractModal" data-contract-year-url="/leagues/<%= @league.id %>/admin/rosters/<%= @roster.id %>/players/' + id + '/contract_years"></button></th>';
           // $("#players-datatable > tbody > #" + rows[index].id).html(new_row_html);
         });
