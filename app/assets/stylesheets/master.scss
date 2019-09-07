@@ -107,9 +107,18 @@ body {
   background: image_url('dust_scratches.png');
 }
 
-#dttb_filter label, 
-#dttb_length label {
-  padding: 10px;
+#players-datatable_filter label, 
+#players-datatable_length label {
+  padding: 10px 15px 0px 15px;
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+  margin: 5px 0px;
+  justify-content: initial;
+}
+
+#players-datatable_info {
+  padding-left: 15px;
 }
 
 
