@@ -35,4 +35,8 @@ class Roster < ApplicationRecord
     end
   end
 
+  def roster_in_league(league)
+    
+  end
+
 end

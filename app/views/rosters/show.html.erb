@@ -1,0 +1,85 @@
+<h1><%= @roster.team_name %></h1>
+<% if current_user.is_admin?(@current_league) %>
+  <h2><%= link_to 'Add Players (Admin)', league_admin_roster_players_path(@roster.league, @roster) %></h2>
+<% end %>
+
+<div class="row">
+  <div class="table-responsive-lg player-table col-6">
+    <table class="table table-hover table-bordered table-sm" cellspacing="0"
+    width="100%">
+      <%# <thead class="thead-light">
+        <tr>
+          <th class="text-center" colspan="16">2018-2019 Season
+        </tr>
+      </thead> %>
+      <thead class="thead-light player-stats">
+        <tr>
+          <th class="th-sm" scope="col">Position</th>
+          <th class="th-sm" scope="col">Name</th>
+          <th class="th-sm" scope="col"><%= @season %></th>
+          <th class="th-sm" scope="col"><%= @season + 1 %></th>
+          <th class="th-sm" scope="col"><%= @season + 2 %></th>
+          <th class="th-sm" scope="col"><%= @season + 3 %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% row = 1 %>
+        <% @positions.each do |position| %>
+          <% player_association = row >= @player_associations.length ? nil : @player_associations[row] %>
+          <% player = player_association == nil ? nil : player_association.player %>
+          <tr id="<%= player == nil ? "Empty" : player.id %>">
+            <th scope="row"><%= position %></th>
+            <th scope="col">
+              <% if player != nil %>
+                <%= link_to player.name, '#' %>
+              <% else %>
+                <%= nil %>
+              <% end %>
+            </th>
+            <% 4.times do |i| %>
+              
+              <td scope="col"><%= player_association != nil ? i < player_association.contract_years.length ? player_association.contract_years[i].salary : nil : nil %></td>
+            <% end %>
+          </tr>
+          <% row += 1%>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="table-responsive-lg pick-table col-4">
+    <table class="table table-hover table-bordered table-sm" cellspacing="0"
+    width="100%">
+      <%# <thead class="thead-light">
+        <tr>
+          <th class="text-center" colspan="16">2018-2019 Season
+        </tr>
+      </thead> %>
+      <thead class="thead-light">
+        <tr>
+          <th class="th-sm" scope="col">Years</th>
+          <th class="th-sm" scope="col">Round 1</th>
+          <th class="th-sm" scope="col">Round 2</th>
+          <th class="th-sm" scope="col">Round 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @years.each do |year|%>
+          <tr>
+            <th scope="row"><%= year %></th>
+            <% picks_in_year = @picks.where(year: year) %>
+            <% picks_in_year.each do |pick| %>
+              <td scope="col"><%= pick.roster.team_abbrev %></td>
+              <%#           
+              <button type="button" class="btn btn-primary btn-circle" 
+                data-toggle="modal" data-target="#contractModal" data-contract-year-url="<%= league_admin_roster_player_contract_years_path(@league, @roster, player) %>
+                <%# <i class="fa fa-plus"></i></button> %>
+              <%# </th> %>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

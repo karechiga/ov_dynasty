@@ -19,4 +19,7 @@ class User < ApplicationRecord
   def is_admin?(league)
     return memberships.find_by_league_id(league.id).admin
   end
+  def my_roster(league)
+    return rosters.find_by_league_id(league.id)
+  end
 end

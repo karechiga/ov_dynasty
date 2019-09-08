@@ -6,7 +6,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <%= link_to 'League Home', league_homes_path(@current_league), class: 'nav-link' %>
-      <%= link_to 'My Roster', '#', class: 'nav-link' %>
+      <%= link_to 'My Roster', league_roster_path(@current_league, current_user.my_roster(@current_league)), class: 'nav-link' %>
       <%= link_to 'Players', '#', class: 'nav-link' %>
       <%= link_to 'Standings', '#', class: 'nav-link' %>
       <%= link_to 'Scoreboard', '#', class: 'nav-link' %>
@@ -16,7 +16,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <% @current_league.rosters.each do |roster| %>
-            <%= link_to roster.team_name, '#', class: 'nav-link' %>
+            <%= link_to roster.team_name, league_roster_path(@current_league, roster), class: 'nav-link' %>
             <span class="dropdown-divider"></span>
           <% end %>
         </div>
