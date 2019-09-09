@@ -3,11 +3,16 @@
 @import 'datatables';
 @import url('https://fonts.googleapis.com/css?family=Lexend+Exa|Noto+Sans&display=swap');
 
-.player-table {
+.player-table, .roster-table {
   margin: 35px 35px 35px 35px;
   border: 1px solid #adb5bd;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background: white;
+}
+
+.roster-table {
+  width: 65%;
+  margin-right: 10px;
 }
 
 .pick-table {
@@ -15,6 +20,11 @@
   border: 1px solid #adb5bd;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background: white;
+  width: 26%;
+}
+
+.two-tables-row {
+  margin: 0;
 }
 
 .contract-year-input .col-9 input {
@@ -123,6 +133,10 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 
 .btn-sm, .btn-group-sm > .btn {
   padding: 0.1rem 0.5rem;
+}
+
+table.table-bordered.dataTable td:last-child {
+  text-align: center;
 }
 
 
