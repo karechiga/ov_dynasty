@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_03_032712) do
+ActiveRecord::Schema.define(version: 2019_09_12_040231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,13 +126,23 @@ ActiveRecord::Schema.define(version: 2019_09_03_032712) do
     t.index ["last_name"], name: "index_players_on_last_name"
   end
 
+  create_table "roster_salaries", force: :cascade do |t|
+    t.integer "year"
+    t.decimal "salary_cap", default: "0.0"
+    t.decimal "traded_salary", default: "0.0"
+    t.decimal "penalty", default: "0.0"
+    t.decimal "salary_adds", default: "0.0"
+    t.integer "roster_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "salary_total", default: "0.0"
+    t.index ["roster_id"], name: "index_roster_salaries_on_roster_id"
+  end
+
   create_table "rosters", force: :cascade do |t|
     t.string "team_name"
     t.string "team_abbrev"
     t.text "motto", default: ""
-    t.decimal "cap_space", default: "0.0"
-    t.decimal "penalty", default: "0.0"
-    t.decimal "traded_salary", default: "0.0"
     t.integer "wins", default: 0
     t.integer "losses", default: 0
     t.integer "ties", default: 0

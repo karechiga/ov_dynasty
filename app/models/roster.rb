@@ -4,9 +4,11 @@ class Roster < ApplicationRecord
   has_many :player_associations
   has_many :players, through: :player_associations, source: :player
   has_many :picks
+  has_many :roster_salaries
 
   after_initialize :init_name
   after_create :init_picks
+  after_create :init_roster_salaries
 
   def init_name
     if self.new_record?
@@ -35,8 +37,17 @@ class Roster < ApplicationRecord
     end
   end
 
-  def roster_in_league(league)
-    
+  def init_roster_salaries
+    current_month = Date.today.month
+    current_year = Date.today.year
+    if current_month > 6
+      year = current_year
+    else
+      year = current_year - 1
+    end
+    4.times do |i|
+      self.roster_salaries.create(year: year + i)
+    end
   end
 
 end

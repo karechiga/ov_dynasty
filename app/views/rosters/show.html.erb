@@ -25,9 +25,9 @@
       <tbody>
         <% row = 1 %>
         <% @positions.each do |position| %>
-          <% player_association = row >= @player_associations.length ? nil : @player_associations[row] %>
+          <% player_association = row > @player_associations.length ? nil : @player_associations[row-1] %>
           <% player = player_association == nil ? nil : player_association.player %>
-          <tr id="<%= player == nil ? "Empty" : player.id %>">
+          <tr id="<%= position %>">
             <th scope="row"><%= position %></th>
             <th scope="col">
               <% if player != nil %>
@@ -37,12 +37,56 @@
               <% end %>
             </th>
             <% 4.times do |i| %>
-              
-              <td scope="col"><%= player_association != nil ? i < player_association.contract_years.length ? player_association.contract_years[i].salary : nil : nil %></td>
+              <td scope="col"><%= player_association != nil ? i < player_association.contract_years.length ? number_to_currency(player_association.contract_years[i].salary, { precision: 0 }) : nil : nil %></td>
             <% end %>
           </tr>
           <% row += 1%>
         <% end %>
+        <tr id="salary-adds">
+          <th scope="row">Salary Adds</th>
+          <td scope="col"></td>
+          <% i = 0 %>
+          <% @roster.roster_salaries.each do %>
+            <td scope="col"><%= number_to_currency(@roster.roster_salaries.find_by_year(@season + i).salary_adds) %></td>
+            <% i += 1 %>
+          <% end %>
+        </tr>
+        <tr id="penalties">
+          <th scope="row">Penalties</th>
+          <td scope="col"></td>
+          <% i = 0 %>
+          <% @roster.roster_salaries.each do %>
+            <td scope="col"><%= number_to_currency(@roster.roster_salaries.find_by_year(@season + i).penalty) %></td>
+            <% i += 1 %>
+          <% end %>
+        </tr>
+        <tr id="traded-salary">
+          <th scope="row">Traded Salary</th>
+          <td scope="col"></td>
+          <% i = 0 %>
+          <% @roster.roster_salaries.each do %>
+            <td scope="col"><%= number_to_currency(@roster.roster_salaries.find_by_year(@season + i).traded_salary) %></td>
+            <% i += 1 %>
+          <% end %>
+        </tr>
+        <tr id="salary-total">
+          <th scope="row">Salary Total</th>
+          <td scope="col"></td>
+          <% i = 0 %>
+          <% @roster.roster_salaries.each do %>
+            <td scope="col"><%= number_to_currency(@roster.roster_salaries.find_by_year(@season + i).salary_total) %></td>
+            <% i += 1 %>
+          <% end %>
+        </tr>
+        <tr id="cap">
+          <th scope="row">Salary Cap</th>
+          <td scope="col"></td>
+          <td scope="col"><%= number_to_currency(115000000) %></td>
+          <td scope="col"><%= number_to_currency(117500000) %></td>
+          <td scope="col"><%= number_to_currency(120000000) %></td>
+          <td scope="col"><%= number_to_currency(120000000) %></td>
+        </tr>
+
       </tbody>
     </table>
   </div>
