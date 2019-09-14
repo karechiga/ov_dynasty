@@ -32,8 +32,10 @@
             <th scope="col">
               <% if player != nil %>
                 <%= link_to player.name, '#' %>
-                <%= link_to 'Drop', league_roster_player_association_path(@current_league, @roster, player_association),
-                 method: :delete, data: {confirm: 'Are you sure you want to delete this?'}, class: 'btn-sm btn-danger' %>
+                <% if current_user.owns_roster?(@roster)%>
+                  <%= link_to 'Drop', league_roster_player_association_path(@current_league, @roster, player_association),
+                  method: :delete, data: {confirm: "Are you sure you want to drop #{player.name}?"}, class: 'btn-sm btn-danger' %>
+                <% end %>
               <% else %>
                 <%= nil %>
               <% end %>
