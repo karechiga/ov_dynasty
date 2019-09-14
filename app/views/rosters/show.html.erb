@@ -1,15 +1,33 @@
-
-<h1><%= @roster.team_name %></h1>
-<div class="row">
-  <div class="col-6">
-    <% if current_user.is_admin?(@current_league) %>
-      <%= link_to 'Add Players (Admin)', league_admin_roster_players_path(@roster.league, @roster), class: "btn btn-primary" %>
-    <% end %>
+<div class="team-header container">
+  <div class="row align-items-center">
+    <%= image_tag 'user.png' %>
+    <div class="col-6">
+      <h1><%= @roster.team_name %></h1>
+    </div>
   </div>
-  <div class="col-6"> 
-    <% if current_user.owns_roster?(@roster)%>
-      <%= link_to 'Team Settings', edit_league_roster_path(@roster.league, @roster), class: "btn btn-primary" %>
-    <% end %>
+  <br/>
+  <div class="row align-items-center">
+    <div class="col-2">
+      <p><%= "#{@roster.user.first_name} #{@roster.user.last_name}" %></p>
+    </div>
+  </div>
+  <div class="row align-items-center">
+    <div class="col-2">
+      <p>Record: <%= "#{@roster.wins} - #{@roster.losses} - #{@roster.ties}" %></p>
+    </div>
+    <div class="col-4">
+      <p>Current Matchup: <%= nil %></p>
+    </div>
+    <div class="col-3">
+      <% if current_user.is_admin?(@current_league) %>
+        <%= link_to 'Add Players (Admin)', league_admin_roster_players_path(@roster.league, @roster), class: "btn btn-success" %>
+      <% end %>
+    </div>
+    <div class="col-3">
+      <% if current_user.owns_roster?(@roster)%>
+        <%= link_to 'Team Settings', edit_league_roster_path(@roster.league, @roster), class: "btn btn-primary" %>
+      <% end %>
+    </div>
   </div>
 </div>
 
