@@ -23,7 +23,7 @@ class Admin::PlayersController < ApplicationController
   def update
     # player = Player.find(params[:id]).update(roster_id: current_roster.id)
     player = Player.find(params[:id]).player_associations.create(roster_id: current_roster.id)
-    redirect_to league_admin_roster_path(current_league, current_roster)
+    redirect_to league_roster_path(current_league, current_roster)
   end
 
   private

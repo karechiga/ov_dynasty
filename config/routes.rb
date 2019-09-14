@@ -13,7 +13,9 @@ Rails.application.routes.draw do
     end
     resources :memberships, only: [:create, :index, :update]
     resources :homes, only: :index, :path => 'home'
-    resources :rosters
+    resources :rosters do
+      resources :player_associations, only: [:destroy]
+    end
   end
   
 end

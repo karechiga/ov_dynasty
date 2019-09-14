@@ -22,4 +22,7 @@ class User < ApplicationRecord
   def my_roster(league)
     return rosters.find_by_league_id(league.id)
   end
+  def owns_roster?(roster)
+    return rosters.include?(roster)
+  end
 end

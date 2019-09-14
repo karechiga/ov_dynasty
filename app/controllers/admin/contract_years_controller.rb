@@ -23,7 +23,7 @@ class Admin::ContractYearsController < ApplicationController
       # end
       season += 1
     end
-    redirect_to league_admin_roster_path(current_league, current_roster)
+    redirect_to league_roster_path(current_league, current_roster)
   end
   
   private
