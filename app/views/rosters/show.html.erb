@@ -1,7 +1,17 @@
+
 <h1><%= @roster.team_name %></h1>
-<% if current_user.is_admin?(@current_league) %>
-  <h2><%= link_to 'Add Players (Admin)', league_admin_roster_players_path(@roster.league, @roster) %></h2>
-<% end %>
+<div class="row">
+  <div class="col-6">
+    <% if current_user.is_admin?(@current_league) %>
+      <%= link_to 'Add Players (Admin)', league_admin_roster_players_path(@roster.league, @roster), class: "btn btn-primary" %>
+    <% end %>
+  </div>
+  <div class="col-6"> 
+    <% if current_user.owns_roster?(@roster)%>
+      <%= link_to 'Team Settings', edit_league_roster_path(@roster.league, @roster), class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
 
 <div class="row two-tables-row">
   <div class="table-responsive-lg player-table roster-table">

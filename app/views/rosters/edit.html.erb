@@ -1,0 +1,13 @@
+<h1>Team Settings</h1>
+
+<div class="form-box">
+  <%= form_with url: league_roster_path(@current_league, @roster), method: :put, model: @roster do |form| %>
+    <%= form.label :team_name %>
+    <%= form.text_field :team_name %>
+    <%= form.label :team_abbrev %>
+    <%= form.text_field :team_abbrev %>
+    <%= form.label :motto %>
+    <%= form.text_field :motto %>
+    <%= form.submit %>
+  <% end %> 
+</div>
