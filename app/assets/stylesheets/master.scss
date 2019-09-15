@@ -15,24 +15,41 @@
   margin-right: 0px;
 }
 
+.roster-table span {
+  font-size: 11px;
+  color: #46474c;
+}
+
+.roster-table span a {
+  float: right;
+  color: #ce0000;
+  font-size: 16px;
+}
+
+.team-option-true {
+  color: rgb(250, 44, 44);
+}
+
 
 .pick-table {
   width: 26%;
   margin-right: 0px;
 }
 
-.team-header {
+.team-header, .free-agents-header {
   margin: 10px 35px 35px 35px;
   border: 1px solid #000000;
-  background: #e7e8ea;
+  background: #ffffff;
+  color: #262748;
   padding: 15px 30px 15px 30px;
-  font-size: 18px;
+  font-size: 16px;
+  font-family: 'Noto Sans TC', sans-serif;
 }
 
 .team-header h1 {
   margin-left: 25px;
   font-weight: 600;
-  font-size: 42px;
+  font-size: 36px;
 }
 
 .two-tables-row {
@@ -127,7 +144,6 @@
 
 body {
   background: image_url('dust_scratches.png');
-  font-family: 'Noto Sans TC', sans-serif;
 }
 
 #players-datatable_filter label, 

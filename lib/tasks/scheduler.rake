@@ -48,11 +48,13 @@ task :update_players_list => :environment do
     height_feet = (height_inches / 12).floor
     weight_pounds = player["weightInKilograms"].to_f * 2.205
     college = player["collegeName"] == "No College" ? player["affiliation"] : player["collegeName"]
+    position = player["leagues"]["standard"]["pos"]
     # if team_id == nil
     Player.create(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], 
       nba_team_id: player["teamId"], years_pro: player["yearsPro"], college: college, country: player["country"],
-        date_of_birth: player["dateOfBirth"], height_feet: height_feet, height_inches: height_inches, weight_pounds: weight_pounds)
-    puts "#{name}, #{height_feet}'#{height_inches % 12}"" out of #{college.blank? ? player["country"] : college}." 
+        date_of_birth: player["dateOfBirth"], height_feet: height_feet, height_inches: height_inches, 
+        weight_pounds: weight_pounds, position: position)
+    puts "#{name}, #{height_feet}'#{height_inches % 12}"" Position: #{position}." 
     # elsif team_id_is_valid(team_id)
     #   NbaTeam.find(team_id).players.create(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], nba_team_id: player["teamId"])
     #   puts "#{name} (#{NbaTeam.find(team_id).abbrev})"
@@ -69,10 +71,13 @@ task :update_players_list => :environment do
     height_feet = (height_inches / 12).floor
     weight_pounds = player["weightInKilograms"].to_f * 2.205
     college = player["collegeName"] == "No College" ? player["affiliation"] : player["collegeName"]
-    puts "Updating #{player['firstName']} #{player['lastName']}"
+    position = player["leagues"]["standard"]["pos"]
+    position = position.to_s.gsub('-', ', ')
+    puts "Updating #{player['firstName']} #{player['lastName']}, #{position}"
     player_db.update(name: name, first_name: player["firstName"], last_name: player["lastName"], id: player["playerId"], 
       nba_team_id: player["teamId"], years_pro: player["yearsPro"], college: college, country: player["country"],
-        date_of_birth: player["dateOfBirth"], height_feet: height_feet, height_inches: height_inches, weight_pounds: weight_pounds)
+        date_of_birth: player["dateOfBirth"], height_feet: height_feet, height_inches: height_inches, 
+        weight_pounds: weight_pounds, position: position)
     # end
   end
   

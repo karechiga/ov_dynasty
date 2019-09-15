@@ -32,7 +32,7 @@
 </div>
 
 <div class="row two-tables-row">
-  <div class="table-responsive-lg player-table roster-table">
+  <div class="table-responsive-lg roster-table">
     <table class="table table-hover table-bordered table-sm" cellspacing="0"
     width="100%">
       <%# <thead class="thead-light">
@@ -60,16 +60,22 @@
             <th scope="col">
               <% if player != nil %>
                 <%= link_to player.name, '#' %>
-                <% if current_user.owns_roster?(@roster)%>
-                  <%= link_to 'Drop', league_roster_player_association_path(@current_league, @roster, player_association),
-                  method: :delete, data: {confirm: "Are you sure you want to drop #{player.name}?"}, class: 'btn-sm btn-danger' %>
-                <% end %>
+                <span>
+                  <%= "#{player.nba_team.abbrev} #{player.position}" %>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <% if current_user.owns_roster?(@roster)%>
+                    <%= link_to fa_icon("minus-circle"), league_roster_player_association_path(@current_league, @roster, player_association),
+                    method: :delete, data: {confirm: "Are you sure you want to drop #{player.name}?"} %>
+                  <% end %>
+                </span>
               <% else %>
                 <%= nil %>
               <% end %>
             </th>
             <% 4.times do |i| %>
-              <td scope="col"><%= player_association != nil ? i < player_association.contract_years.length ? number_to_currency(player_association.contract_years[i].salary, { precision: 0 }) : nil : nil %></td>
+              <td scope="col" class="team-option-<%= player_association != nil ? i < player_association.contract_years.length ? player_association.contract_years[i].team_option : "false" : "false" %>"> 
+                <%= player_association != nil ? i < player_association.contract_years.length ? number_to_currency(player_association.contract_years[i].salary, { precision: 0 }) : nil : nil %>
+              </td>
             <% end %>
           </tr>
           <% row += 1%>
