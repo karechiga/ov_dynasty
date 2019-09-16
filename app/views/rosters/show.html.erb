@@ -1,8 +1,10 @@
 <div class="team-header container">
   <div class="row align-items-center">
     <%= image_tag 'user.png' %>
-    <div class="col-6">
+    <div class="team-header-info">
       <h1><%= @roster.team_name %></h1>
+      <div id="record"><%= "#{@roster.wins} - #{@roster.losses} - #{@roster.ties}" %></div>
+      <div id="owner-name">Current Matchup: <%= nil %></div>
     </div>
   </div>
   <br/>
@@ -12,12 +14,6 @@
     </div>
   </div>
   <div class="row align-items-center">
-    <div class="col-2">
-      <p>Record: <%= "#{@roster.wins} - #{@roster.losses} - #{@roster.ties}" %></p>
-    </div>
-    <div class="col-4">
-      <p>Current Matchup: <%= nil %></p>
-    </div>
     <div class="col-3">
       <% if current_user.is_admin?(@current_league) %>
         <%= link_to 'Add Players (Admin)', league_admin_roster_players_path(@roster.league, @roster), class: "btn btn-success" %>
@@ -62,7 +58,7 @@
                 <%= link_to player.name, '#' %>
                 <span>
                   <%= "#{player.nba_team.abbrev} #{player.position}" %>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;
                   <% if current_user.owns_roster?(@roster)%>
                     <%= link_to fa_icon("minus-circle"), league_roster_player_association_path(@current_league, @roster, player_association),
                     method: :delete, data: {confirm: "Are you sure you want to drop #{player.name}?"} %>

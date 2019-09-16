@@ -18,9 +18,15 @@ class ContractYear < ApplicationRecord
   end
 
   def add_contract_to_salary_add
-    r = player_association.roster.roster_salaries.find_by_year(self.season)
-    salary = r.salary_adds + 0.5 * self.salary
-    r.update(salary_adds: salary)
+    if !team_option?
+      r = player_association.roster.roster_salaries.find_by_year(self.season)
+      salary = r.salary_adds + 0.5 * self.salary
+      r.update(salary_adds: salary)
+    end
+  end
+
+  def team_option?
+    return self.team_option == 'true'
   end
   # validates :season, presence: true
   # validates :salary, presence: true

@@ -21,7 +21,6 @@
 }
 
 .roster-table span a {
-  float: right;
   color: #ce0000;
   font-size: 16px;
 }
@@ -40,6 +39,7 @@
   margin: 10px 35px 35px 35px;
   border: 1px solid #000000;
   background: #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   color: #262748;
   padding: 15px 30px 15px 30px;
   font-size: 16px;
@@ -47,9 +47,15 @@
 }
 
 .team-header h1 {
-  margin-left: 25px;
+  margin-bottom: 0px;
   font-weight: 600;
   font-size: 36px;
+}
+
+.team-header-info {
+  margin-left: 13px;
+  display: flex;
+  flex-direction: column;
 }
 
 .two-tables-row {
