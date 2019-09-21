@@ -114,7 +114,42 @@ task :update_players_list => :environment do
   update_players_list
 end
 
-task :update_salaries => :environment do
+task :update_positions => :environment do
+  require 'nokogiri'
+  require 'open-uri'
+  require 'pry'
+  require 'fuzzy_match'
+  require 'amatch'
+  include Amatch
+
+  def data_scraper(url)
+    Nokogiri::HTML(open(url))
+  end
+
+  def get_data(first_name, last_name)
+    if last_name != nil
+      last_initial = last_name[0].downcase
+    else
+      last_initial = first_name[0].downcase
+    end
+    url_string = last_name.downcase + first_name[0, 2].downcase + '01.html'
+    base_url = 'https://www.basketball-reference.com/players/'
+    main_url = "#{base_url}#{last_initial}/#{url_string}"
+    puts main_url
+    return data_scraper(main_url)
+  end
+
+  def get_position_data(data)
+    data.css('.placeholder')
+  end
+
+
+  data = get_data("Steven", "Adams")
+  positions = get_position_data(data)
+  puts positions
+end
+
+task :update_salaries_and_positions => :environment do
   require 'nokogiri'
   require 'open-uri'
   require 'pry'
@@ -140,16 +175,22 @@ task :update_salaries => :environment do
       while !next_player.empty?
         player = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td > a")
         salary_info = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td:nth-child(3) > span")
+        position_info = data.css("table:first-of-type > tbody > tr:nth-child(#{i}) > td:nth-child(2)")
         name = player.children.to_s
         salary = salary_info.children.to_s.gsub(/[^\d\.]/, '').to_f
-        # puts "#{name} has a salary of #{salary}."
+        position = position_info.children.to_s
+        if position != 'PG' && position != 'SG' && position != 'SF' && position != 'PF' && position != 'C'
+          position = 'N/A'
+        end
+        puts "#{name} (#{position}) has a salary of #{salary}."
         if !Player.where("name like ?", "%#{name}%").empty?
           # puts "Found #{name} in the database"
-          Player.where("name like ?", "%#{name}%")[0].update(:current_salary => salary)
+          Player.where("name like ?", "%#{name}%")[0].update(:current_salary => salary, :primary_position => position)
           @matched.push(Player.where("name like ?", "%#{name}%")[0])
         else
           @unmatched.push(name)
           @unmatched_salaries.push(salary)
+          @unmatched_positions.push(position)
           # puts "Spotrac: #{name} Actual Name: #{fz_player.name} Distance: #{dist}"
         end
         i += 1
@@ -162,6 +203,7 @@ task :update_salaries => :environment do
   @matched = []
   @unmatched = []
   @unmatched_salaries = []
+  @unmatched_positions = []
   teams.each do |team|
     city = team.city
     nickname = team.nickname
@@ -186,6 +228,7 @@ task :update_salaries => :environment do
   @unmatched.each_index do |i|
     name = @unmatched[i]
     salary = @unmatched_salaries[i]
+    position = @unmatched_positions[i]
     fz_player = fz.find(name)
     name_arr = name.split(' ')
     last_name = name
@@ -199,7 +242,7 @@ task :update_salaries => :environment do
     ls_dist = name.longest_substring_similar(fz_player.name)
     last_name_dist = m.match(fz_player.last_name)
     if ls_dist > 0.35 && last_name_dist > 0.9
-      fz_player.update(:current_salary => salary)
+      fz_player.update(:current_salary => salary, :primary_position => position)
       puts "Spotrac: #{name} Actual Name: #{fz_player.name} LS_Distance: #{ls_dist}, Last Name: #{last_name}, Jaro_Distance: #{last_name_dist}"
       puts "Updating #{fz_player.name}'s current salary to #{fz_player.current_salary}"
     else

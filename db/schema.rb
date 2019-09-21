@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_13_040925) do
+ActiveRecord::Schema.define(version: 2019_09_21_031321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(version: 2019_09_13_040925) do
     t.decimal "fg3_perc"
     t.decimal "ft_perc"
     t.decimal "fppg"
+    t.string "primary_position"
     t.index ["college"], name: "index_players_on_college"
     t.index ["country"], name: "index_players_on_country"
     t.index ["date_of_birth"], name: "index_players_on_date_of_birth"

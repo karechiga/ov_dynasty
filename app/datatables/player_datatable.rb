@@ -6,7 +6,7 @@ class PlayerDatatable < AjaxDatatablesRails::ActiveRecord
     @view_columns ||= {
       first_name: { source: "Player.first_name", cond: :like, searchable: true, orderable: true },
       last_name:  { source: "Player.last_name",  cond: :like, searchable: true },
-      position:      { source: "Player.position", searchable: false },
+      position:      { source: "Player.primary_position", searchable: false },
       gp:        { source: "Player.gp", searchable: false },
       mpg:        { source: "Player.mpg", searchable: false },
       ppg:        { source: "Player.ppg", searchable: false },
@@ -31,7 +31,7 @@ class PlayerDatatable < AjaxDatatablesRails::ActiveRecord
         # name: record.name
         first_name: record.first_name,
         last_name:  record.last_name,
-        position:   record.position,
+        position:   record.primary_position,
         gp:         record.gp,
         mpg:        record.mpg,
         ppg:        record.ppg,

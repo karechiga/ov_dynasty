@@ -57,7 +57,7 @@
               <% if player != nil %>
                 <%= link_to player.name, '#' %>
                 <span>
-                  <%= "#{player.nba_team.abbrev} #{player.position}" %>
+                  <%= "#{player.nba_team.abbrev} #{player.primary_position}" %>
                   &nbsp;&nbsp;
                   <% if current_user.owns_roster?(@roster)%>
                     <%= link_to fa_icon("minus-circle"), league_roster_player_association_path(@current_league, @roster, player_association),
