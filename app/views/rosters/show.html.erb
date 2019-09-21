@@ -48,11 +48,11 @@
       </thead>
       <tbody>
         <% row = 1 %>
-        <% @positions.each do |position| %>
-          <% player_association = row > @player_associations.length ? nil : @player_associations[row-1] %>
+        <% @roster_spots.each do |roster_spot| %>
+          <% player_association = roster_spot.player_association %>
           <% player = player_association == nil ? nil : player_association.player %>
-          <tr id="<%= position %>">
-            <th scope="row"><%= position %></th>
+          <tr id="<%= roster_spot.position %>">
+            <th scope="row"><%= roster_spot.position %></th>
             <th scope="col">
               <% if player != nil %>
                 <%= link_to player.name, '#' %>
@@ -70,7 +70,7 @@
             </th>
             <% 4.times do |i| %>
               <td scope="col" class="team-option-<%= player_association != nil ? i < player_association.contract_years.length ? player_association.contract_years[i].team_option : "false" : "false" %>"> 
-                <%= player_association != nil ? i < player_association.contract_years.length ? number_to_currency(player_association.contract_years[i].salary, { precision: 0 }) : nil : nil %>
+                <%= player_association != nil ? i < player_association.contract_years.length ? number_to_currency(roster_spot.salary_multiplier * player_association.contract_years[i].salary, { precision: 0 }) : nil : nil %>
               </td>
             <% end %>
           </tr>

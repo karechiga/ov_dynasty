@@ -1,14 +1,14 @@
 class Roster < ApplicationRecord
   belongs_to :league
   belongs_to :user
-  has_many :player_associations
+  has_many :roster_spots
+  has_many :player_associations, through: :roster_spots, source: :player_association
   has_many :players, through: :player_associations, source: :player
   has_many :picks
   has_many :roster_salaries
 
   after_initialize :init_name
-  after_create :init_picks
-  after_create :init_roster_salaries
+  after_create :init_picks, :init_roster_salaries, :init_default_roster_spots
 
   def init_name
     if self.new_record?
@@ -48,6 +48,45 @@ class Roster < ApplicationRecord
     4.times do |i|
       self.roster_salaries.create(year: year + i)
     end
+  end
+
+  def init_default_roster_spots
+    2.times do
+      self.roster_spots.create(position: 'PG', active: true)
+    end
+    2.times do
+      self.roster_spots.create(position: 'SG', active: true)
+    end
+    2.times do
+      self.roster_spots.create(position: 'SF', active: true)
+    end
+    2.times do
+      self.roster_spots.create(position: 'PF', active: true)
+    end
+    2.times do
+      self.roster_spots.create(position: 'C', active: true)
+    end
+    5.times do
+      self.roster_spots.create()  # Defaults to Bench spot
+    end
+    3.times do
+      self.roster_spots.create(position: 'DL', salary_multiplier: 0.5)
+    end
+    3.times do 
+      self.roster_spots.create(position: 'IR', salary_multiplier: 0.5)
+    end
+    2.times do
+      self.roster_spots.create(position: 'Stash', salary_multiplier: 0.0)
+    end
+  end
+
+  def find_open_spot(position)
+    self.roster_spots.each do |spot|
+      if spot.player_is_valid?(position)
+        return spot
+      end
+    end
+    return nil
   end
 
 end

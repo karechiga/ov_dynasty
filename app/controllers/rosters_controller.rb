@@ -5,7 +5,7 @@ class RostersController < ApplicationController
 
   def show
     @roster = current_roster
-    @positions = positions
+    @roster_spots = @roster.roster_spots
     @players = @roster.players
     @picks = @roster.picks
     @player_associations = @roster.player_associations
@@ -69,15 +69,6 @@ class RostersController < ApplicationController
       years.push(season + i)
     end
     return years
-  end
-
-  def positions
-    @positions = ['PG', 'PG', 'SG', 'SG',
-                  'SF', 'SF', 'PF', 'PF',
-                  'C', 'C', 'Bench', 'Bench',
-                  'Bench', 'Bench', 'Bench',
-                  'DL', 'DL', 'DL', 'Stash',
-                  'Stash']
   end
 
 end

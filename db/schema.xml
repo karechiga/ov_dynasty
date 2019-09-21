@@ -76,7 +76,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="678" y="639" name="Player">
+<table x="851" y="663" name="Player">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="NBA_team" row="id" />
@@ -234,10 +234,10 @@
 <part>id</part>
 </key>
 </table>
-<table x="978" y="588" name="ContractYear">
+<table x="1211" y="625" name="ContractYear">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="Association" row="id" />
+<default>NULL</default><relation table="PlayerAssociation" row="id" />
 </row>
 <row name="year" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
@@ -271,14 +271,13 @@
 <part>id</part>
 </key>
 </table>
-<table x="797" y="477" name="Association">
+<table x="1011" y="570" name="PlayerAssociation">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Player" row="id" />
-<relation table="Player" row="id" />
-<relation table="Roster" row="id" />
+<relation table="RosterSpot" row="id" />
 </row>
-<row name="roster_id" null="1" autoincrement="0">
+<row name="roster_spot_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="player_id" null="1" autoincrement="0">
@@ -310,6 +309,30 @@
 <default>NULL</default></row>
 <row name="roster_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="724" y="444" name="RosterSpot">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Roster" row="id" />
+</row>
+<row name="roster_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="position" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="salary_multiplier" null="1" autoincrement="0">
+<datatype>DECIMAL</datatype>
+<default>NULL</default></row>
+<row name="locked" null="1" autoincrement="0">
+<datatype>BINARY</datatype>
+<default>NULL</default></row>
+<row name="active" null="1" autoincrement="0">
+<datatype>BINARY</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>

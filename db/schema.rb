@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_21_031321) do
+ActiveRecord::Schema.define(version: 2019_09_21_164824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,11 +68,10 @@ ActiveRecord::Schema.define(version: 2019_09_21_031321) do
 
   create_table "player_associations", force: :cascade do |t|
     t.integer "player_id"
-    t.integer "roster_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "roster_spot_id"
     t.index ["player_id"], name: "index_player_associations_on_player_id"
-    t.index ["roster_id"], name: "index_player_associations_on_roster_id"
   end
 
   create_table "players", force: :cascade do |t|
@@ -139,6 +138,17 @@ ActiveRecord::Schema.define(version: 2019_09_21_031321) do
     t.decimal "salary_total", default: "0.0"
     t.decimal "player_salary_total", default: "0.0"
     t.index ["roster_id"], name: "index_roster_salaries_on_roster_id"
+  end
+
+  create_table "roster_spots", force: :cascade do |t|
+    t.integer "roster_id"
+    t.string "position", default: "Bench"
+    t.decimal "salary_multiplier", default: "1.0"
+    t.boolean "locked", default: false
+    t.boolean "active", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["roster_id"], name: "index_roster_spots_on_roster_id"
   end
 
   create_table "rosters", force: :cascade do |t|

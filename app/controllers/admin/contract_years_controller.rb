@@ -15,15 +15,20 @@ class Admin::ContractYearsController < ApplicationController
 
   def create
     season = current_season
-    player_association = current_player.player_associations.create(roster_id: current_roster.id)
-    num_params.times do |i|
-      contract_year = player_association.contract_years.create(contract_year_params["contract_years"][i]["contract_year"].merge(season: season))
-      # if !contract_year.valid?
-      #   return render plain: "#{contract_year_params["contract_years"][i]["contract_year"]}", status: :unprocessable_entity
-      # end
-      season += 1
+    roster_spot = current_roster.find_open_spot(current_player.primary_position)
+    if roster_spot == nil
+      render plain: "No open spots left on roster", status: :unauthorized
+    else
+      player_association = current_player.player_associations.create(roster_spot_id: roster_spot.id)
+      num_params.times do |i|
+        contract_year = player_association.contract_years.create(contract_year_params["contract_years"][i]["contract_year"].merge(season: season))
+        # if !contract_year.valid?
+        #   return render plain: "#{contract_year_params["contract_years"][i]["contract_year"]}", status: :unprocessable_entity
+        # end
+        season += 1
+      end
+      redirect_to league_roster_path(current_league, current_roster)
     end
-    redirect_to league_roster_path(current_league, current_roster)
   end
   
   private
