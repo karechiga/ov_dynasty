@@ -80,9 +80,9 @@ class Roster < ApplicationRecord
     end
   end
 
-  def find_open_spot(position)
+  def find_open_spot(player)
     self.roster_spots.each do |spot|
-      if spot.player_is_valid?(position)
+      if spot.player_is_valid?(player)
         return spot
       end
     end

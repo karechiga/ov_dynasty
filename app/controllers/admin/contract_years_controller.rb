@@ -15,7 +15,7 @@ class Admin::ContractYearsController < ApplicationController
 
   def create
     season = current_season
-    roster_spot = current_roster.find_open_spot(current_player.primary_position)
+    roster_spot = current_roster.find_open_spot(current_player)
     if roster_spot == nil
       render plain: "No open spots left on roster", status: :unauthorized
     else
