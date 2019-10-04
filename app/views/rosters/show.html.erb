@@ -40,6 +40,7 @@
         <tr>
           <th class="th-sm" scope="col">Position</th>
           <th class="th-sm" scope="col">Name</th>
+          <th class="th-sm" scope="col">Move</th>
           <th class="th-sm" scope="col"><%= @season %></th>
           <th class="th-sm" scope="col"><%= @season + 1 %></th>
           <th class="th-sm" scope="col"><%= @season + 2 %></th>
@@ -51,21 +52,29 @@
         <% @roster_spots.each do |roster_spot| %>
           <% player_association = roster_spot.player_association %>
           <% player = player_association == nil ? nil : player_association.player %>
-          <tr id="<%= roster_spot.position %>">
-            <th scope="row"><%= roster_spot.position %></th>
+          <tr class="roster-spot not-toggled" id="<%= player_association == nil ? 'none' : player_association.id %>">
+            <th scope="row" class="position" id="<%= roster_spot.id %>"><%= roster_spot.position %></th>
             <th scope="col">
               <% if player != nil %>
-                <%= link_to player.name, '#' %>
-                <span>
-                  <%= "#{player.nba_team.abbrev} #{player.primary_position}" %>
+                <div class="roster-player-cell">
+                  <%= link_to player.name, '#' %>
                   &nbsp;&nbsp;
-                  <% if current_user.owns_roster?(@roster)%>
-                    <%= link_to fa_icon("minus-circle"), league_roster_player_association_path(@current_league, @roster, player_association),
-                    method: :delete, data: {confirm: "Are you sure you want to drop #{player.name}?"} %>
-                  <% end %>
-                </span>
+                  <span>
+                    <%= "#{player.nba_team.abbrev} #{player.primary_position}" %>
+                    &nbsp;&nbsp;
+                    <% if current_user.owns_roster?(@roster) || current_user.is_admin? %>
+                      <%= link_to fa_icon("minus-circle"), league_roster_player_association_path(@current_league, @roster, player_association),
+                      method: :delete, data: {confirm: "Are you sure you want to drop #{player.name}?"} %>
+                    <% end %>
+                  </span>
+                </div>
               <% else %>
                 <%= nil %>
+              <% end %>
+            </th>
+            <th class="move-button not-pushed">
+              <% if player != nil %>
+                <button type="button" class="btn-sm btn-secondary move-player-button">Move</button>
               <% end %>
             </th>
             <% 4.times do |i| %>
@@ -76,8 +85,9 @@
           </tr>
           <% row += 1%>
         <% end %>
-        <tr id="salary-adds">
+        <tr class="roster-salary" id="salary-adds">
           <th scope="row">Salary Adds</th>
+          <td scope="col"></td>
           <td scope="col"></td>
           <% i = 0 %>
           <% @roster.roster_salaries.each do %>
@@ -85,8 +95,9 @@
             <% i += 1 %>
           <% end %>
         </tr>
-        <tr id="penalties">
+        <tr class="roster-salary" id="penalties">
           <th scope="row">Penalties</th>
+          <td scope="col"></td>
           <td scope="col"></td>
           <% i = 0 %>
           <% @roster.roster_salaries.each do %>
@@ -94,8 +105,9 @@
             <% i += 1 %>
           <% end %>
         </tr>
-        <tr id="traded-salary">
+        <tr class="roster-salary" id="traded-salary">
           <th scope="row">Traded Salary</th>
+          <td scope="col"></td>
           <td scope="col"></td>
           <% i = 0 %>
           <% @roster.roster_salaries.each do %>
@@ -103,8 +115,9 @@
             <% i += 1 %>
           <% end %>
         </tr>
-        <tr id="salary-total">
+        <tr class="roster-salary" id="salary-total">
           <th scope="row">Salary Total</th>
+          <td scope="col"></td>
           <td scope="col"></td>
           <% i = 0 %>
           <% @roster.roster_salaries.each do %>
@@ -112,15 +125,15 @@
             <% i += 1 %>
           <% end %>
         </tr>
-        <tr id="cap">
+        <tr class="roster-salary" id="cap">
           <th scope="row">Salary Cap</th>
+          <td scope="col"></td>
           <td scope="col"></td>
           <td scope="col"><%= number_to_currency(115000000, { precision: 0 }) %></td>
           <td scope="col"><%= number_to_currency(117500000, { precision: 0 }) %></td>
           <td scope="col"><%= number_to_currency(120000000, { precision: 0 }) %></td>
           <td scope="col"><%= number_to_currency(120000000, { precision: 0 }) %></td>
         </tr>
-
       </tbody>
     </table>
   </div>
@@ -161,3 +174,34 @@
     </table>
   </div>
 </div>
+
+<script>
+  $(function () {
+    $('.move-player-button').click( function (e) {
+      var playerId = e.target.parentElement.parentElement.id;
+      var row = $('#' + playerId);
+      row.css("background-color", "#cecece");
+      row.toggleClass('not-toggled toggled');
+
+      var pushedButton = $('#' + playerId + ' .not-pushed').toggleClass('not-pushed pushed');
+      var notPushedButtons = $('.roster-spot .not-pushed');
+      notPushedButtons.html('<button type="button" class="btn-sm btn-success move-here-button">Here</button>');
+      var possibleRows = $('.roster-table tbody .not-toggled');
+      var rosterSpotIds = $('.roster-table tbody .not-toggled th.position');
+
+      var roster = "<%= @roster.to_json %>";
+      console.log(roster);
+      possibleRows.each( function(index) {
+        var rosterSpotId = rosterSpotIds[index].id;        
+      });
+
+      // Add button to any row that is a valid position
+      // $('.roster-table tbody tr').each( function(index) {
+      //   if (tableRows[index].id != "none") {
+      //     var playerCell = $(".roster-table tbody #" + tableRows[index].id + " .move-button");
+      //     console.log(playerCell)
+      //   }
+      // });
+    });
+  });
+</script>

@@ -15,7 +15,11 @@
   margin-right: 0px;
 }
 
-.roster-table span {
+.roster-player-cell {
+  display: flex;
+  justify-content: left;
+}
+.roster-player-cell span {
   font-size: 11px;
   color: #46474c;
 }
