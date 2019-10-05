@@ -189,12 +189,19 @@
       var possibleRows = $('.roster-table tbody .not-toggled');
       var rosterSpotIds = $('.roster-table tbody .not-toggled th.position');
 
-      var roster = "<%= @roster.to_json %>";
-      console.log(roster);
-      possibleRows.each( function(index) {
-        var rosterSpotId = rosterSpotIds[index].id;        
+      $('.move-here-button').click( function (e) {
+        var rosterSpotId = e.target.parentElement.parentElement.children[0].id;
+        console.log(rosterSpotId);
+        $.ajax({
+          type: 'PUT',
+          url: '/leagues/<%= @current_league.id %>/rosters/<%= @roster.id %>/player_associations/' + playerId,
+          dataType: 'json',
+          data: { roster_spot_id : rosterSpotId },
+          success: function () {
+            console.log("success");
+          }
+        });
       });
-
       // Add button to any row that is a valid position
       // $('.roster-table tbody tr').each( function(index) {
       //   if (tableRows[index].id != "none") {

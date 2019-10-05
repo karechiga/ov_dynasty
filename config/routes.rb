@@ -14,11 +14,7 @@ Rails.application.routes.draw do
     resources :memberships, only: [:create, :index, :update]
     resources :homes, only: :index, :path => 'home'
     resources :rosters do
-      resources :player_associations, only: [:edit, :destroy] do
-        # put 'swap', to: 'player_associations#swap', as: :swap_player_associations
-        # resources :roster_spots do
-        #   put :player_is_valid, on: :member
-        # end
+      resources :player_associations, only: [:update, :destroy] do
       end
     end
   end

@@ -13,11 +13,10 @@ class PlayerAssociationsController < ApplicationController
     redirect_to league_roster_path(current_league, current_roster)
   end
 
-  def edit
-  end
-
-  def swap
-  end
+  def update
+    current_player_association.update_attributes(:roster_spot_id => params[:roster_spot_id])
+    render plain: 'updated!'
+  end 
 
   private
   
