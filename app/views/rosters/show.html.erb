@@ -52,9 +52,9 @@
         <% @roster_spots.each do |roster_spot| %>
           <% player_association = roster_spot.player_association %>
           <% player = player_association == nil ? nil : player_association.player %>
-          <tr class="roster-spot not-toggled" id="<%= player_association == nil ? 'none' : player_association.id %>">
-            <th scope="row" class="position" id="<%= roster_spot.id %>"><%= roster_spot.position %></th>
-            <th scope="col">
+          <tr class="roster-spot not-toggled" id="<%= roster_spot.id %>">
+            <th scope="row" class="position"><%= roster_spot.position %></th>
+            <th scope="col" id="<%= player_association == nil ? 'none' : player_association.id %>">
               <% if player != nil %>
                 <div class="roster-player-cell">
                   <%= link_to player.name, '#' %>
@@ -177,31 +177,82 @@
 
 <script>
   $(function () {
-    $('.move-player-button').click( function (e) {
-      var playerId = e.target.parentElement.parentElement.id;
-      var row = $('#' + playerId);
-      row.css("background-color", "#cecece");
-      row.toggleClass('not-toggled toggled');
-
-      var pushedButton = $('#' + playerId + ' .not-pushed').toggleClass('not-pushed pushed');
-      var notPushedButtons = $('.roster-spot .not-pushed');
-      notPushedButtons.html('<button type="button" class="btn-sm btn-success move-here-button">Here</button>');
-      var possibleRows = $('.roster-table tbody .not-toggled');
-      var rosterSpotIds = $('.roster-table tbody .not-toggled th.position');
-
-      $('.move-here-button').click( function (e) {
-        var rosterSpotId = e.target.parentElement.parentElement.children[0].id;
-        console.log(rosterSpotId);
-        $.ajax({
-          type: 'PUT',
-          url: '/leagues/<%= @current_league.id %>/rosters/<%= @roster.id %>/player_associations/' + playerId,
-          dataType: 'json',
-          data: { roster_spot_id : rosterSpotId },
-          success: function () {
-            console.log("success");
+    $('.roster-table').on( "click", ".move-player-button", function MovePlayer(e) {
+      var playerId = e.target.parentElement.parentElement.children[1].id;
+      var fromRosterSpot = $(e.target.parentElement.parentElement);
+      var fromRosterSpotId = e.target.parentElement.parentElement.id;
+      var fromRosterSpotHtml = fromRosterSpot.html();
+      console.log(fromRosterSpot.hasClass('toggled'));
+      if (fromRosterSpot.hasClass('toggled')) {
+        fromRosterSpot.css("background-color", "#FFFFFF");
+        fromRosterSpot.toggleClass('not-toggled toggled');
+        var pushedButton = $('#' + fromRosterSpotId + ' .pushed');
+        pushedButton.toggleClass('not-pushed pushed');
+        notPushedButtons = $('.roster-spot .not-pushed');
+        notPushedButtons.empty();
+        notPushedButtons.each( function(index) {
+          var playerColumn = notPushedButtons[index].parentElement.children[1];
+          var playerVal = $(playerColumn)[0].innerText;
+          if (playerVal != "") {
+            $(notPushedButtons[index]).html('<button type="button" class="btn-sm btn-secondary move-player-button">Move</button>');
           }
         });
-      });
+      }
+      else {
+        fromRosterSpot.css("background-color", "#cecece");
+        fromRosterSpot.toggleClass('not-toggled toggled');
+
+        var pushedButton = $('#' + fromRosterSpotId + ' .not-pushed');
+        pushedButton.toggleClass('not-pushed pushed');
+        var notPushedButtons = $('.roster-spot .not-pushed');
+        notPushedButtons.html('<button type="button" class="btn-sm btn-success move-here-button">Here</button>');
+        var possibleRows = $('.roster-table tbody .not-toggled');
+        var rosterSpotIds = $('.roster-table tbody .not-toggled th.position');
+
+        $('.move-here-button').click( function (e) {
+          var rosterSpotId = e.target.parentElement.parentElement.id;
+
+          $.ajax({
+            type: 'PUT',
+            url: '/leagues/<%= @current_league.id %>/rosters/<%= @roster.id %>/player_associations/' + playerId,
+            dataType: 'json',
+            data: { roster_spot_id : rosterSpotId },
+            success: function () {
+              console.log("success");
+            },
+            error: function (e) {
+              console.log(rosterSpotId);
+            }
+          });
+
+          var toRosterSpot = $(e.target.parentElement.parentElement);
+          var toRosterSpotHtml = toRosterSpot.html();
+          fromRosterSpot.html(toRosterSpotHtml);
+          toRosterSpot.html(fromRosterSpotHtml);
+
+          toRosterPosition = $(toRosterSpot[0].children[0]);
+          fromRosterPosition = $(fromRosterSpot[0].children[0]);
+          
+          var fromPosition = fromRosterPosition.html();
+          var toPosition = toRosterPosition.html();
+          toRosterPosition.html(fromPosition);
+          fromRosterPosition.html(toPosition);
+
+          fromRosterSpot.css("background-color", "#FFFFFF");
+          fromRosterSpot.toggleClass('not-toggled toggled');
+          pushedButton.toggleClass('not-pushed pushed');
+          notPushedButtons = $('.roster-spot .not-pushed');
+          notPushedButtons.empty();
+          notPushedButtons.each( function(index) {
+            var playerColumn = notPushedButtons[index].parentElement.children[1];
+            var playerVal = $(playerColumn)[0].innerText;
+            if (playerVal != "") {
+              $(notPushedButtons[index]).html('<button type="button" class="btn-sm btn-secondary move-player-button">Move</button>');
+            }
+          });
+          // toRosterPosition.html(fromPosition);
+        });
+      }
       // Add button to any row that is a valid position
       // $('.roster-table tbody tr').each( function(index) {
       //   if (tableRows[index].id != "none") {
