@@ -2,6 +2,7 @@ class PlayerAssociationsController < ApplicationController
   before_action :authenticate_user!
   before_action :require_user_membership
   before_action :require_user_roster_owner
+  before_action :require_valid_position_move, only: :update
 
   def destroy
     # subtract all remaining contract years from salary_total
@@ -43,6 +44,12 @@ class PlayerAssociationsController < ApplicationController
 
   def require_user_roster_owner
     if !current_user.owns_roster?(current_roster)
+      render plain: "Unauthorized", status: :unauthorized
+    end
+  end
+
+  def require_valid_position_move
+    if !RosterSpot.find(params[:roster_spot_id]).player_is_valid?(current_player_association.player)
       render plain: "Unauthorized", status: :unauthorized
     end
   end
