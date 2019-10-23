@@ -15,6 +15,9 @@ Rails.application.routes.draw do
     resources :homes, only: :index, :path => 'home'
     resources :rosters do
       resources :player_associations, only: [:update, :destroy] do
+        resources :roster_spots do
+          get 'valid_player', on: :member
+        end
       end
     end
   end

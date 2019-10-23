@@ -3,11 +3,11 @@ class RosterSpotsController < ApplicationController
   before_action :require_user_membership
   before_action :require_user_roster_owner
 
-  # def player_is_valid
-  #   @current_roster_spot = current_roster_spot
-  #   @player = player
-  #   return @current_roster_spot.player_is_valid?(@player)
-  # end
+  def valid_player
+    @current_roster_spot = current_roster_spot
+    @player = player
+    render json: @current_roster_spot.player_is_valid?(@player)
+  end
 
   private
 
