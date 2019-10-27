@@ -177,12 +177,14 @@
 
 <script>
   $(function () {
-    $('.roster-table').on( "click", ".move-player-button", function MovePlayer(e) {
+    $('.roster-table').on( "click", ".move-player-button", function (e) {
       var playerId = e.target.parentElement.parentElement.children[1].id;
+      // console.log(e.target.parentElement.parentElement.children[1]);
       var fromRosterSpot = $(e.target.parentElement.parentElement);
       var fromRosterSpotId = e.target.parentElement.parentElement.id;
       var fromRosterSpotHtml = fromRosterSpot.html();
       if (fromRosterSpot.hasClass('toggled')) {
+        
         fromRosterSpot.css("background-color", "#FFFFFF");
         fromRosterSpot.toggleClass('not-toggled toggled');
         var pushedButton = $('#' + fromRosterSpotId + ' .pushed');
@@ -200,7 +202,7 @@
       else {
         fromRosterSpot.css("background-color", "#cecece");
         fromRosterSpot.toggleClass('not-toggled toggled');
-
+        console.log("moving a player");
         var pushedButton = $('#' + fromRosterSpotId + ' .not-pushed');
         pushedButton.toggleClass('not-pushed pushed');
         var notPushedButtons = $('.roster-spot .not-pushed');
@@ -210,7 +212,6 @@
           var calls = 0;
           notPushedButtons.each( function (index) {
             calls = calls + 1;
-            // console.log(notPushedButtons[index].parentElement.id);
             var rosterSpotId = notPushedButtons[index].parentElement.id;
             $.ajax({
               url: '/leagues/<%= @current_league.id %>/rosters/<%= @roster.id %>/player_associations/' + playerId + '/roster_spots/' + rosterSpotId + '/valid_player/',
@@ -225,27 +226,20 @@
                 }
               },
             });
-            // $.get( '/leagues/<%= @current_league.id %>/rosters/<%= @roster.id %>/player_associations/' + playerId + '/roster_spots/' + rosterSpotId + '/valid_player/', function( data ) {
-            //   if (data) {
-            //     // console.log(notPushedButtons[index].parentElement);
-            //     // $(notPushedButtons[index]).html('<button type="button" class="btn-sm btn-success move-here-button">Here</button>');
-            //     // console.log($(possibleRows).html('<button type="button" class="btn-sm btn-success move-here-button">Here</button>'));
-            //   }
-            // });
           });
-          console.log('Pass1');
         }
         callAjaxfunc(function() {
-          console.log(possibleRows[0]);
           $(possibleRows).html('<button type="button" class="btn-sm btn-success move-here-button">Here</button>');
-          console.log('Pass2');
         });
         // notPushedButtons.html('<button type="button" class="btn-sm btn-success move-here-button">Here</button>');
         // var possibleRows = $('.roster-table tbody .not-toggled');
         var rosterSpotIds = $('.roster-table tbody .not-toggled th.position');
 
+        console.log(playerId);
         $('.roster-table').on( "click", ".move-here-button", function (e) {
           var rosterSpotId = e.target.parentElement.parentElement.id;
+          console.log(playerId);
+          console.log(e.target.parentElement.parentElement.id);
 
           $.ajax({
             type: 'PUT',
@@ -256,12 +250,14 @@
               console.log("success");
             },
             error: function (e) {
-              console.log(rosterSpotId);
+              // console.log(rosterSpotId);
             }
           });
 
           var toRosterSpot = $(e.target.parentElement.parentElement);
           var toRosterSpotHtml = toRosterSpot.html();
+          // console.log(toRosterSpotHtml);
+          // console.log(fromRosterSpotHtml);
           fromRosterSpot.html(toRosterSpotHtml);
           toRosterSpot.html(fromRosterSpotHtml);
 
