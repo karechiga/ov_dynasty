@@ -37,7 +37,7 @@
 		<type label="SET" length="1" sql="SET" quote=""/>
 		<type label="Bit" length="0" sql="bit" quote=""/>
 	</group>
-</datatypes><table x="509" y="359" name="Roster">
+</datatypes><table x="777" y="330" name="Roster">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="User" row="id" />
@@ -76,7 +76,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="851" y="663" name="Player">
+<table x="1128" y="670" name="Player">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="NBA_team" row="id" />
@@ -184,7 +184,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="870" y="246" name="Pick">
+<table x="1081" y="245" name="Pick">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Roster" row="id" />
@@ -226,7 +226,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="482" y="798" name="NBA_team">
+<table x="954" y="681" name="NBA_team">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
@@ -234,7 +234,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="1211" y="625" name="ContractYear">
+<table x="1571" y="604" name="ContractYear">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="PlayerAssociation" row="id" />
@@ -271,7 +271,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="1011" y="570" name="PlayerAssociation">
+<table x="1296" y="595" name="PlayerAssociation">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Player" row="id" />
@@ -287,7 +287,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="655" y="121" name="RosterSalary">
+<table x="972" y="83" name="RosterSalary">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Roster" row="id" />
@@ -314,7 +314,7 @@
 <part>id</part>
 </key>
 </table>
-<table x="724" y="444" name="RosterSpot">
+<table x="1100" y="466" name="RosterSpot">
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default><relation table="Roster" row="id" />
@@ -338,4 +338,50 @@
 <part>id</part>
 </key>
 </table>
+<table x="539" y="691" name="Matchup">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Schedule" row="id" />
+</row>
+<row name="result" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="home_score" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="away_score" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="date" null="1" autoincrement="0">
+<datatype>DATE</datatype>
+<default>NULL</default></row>
+<row name="schedule_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="home_roster_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="away_roster_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="356" y="771" name="Schedule">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="League" row="id" />
+</row>
+<row name="season" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="new field" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
 </sql>
+

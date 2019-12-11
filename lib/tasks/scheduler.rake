@@ -249,8 +249,15 @@ task :update_salaries_and_positions => :environment do
       puts "Name is not found: #{name}, what FuzzyMatch thought: #{fz_player.name}, LS_Distance: #{ls_dist}, Last Name: #{last_name}, Jaro_Distance: #{last_name_dist}"
     end
   end
-
 end
+
+task :update_current_stats => :environment do
+  
+end
+
+
+
+
 
 task :update_100_players_stats => :environment do
   def get_player_info(id)

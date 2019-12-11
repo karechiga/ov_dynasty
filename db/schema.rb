@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_21_164824) do
+ActiveRecord::Schema.define(version: 2019_12_11_030829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,18 @@ ActiveRecord::Schema.define(version: 2019_09_21_164824) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_leagues_on_user_id"
+  end
+
+  create_table "matchups", force: :cascade do |t|
+    t.float "home_score", default: 0.0
+    t.float "away_score", default: 0.0
+    t.string "date"
+    t.string "result", default: ""
+    t.integer "schedule_id"
+    t.integer "home_roster_id"
+    t.integer "away_roster_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -164,6 +176,13 @@ ActiveRecord::Schema.define(version: 2019_09_21_164824) do
     t.integer "league_id"
     t.index ["league_id"], name: "index_rosters_on_league_id"
     t.index ["user_id"], name: "index_rosters_on_user_id"
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.integer "season"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "league_id"
   end
 
   create_table "users", force: :cascade do |t|
