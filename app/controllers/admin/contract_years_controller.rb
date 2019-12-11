@@ -65,9 +65,9 @@ class Admin::ContractYearsController < ApplicationController
     month = Date.today.month
     year = Date.today.year
     if month < 6
-      return year-1
-    else
       return year
+    else
+      return year + 1
     end
   end
 

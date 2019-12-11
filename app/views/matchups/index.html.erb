@@ -1,0 +1,5 @@
+<h1>League Matchups</h1>
+<% @matchups.each do |matchup| %>
+  <p><%= matchup.away_team.team_name %>   <%= matchup.away_score %></p>
+  <p><%= matchup.home_team.team_name %>   <%= matchup.home_score %></p>
+<% end %>
