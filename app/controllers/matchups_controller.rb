@@ -7,6 +7,9 @@ class MatchupsController < ApplicationController
   end
 
   def show
+    @matchup = Matchup.find(params[:id])
+    @home_team = @matchup.home_team
+    @away_team = @matchup.away_team
   end
 
   private

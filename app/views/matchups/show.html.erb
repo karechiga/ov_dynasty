@@ -1,0 +1,130 @@
+<h1><%= @matchup.home_team.team_name %> Vs. <%= @matchup.away_team.team_name %></h1>
+
+<div class="table-responsive-lg player-table">
+  <table class="table table-hover table-bordered table-sm" cellspacing="0"
+  width="100%">
+    <thead class="thead-light player-stats">
+      <tr>
+        <th class="th-sm" scope="col">Position</th>
+        <th class="th-sm" scope="col">Name</th>
+        <th class="th-sm" scope="col">Min</th>
+        <th class="th-sm" scope="col">FGM</th>
+        <th class="th-sm" scope="col">FGA</th>
+        <th class="th-sm" scope="col">3FGM</th>
+        <th class="th-sm" scope="col">3FGA</th>
+        <th class="th-sm" scope="col">FTM</th>
+        <th class="th-sm" scope="col">FTA</th>
+        <th class="th-sm" scope="col">TO</th>
+        <th class="th-sm" scope="col">Blk</th>
+        <th class="th-sm" scope="col">Stl</th>
+        <th class="th-sm" scope="col">Ast</th>
+        <th class="th-sm" scope="col">Reb</th>
+        <th class="th-sm" scope="col">Pts</th>
+        <th class="th-sm" scope="col">FPts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @away_team.roster_spots.each do |roster_spot| %>
+        <% player_association = roster_spot.player_association %>
+        <% player = player_association == nil ? nil : player_association.player %>
+        <tr id="<%= roster_spot.id %>">
+          <th scope="row" class="position"><%= roster_spot.position %></th>
+          <th scope="row">
+            <% if player != nil %>
+              <div class="roster-player-cell">
+                <%= link_to player.name, '#' %>
+                &nbsp;&nbsp;
+                <span>
+                  <%= "#{player.nba_team.abbrev} #{player.primary_position}" %>
+                  &nbsp;&nbsp;
+                </span>
+              </div>
+            <% else %>
+              <%= nil %>
+            <% end %>
+          </th>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<br/>
+<br/>
+
+<div class="table-responsive-lg player-table">
+  <table class="table table-hover table-bordered table-sm" cellspacing="0"
+  width="100%">
+    <thead class="thead-light player-stats">
+      <tr>
+        <th class="th-sm" scope="col">Position</th>
+        <th class="th-sm" scope="col">Name</th>
+        <th class="th-sm" scope="col">Min</th>
+        <th class="th-sm" scope="col">FGM</th>
+        <th class="th-sm" scope="col">FGA</th>
+        <th class="th-sm" scope="col">3FGM</th>
+        <th class="th-sm" scope="col">3FGA</th>
+        <th class="th-sm" scope="col">FTM</th>
+        <th class="th-sm" scope="col">FTA</th>
+        <th class="th-sm" scope="col">TO</th>
+        <th class="th-sm" scope="col">Blk</th>
+        <th class="th-sm" scope="col">Stl</th>
+        <th class="th-sm" scope="col">Ast</th>
+        <th class="th-sm" scope="col">Reb</th>
+        <th class="th-sm" scope="col">Pts</th>
+        <th class="th-sm" scope="col">FPts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @home_team.roster_spots.each do |roster_spot| %>
+        <% player_association = roster_spot.player_association %>
+        <% player = player_association == nil ? nil : player_association.player %>
+        <tr id="<%= roster_spot.id %>">
+          <th scope="row" class="position"><%= roster_spot.position %></th>
+          <th scope="row">
+            <% if player != nil %>
+              <div class="roster-player-cell">
+                <%= link_to player.name, '#' %>
+                &nbsp;&nbsp;
+                <span>
+                  <%= "#{player.nba_team.abbrev} #{player.primary_position}" %>
+                  &nbsp;&nbsp;
+                </span>
+              </div>
+            <% else %>
+              <%= nil %>
+            <% end %>
+          </th>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+          <td scope="col">0</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

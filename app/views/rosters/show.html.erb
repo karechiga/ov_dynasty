@@ -62,7 +62,7 @@
                   <span>
                     <%= "#{player.nba_team.abbrev} #{player.primary_position}" %>
                     &nbsp;&nbsp;
-                    <% if current_user.owns_roster?(@roster) || current_user.is_admin? %>
+                    <% if current_user.owns_roster?(@roster) || current_user.is_admin?(@current_league) %>
                       <%= link_to fa_icon("minus-circle"), league_roster_player_association_path(@current_league, @roster, player_association),
                       method: :delete, data: {confirm: "Are you sure you want to drop #{player.name}?"} %>
                     <% end %>
