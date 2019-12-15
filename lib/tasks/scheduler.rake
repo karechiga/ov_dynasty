@@ -251,15 +251,176 @@ task :update_salaries_and_positions => :environment do
   end
 end
 
+desc "Use this to update player stats at the end of each day"
 task :update_current_stats => :environment do
+  def get_date
+    date = Date.current
+    puts date
+    return date
+  end
+
+  def get_current_season
+    date = get_date
+    if date.month > 5
+      return date.year
+    else
+      return date.year - 1
+    end
+  end
+
+  def get_time
+    time = Time.current
+    puts time.hour
+    return time
+  end
+
+  def get_todays_games
+    response = Unirest.get "https://api-nba-v1.p.rapidapi.com/games/date/#{get_date.yesterday}",
+      {
+        "X-RapidAPI-Host" => ENV["rapidapi_host"],
+        "X-RapidAPI-Key" => ENV["rapidapi_key"]
+      }
+    yesterdays_games = response.body["api"]["games"]
+    yesterdays_games.delete_if { |game| game["startTimeUTC"].slice(11,2).to_i < 10 } 
+
+    response = Unirest.get "https://api-nba-v1.p.rapidapi.com/games/date/#{get_date}",
+      {
+        "X-RapidAPI-Host" => ENV["rapidapi_host"],
+        "X-RapidAPI-Key" => ENV["rapidapi_key"]
+      }
+    todays_games = response.body["api"]["games"]
+    todays_games.delete_if { |game| game["startTimeUTC"].slice(11,2).to_i > 10 } 
+
+    yesterdays_games.concat(todays_games)
+    puts yesterdays_games
+    return yesterdays_games
+  end
+
+  def get_game_info(year)
+    response = Unirest.get "https://api-nba-v1.p.rapidapi.com/games/seasonYear/#{year}",
+      {
+        "X-RapidAPI-Host" => ENV["rapidapi_host"],
+        "X-RapidAPI-Key" => ENV["rapidapi_key"]
+      }
+    return response.body
+  end
   
+  def get_game_boxscore(game_id)
+    response = Unirest.get "https://api-nba-v1.p.rapidapi.com/statistics/players/gameId/#{game_id}",
+    {
+      "X-RapidAPI-Host" => ENV["rapidapi_host"],
+      "X-RapidAPI-Key" => ENV["rapidapi_key"]
+    }
+    return response.body
+  end
+  
+  def get_player_info(id)
+    response = Unirest.get "https://api-nba-v1.p.rapidapi.com/statistics/players/playerId/#{id}",
+      {
+        "X-RapidAPI-Host" => ENV["rapidapi_host"],
+        "X-RapidAPI-Key" => ENV["rapidapi_key"]
+      }
+    return response.body
+  end
+
+  def minutes_string_to_float(minutes_seconds)
+    strs = minutes_seconds.split(':')
+    if strs.length == 1
+      return minutes_seconds.to_f
+    end
+    minutes = strs[0].to_f
+    seconds = strs[1].to_f
+    return minutes + seconds / 60.0
+  end
+  
+  def stats_initialize_to_zero(player)
+    player.gp = 0
+    player.min_total = 0.0
+    player.pts_total = 0
+    player.reb_total = 0
+    player.ast_total = 0
+    player.stl_total = 0
+    player.blk_total = 0
+    player.to_total = 0
+    player.fgm_total = 0
+    player.fga_total = 0
+    player.fgm3_total = 0
+    player.fga3_total = 0
+    player.ftm_total = 0
+    player.fta_total = 0
+    return
+  end
+  
+  def increment_stats(player, game_stats)
+    player.gp += 1
+    player.min_total += minutes_string_to_float(game_stats["min"])
+    player.pts_total += game_stats["points"].to_i
+    player.reb_total += game_stats["totReb"].to_i
+    player.ast_total += game_stats["assists"].to_i
+    player.stl_total += game_stats["steals"].to_i
+    player.blk_total += game_stats["blocks"].to_i
+    player.to_total += game_stats["turnovers"].to_i
+    player.fgm_total += game_stats["fgm"].to_i
+    player.fga_total += game_stats["fga"].to_i
+    player.fgm3_total += game_stats["tpm"].to_i
+    player.fga3_total += game_stats["tpa"].to_i
+    player.ftm_total += game_stats["ftm"].to_i
+    player.fta_total += game_stats["fta"].to_i
+  end
+
+  def update_per_game(player)
+    player.mpg = player.calc_mpg
+    player.ppg = player.calc_ppg
+    player.rpg = player.calc_rpg
+    player.apg = player.calc_apg
+    player.spg = player.calc_spg
+    player.bpg = player.calc_bpg
+    player.topg = player.calc_topg
+    player.fg_perc = player.calc_fg_perc
+    player.fg3_perc = player.calc_fg3_perc
+    player.ft_perc = player.calc_ft_perc
+    player.fppg = player.calc_fppg
+  end
+  
+  games = get_todays_games
+  
+  all_games = get_game_info(get_current_season)["api"]["games"]
+  all_games.delete_if { |game| game["seasonStage"] != "2" || game["league"] != "standard" } 
+
+  games.each do |game|
+    puts "#{game["vTeam"]["fullName"]} @ #{game["hTeam"]["fullName"]}"
+    boxscore = get_game_boxscore(game["gameId"])
+    players = boxscore["api"]["statistics"]
+    players.each do |player|
+      if player["min"] == "0:00" || player["min"] == ""
+        puts "Player with ID = #{player["playerId"]} did not play."
+      elsif !Player.where(id: player["playerId"]).empty?
+        p = Player.find(player["playerId"])
+        puts "updating stats for #{p.name}"
+        stats_initialize_to_zero(p)
+    
+        player_response = get_player_info(p.id)
+      
+        player_response["api"]["statistics"].each do |game_stats|
+          game_index = all_games.index { |g| g["gameId"] == game_stats["gameId"] && game_stats["min"] != "0:00" && game_stats["min"] != ""}
+          if game_index != nil
+            increment_stats(p, game_stats)
+          end
+        end
+        update_per_game(p)
+        p.save
+      else
+        puts "Player with ID = #{player["playerId"]} could not be found in the database"
+      end
+    end
+  end
 end
 
 
 
 
-
-task :update_100_players_stats => :environment do
+desc "Use this for when player stats have not been updated in a while"
+task :update_players_stats => :environment do
   def get_player_info(id)
     response = Unirest.get "https://api-nba-v1.p.rapidapi.com/statistics/players/playerId/#{id}",
       {
@@ -341,29 +502,27 @@ task :update_100_players_stats => :environment do
     player.fppg = player.calc_fppg
   end
 
-  game_response = get_game_info(2018)
+  game_response = get_game_info(2019)
   games = game_response["api"]["games"]
   # games = games.uniq! { |game| [game["startTimeUTC"], game["endTimeUTC"], game["arena"]] }
   games.delete_if { |game| game["seasonStage"] != "2" || game["league"] != "standard" } 
   
   players = Player.all.sort_by { |player| player.last_name }
   # i = players.index { |player| player.first_name == "Nene" }
-  for i in 51..100 do
-    if !stats_populated_already(players[i])
-      puts "updating stats for #{players[i].name}"
-      stats_initialize_to_zero(players[i])
+  players.each do |player|
+    puts "updating stats for #{player.name}"
+    stats_initialize_to_zero(player)
 
-      player_response = get_player_info(players[i].id)
-    
-      player_response["api"]["statistics"].each do |game_stats|
-        game_index = games.index { |game| game["gameId"] == game_stats["gameId"] && game_stats["min"] != "0:00" && game_stats["min"] != ""}
-        if game_index != nil
-          increment_stats(players[i], game_stats)
-        end
+    player_response = get_player_info(player.id)
+  
+    player_response["api"]["statistics"].each do |game_stats|
+      game_index = games.index { |game| game["gameId"] == game_stats["gameId"] && game_stats["min"] != "0:00" && game_stats["min"] != ""}
+      if game_index != nil
+        increment_stats(player, game_stats)
       end
-      update_per_game(players[i])
-      players[i].save
     end
+    update_per_game(player)
+    player.save
   end
 
   # for i in 0..70 do
