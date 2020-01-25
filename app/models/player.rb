@@ -1,6 +1,5 @@
 class Player < ApplicationRecord
   belongs_to :nba_team, optional: true
-  has_many :games
   has_many :player_associations
   has_many :roster_spots, through: :player_associations, source: :roster_spot
   has_many :rosters, through: :roster_spots, source: :roster

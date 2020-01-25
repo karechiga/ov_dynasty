@@ -20,7 +20,10 @@ Rails.application.routes.draw do
         end
       end
     end
-    resources :matchups, only: [:index, :show]
+    resources :matchups, only: [:index, :show] do
+      resources :days, only: :show
+    end
+
   end
   
 end

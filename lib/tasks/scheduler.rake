@@ -220,7 +220,7 @@ end
 
 ##################################################################################################################
 
-desc "Use this to update player stats at the end of each day"
+desc "Use this to update player stats and games at the end of each day"
 task :update_current_stats => :environment do
   def get_date
     date = Date.current
@@ -249,7 +249,7 @@ task :update_current_stats => :environment do
       }
     @num_api_calls += 1
     yesterdays_games = response.body["api"]["games"]
-    yesterdays_games.delete_if { |game| game["startTimeUTC"].slice(11,2).to_i < 10 } 
+    yesterdays_games.delete_if { |game| game["startTimeUTC"].slice(11,2).to_i < 10 || game["seasonStage"] != "2"} 
     
     response = Unirest.get "https://api-nba-v1.p.rapidapi.com/games/date/#{get_date}",
     {
@@ -258,7 +258,7 @@ task :update_current_stats => :environment do
     }
     @num_api_calls += 1
     todays_games = response.body["api"]["games"]
-    todays_games.delete_if { |game| game["startTimeUTC"].slice(11,2).to_i > 10 } 
+    todays_games.delete_if { |game| game["startTimeUTC"].slice(11,2).to_i > 10 || game["seasonStage"] != "2"} 
 
     yesterdays_games.concat(todays_games)
     return yesterdays_games
@@ -341,32 +341,32 @@ task :update_current_stats => :environment do
     end
   end
   
-  def update_game(player, game_stats, game)
-    if player.games.where(nba_game_id: game_stats["gameId"].to_i).empty?
-      date = Date.parse(game["startTimeUTC"].slice(0,10))
-      if game["startTimeUTC"].slice(11,2).to_i < 10 
-        date = date.yesterday
-      end
-      player.games.create(date: date.to_s, nba_game_id: game["gameId"].to_i)
-    end
-    if game_stats["min"] != "0:00" && game_stats["min"] != ""
-      player.games.find_by_nba_game_id(game["gameId"].to_i).update(
-        min: minutes_string_to_float(game_stats["min"]),
-        pts: game_stats["points"].to_i,
-        reb: game_stats["totReb"].to_i,
-        ast: game_stats["assists"].to_i,
-        stl: game_stats["steals"].to_i,
-        blk: game_stats["blocks"].to_i,
-        to: game_stats["turnovers"].to_i,
-        fgm: game_stats["fgm"].to_i,
-        fga: game_stats["fga"].to_i,
-        fgm3: game_stats["tpm"].to_i,
-        fga3: game_stats["tpa"].to_i,
-        ftm: game_stats["ftm"].to_i,
-        fta: game_stats["fta"].to_i
-      )
-    end
-  end
+  # def update_game(player, game_stats, game)
+  #   if player.games.where(nba_game_id: game_stats["gameId"].to_i).empty?
+  #     date = Date.parse(game["startTimeUTC"].slice(0,10))
+  #     if game["startTimeUTC"].slice(11,2).to_i < 10 
+  #       date = date.yesterday
+  #     end
+  #     player.games.create(date: date.to_s, nba_game_id: game["gameId"].to_i)
+  #   end
+  #   if game_stats["min"] != "0:00" && game_stats["min"] != ""
+  #     player.games.find_by_nba_game_id(game["gameId"].to_i).update(
+  #       min: minutes_string_to_float(game_stats["min"]),
+  #       pts: game_stats["points"].to_i,
+  #       reb: game_stats["totReb"].to_i,
+  #       ast: game_stats["assists"].to_i,
+  #       stl: game_stats["steals"].to_i,
+  #       blk: game_stats["blocks"].to_i,
+  #       to: game_stats["turnovers"].to_i,
+  #       fgm: game_stats["fgm"].to_i,
+  #       fga: game_stats["fga"].to_i,
+  #       fgm3: game_stats["tpm"].to_i,
+  #       fga3: game_stats["tpa"].to_i,
+  #       ftm: game_stats["ftm"].to_i,
+  #       fta: game_stats["fta"].to_i
+  #     )
+  #   end
+  # end
 
   def update_per_game(player)
     player.mpg = player.calc_mpg
@@ -386,7 +386,6 @@ task :update_current_stats => :environment do
   
   all_games = get_game_info(get_current_season)["api"]["games"]
   all_games.delete_if { |game| game["seasonStage"] != "2" || game["league"] != "standard" } 
-
   games.each do |game|
     puts "#{game["vTeam"]["fullName"]} @ #{game["hTeam"]["fullName"]}"
     boxscore = get_game_boxscore(game["gameId"])
@@ -404,7 +403,7 @@ task :update_current_stats => :environment do
           game_index = all_games.index { |g| g["gameId"] == game_stats["gameId"] }
           if game_index != nil
             increment_stats(p, game_stats)
-            update_game(p, game_stats, all_games[game_index])
+            # update_game(p, game_stats, all_games[game_index])
             count +=1
           end
         end
