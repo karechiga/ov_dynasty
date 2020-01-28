@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_24_213039) do
+ActiveRecord::Schema.define(version: 2020_01_27_171706) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,30 @@ ActiveRecord::Schema.define(version: 2020_01_24_213039) do
     t.datetime "updated_at", null: false
     t.index ["date"], name: "index_days_on_date"
     t.index ["matchup_id"], name: "index_days_on_matchup_id"
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.string "date"
+    t.integer "player_id"
+    t.integer "min", default: 0
+    t.integer "pts", default: 0
+    t.integer "reb", default: 0
+    t.integer "ast", default: 0
+    t.integer "stl", default: 0
+    t.integer "blk", default: 0
+    t.integer "to", default: 0
+    t.integer "fgm", default: 0
+    t.integer "fga", default: 0
+    t.integer "fgm3", default: 0
+    t.integer "fga3", default: 0
+    t.integer "ftm", default: 0
+    t.integer "fta", default: 0
+    t.integer "nba_game_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date"], name: "index_games_on_date"
+    t.index ["nba_game_id"], name: "index_games_on_nba_game_id"
+    t.index ["player_id"], name: "index_games_on_player_id"
   end
 
   create_table "leagues", force: :cascade do |t|
