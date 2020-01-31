@@ -14,12 +14,24 @@ class Player < ApplicationRecord
   def is_in_league?(league)
     return leagues.include?(league)
   end
+  def has_game_on_date?(date)
+    return !games.where(date: date).empty?
+  end
 
-  # def update_per_game
-  #   puts "Updating Per Game Stats!!!"
-  #   self.update(mpg: mpg, ppg: ppg, rpg: rpg, apg: apg, spg: spg, bpg: bpg,
-  #   topg: topg, fg_perc: fg_perc, fg3_perc: fg3_perc, ft_perc: ft_perc)
-  # end
+  def update_per_game
+    self.mpg = self.calc_mpg
+    self.ppg = self.calc_ppg
+    self.rpg = self.calc_rpg
+    self.apg = self.calc_apg
+    self.spg = self.calc_spg
+    self.bpg = self.calc_bpg
+    self.topg = self.calc_topg
+    self.fg_perc = self.calc_fg_perc
+    self.fg3_perc = self.calc_fg3_perc
+    self.ft_perc = self.calc_ft_perc
+  end
+
+  
 
   def calc_mpg
     return (self.min_total.to_f / self.gp.to_f).round(1)
@@ -65,8 +77,5 @@ class Player < ApplicationRecord
   def calc_ft_perc
     ft_perc = (self.ftm_total.to_f / self.fta_total.to_f).round(3)
     return ft_perc.nan? ? 0.00 : ft_perc
-  end
-  def calc_fppg
-    return (calc_ppg + calc_rpg + calc_apg + calc_spg + calc_bpg - calc_topg + calc_fgpg - calc_fgapg + calc_ftpg - calc_ftapg).round(1)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_27_171706) do
+ActiveRecord::Schema.define(version: 2020_01_31_032546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(version: 2020_01_27_171706) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "roster_spot_id"
+    t.decimal "fppg"
     t.index ["player_id"], name: "index_player_associations_on_player_id"
   end
 
@@ -167,7 +168,6 @@ ActiveRecord::Schema.define(version: 2020_01_27_171706) do
     t.decimal "fg_perc"
     t.decimal "fg3_perc"
     t.decimal "ft_perc"
-    t.decimal "fppg"
     t.string "primary_position"
     t.index ["college"], name: "index_players_on_college"
     t.index ["country"], name: "index_players_on_country"

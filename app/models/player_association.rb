@@ -21,4 +21,8 @@ class PlayerAssociation < ApplicationRecord
       end
     end
   end
+
+  def calc_fppg
+    return 
+  end
 end

@@ -18,7 +18,7 @@ class PlayerDatatable < AjaxDatatablesRails::ActiveRecord
       fg_perc:        { source: "Player.fg_perc", searchable: false },
       fg3_perc:        { source: "Player.fg3_perc", searchable: false },
       ft_perc:        { source: "Player.ft_perc", searchable: false },
-      fppg:        { source: "Player.fppg", searchable: false },
+      # fppg:        { source: "PlayerAssociation.fppg", searchable: false },
       current_salary:        { source: "Player.current_salary", searchable: false }
     }
   end
@@ -43,7 +43,7 @@ class PlayerDatatable < AjaxDatatablesRails::ActiveRecord
         fg_perc:    record.fg_perc,
         fg3_perc:   record.fg3_perc,
         ft_perc:    record.ft_perc,
-        fppg:       record.fppg,
+        # fppg:       record.fppg,
         current_salary:     record.current_salary,
         DT_RowId:   record.id
       }

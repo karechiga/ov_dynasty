@@ -23,7 +23,7 @@
         <th>FG%</th>
         <th>3Pt%</th>
         <th>FT%</th>
-        <th>FPPG</th>
+        <%# <th>FPPG</th> %>
         <th>Salary</th>
         <th>Add</th>
       </tr>
@@ -149,8 +149,8 @@
           {"data": "fg3_perc",
           "orderSequence": [ "desc", "asc" ]},
           {"data": "ft_perc",
-          "orderSequence": [ "desc", "asc" ]},
-          {"data": "fppg",
+          // "orderSequence": [ "desc", "asc" ]},
+          // {"data": "fppg",
           "orderSequence": [ "desc", "asc" ]},
           {"data": "current_salary",
             render: $.fn.dataTable.render.number( ',', '.', 0, '$' ),

@@ -368,19 +368,19 @@ task :update_current_stats => :environment do
     end
   end
 
-  def update_per_game(player)
-    player.mpg = player.calc_mpg
-    player.ppg = player.calc_ppg
-    player.rpg = player.calc_rpg
-    player.apg = player.calc_apg
-    player.spg = player.calc_spg
-    player.bpg = player.calc_bpg
-    player.topg = player.calc_topg
-    player.fg_perc = player.calc_fg_perc
-    player.fg3_perc = player.calc_fg3_perc
-    player.ft_perc = player.calc_ft_perc
-    player.fppg = player.calc_fppg
-  end
+  # def update_per_game(player)
+  #   player.mpg = player.calc_mpg
+  #   player.ppg = player.calc_ppg
+  #   player.rpg = player.calc_rpg
+  #   player.apg = player.calc_apg
+  #   player.spg = player.calc_spg
+  #   player.bpg = player.calc_bpg
+  #   player.topg = player.calc_topg
+  #   player.fg_perc = player.calc_fg_perc
+  #   player.fg3_perc = player.calc_fg3_perc
+  #   player.ft_perc = player.calc_ft_perc
+  #   player.fppg = player.calc_fppg
+  # end
   @num_api_calls = 0
   games = get_todays_games
   
@@ -407,7 +407,7 @@ task :update_current_stats => :environment do
             count +=1
           end
         end
-        update_per_game(p)
+        p.update_per_game
         p.save
       else
         puts "Player with ID = #{player["playerId"]} could not be found in the database"
