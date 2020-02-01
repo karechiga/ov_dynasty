@@ -224,6 +224,10 @@ desc "Use this to update player stats and games at the end of each day"
 task :update_current_stats => :environment do
   def get_date
     date = Date.current
+    time = Time.current
+    if time.hour < 10
+      date = date.yesterday
+    end
     return date
   end
 
@@ -414,6 +418,10 @@ task :update_current_stats => :environment do
       end
     end
     puts @num_api_calls
+  end
+  days = Day.where(date: get_date.to_s)
+  days.each do |day|
+    day.update_score
   end
 end
 

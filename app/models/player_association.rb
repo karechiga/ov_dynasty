@@ -23,6 +23,15 @@ class PlayerAssociation < ApplicationRecord
   end
 
   def calc_fppg
-    return 
+    return player.ppg + player.rpg + player.apg + player.spg + player.bpg + player.calc_fgpg + player.calc_ftpg - player.calc_fgapg - player.calc_ftapg - player.topg
+  end
+
+  def calc_fp(date)
+    if player.has_game_on_date?(date)
+      game = player.games.find_by_date(date)
+      return game.pts + game.reb + game.ast + game.stl + game.blk + game.fgm + game.ftm - game.fga - game.fta - game.to
+    else
+      return 0
+    end
   end
 end

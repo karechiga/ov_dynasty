@@ -20,4 +20,21 @@ class Matchup < ApplicationRecord
   def away_team
     Roster.find(self.away_roster_id)
   end
+
+  def update_days
+    days.each do |day|
+      day.update_score
+    end
+  end
+
+  def update_matchup_score
+    home = 0
+    away = 0
+    days.each do |day|
+      home += day.home_score
+      away += day.away_score
+    end
+    self.home_score = home
+    self.away_score = away
+  end
 end
