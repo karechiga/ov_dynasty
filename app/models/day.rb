@@ -16,21 +16,19 @@ class Day < ApplicationRecord
   def update_score
     home_team = matchup.home_team
     away_team = matchup.away_team
-    score = 0
+    home = 0
     home_team.roster_spots.each do |rs|
       if rs.active && rs.player_association != nil
-        score = score + rs.player_association.calc_fp(self.date)
+        home = home + rs.player_association.calc_fp(self.date)
       end
     end
-    self.home_score = score
-    score = 0
+    away = 0
     away_team.roster_spots.each do |rs|
       if rs.active && rs.player_association != nil
-        score = score + rs.player_association.calc_fp(self.date)
+        away = away + rs.player_association.calc_fp(self.date)
       end
     end
-    self.away_score = score
-
+    self.update(home_score: home, away_score: away)
     matchup.update_matchup_score
   end
 end

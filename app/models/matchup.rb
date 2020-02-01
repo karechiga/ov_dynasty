@@ -34,7 +34,6 @@ class Matchup < ApplicationRecord
       home += day.home_score
       away += day.away_score
     end
-    self.home_score = home
-    self.away_score = away
+    self.update(home_score: home, away_score: away)
   end
 end
