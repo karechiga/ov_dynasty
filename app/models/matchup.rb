@@ -36,4 +36,28 @@ class Matchup < ApplicationRecord
     end
     self.update(home_score: home, away_score: away)
   end
+
+  def set_active
+    self.update(result: "active")
+  end
+  def update_result
+    if self.result != "complete"
+      if self.home_score > self.away_score
+        home = 1
+        away = 0
+        tie = 0
+      elsif self.home_score < self.away_score
+        home = 0
+        away = 1
+        tie = 0
+      else
+        home = 0
+        away = 0
+        tie = 1
+      end
+      home_team.update_matchup_results(home, away, tie)
+      away_team.update_matchup_results(away, home, tie)
+      self.update(result: "complete")
+    end
+  end
 end

@@ -224,10 +224,6 @@ desc "Use this to update player stats and games at the end of each day"
 task :update_current_stats => :environment do
   def get_date
     date = Date.current
-    time = Time.current
-    if time.hour < 10
-      date = date.yesterday
-    end
     return date
   end
 
@@ -387,7 +383,7 @@ task :update_current_stats => :environment do
   # end
   @num_api_calls = 0
   games = get_todays_games
-  
+  # UPDATES GAME STATS FOR ALL PLAYERS THAT PLAYED IN YESTERDAY'S GAMES
   all_games = get_game_info(get_current_season)["api"]["games"]
   all_games.delete_if { |game| game["seasonStage"] != "2" || game["league"] != "standard" } 
   games.each do |game|
@@ -419,9 +415,26 @@ task :update_current_stats => :environment do
     end
     puts @num_api_calls
   end
-  days = Day.where(date: get_date.to_s)
+  ################################
+  # UPDATES THE MATCHUP INFORMATION BASED ON THE PLAYER'S STATS
+  yesterday = get_date.yesterday
+  days = Day.where(date: yesterday.to_s)
   days.each do |day|
     day.update_score
+  end
+  matchups = Matchup.where.not(result: "active")
+  matchups.each do |matchup|
+    if Date.parse(matchup.start_date) <= get_date && Date.parse(matchup.end_date) > yesterday
+      matchup.set_active
+    end
+  end
+  schedules = Schedule.where(season: get_current_season)
+  schedules.each do |schedule|
+    matchups = schedule.matchups.where(end_date: yesterday.to_s)
+    matchups.each do |matchup|
+      matchup.update_days
+      matchup.update_result
+    end
   end
 end
 

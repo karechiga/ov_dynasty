@@ -3,7 +3,7 @@ class MatchupsController < ApplicationController
   before_action :require_authorized_for_league
  
   def index
-    @matchups = current_schedule.matchups
+    @matchups = current_schedule.matchups.where(result: "active")
   end
 
   def show

@@ -89,4 +89,8 @@ class Roster < ApplicationRecord
     return nil
   end
 
+  def update_matchup_results(wins, losses, ties)
+    self.update(wins: self.wins += wins, losses: self.losses += losses, ties: self.ties += ties)
+  end
+
 end
