@@ -1,6 +1,6 @@
 class Roster < ApplicationRecord
   belongs_to :league
-  belongs_to :user
+  belongs_to :user, optional: :true
   has_many :roster_spots
   has_many :player_associations, through: :roster_spots, source: :player_association
   has_many :players, through: :player_associations, source: :player
@@ -12,11 +12,16 @@ class Roster < ApplicationRecord
 
   def init_name
     if self.new_record?
-      self.team_name = "Team #{user.last_name}"
-      if user.last_name.length <= 3
-        self.team_abbrev = user.last_name.upcase
+      if user != nil
+        self.team_name = "Team #{user.last_name}"
+        if user.last_name.length <= 3
+          self.team_abbrev = user.last_name.upcase
+        else
+          self.team_abbrev = user.last_name[0, 3].upcase
+        end
       else
-        self.team_abbrev = user.last_name[0, 3].upcase
+        self.team_name = "Team #{league.rosters.length + 1}"
+        self.team_abbrev = "TM#{league.rosters.length + 1}"
       end
     end
   end

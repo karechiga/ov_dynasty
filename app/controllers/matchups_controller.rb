@@ -22,9 +22,9 @@ class MatchupsController < ApplicationController
     month = Date.today.month
     year = Date.today.year
     if month < 6
-      return year
+      return year - 1
     else
-      return year + 1
+      return year
     end
   end
 
