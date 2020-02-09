@@ -16,5 +16,9 @@ class League < ApplicationRecord
     end
   end
 
+  def open_roster?
+    self.rosters.where(:user => nil).length > 0
+  end
+
 
 end

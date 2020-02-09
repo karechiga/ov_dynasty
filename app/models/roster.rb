@@ -98,4 +98,14 @@ class Roster < ApplicationRecord
     self.update(wins: self.wins += wins, losses: self.losses += losses, ties: self.ties += ties)
   end
 
+  def new_member
+    team_name = "Team #{user.last_name}"
+    if user.last_name.length <= 3
+      team_abbrev = user.last_name.upcase
+    else
+      team_abbrev = user.last_name[0, 3].upcase
+    end
+    self.update(team_name: team_name, team_abbrev: team_abbrev)
+  end
+
 end

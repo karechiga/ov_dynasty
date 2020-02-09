@@ -1,5 +1,7 @@
 <h1><%= @league.name %></h1>
 <h2><%= @league.motto %></h2>
-<% if !current_user.is_a_member?(@league) %>
+<% if !current_user.is_a_member?(@league) && @league.open_roster? %>
   <p><%= link_to "Join #{@league.name}", league_memberships_path(@league), method: :post %></p>
+<% elsif !@league.open_roster? %>
+  <p>League is filled</p>
 <% end %>

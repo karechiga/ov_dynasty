@@ -51,7 +51,7 @@
       </thead>
       <tbody>
         <% row = 1 %>
-        <% @roster_spots.reverse_each do |roster_spot| %>
+        <% @roster_spots.each do |roster_spot| %>
           <% player_association = roster_spot.player_association %>
           <% player = player_association == nil ? nil : player_association.player %>
           <tr class="roster-spot not-toggled" id="<%= roster_spot.id %>">
